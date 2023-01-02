@@ -1,16 +1,15 @@
-
-import express from 'express';
-import dotenv from 'dotenv';
-import {routes} from './routes';
+import express from "express";
+import dotenv from "dotenv";
+import { routes } from "./routes";
 
 export class App {
   public server;
 
   constructor() {
-    this.server = express();   
+    this.server = express();
     this.loadEnvironmentVariables();
     this.loadMiddlewares();
-    this.loadRoutes(); 
+    this.loadRoutes();
   }
 
   loadMiddlewares() {
@@ -21,14 +20,14 @@ export class App {
     this.server.use(routes);
   }
 
-  loadEnvironmentVariables(){
-    dotenv.config();    
+  loadEnvironmentVariables() {
+    dotenv.config();
   }
 
-  startServer(){
+  startServer() {
     const PORT = process.env.PORT || 5000;
     this.server.listen(PORT, () => {
-      console.log(`SERVER is running on [${PORT}]`)
+      console.log(`SERVER is running on [${PORT}]`);
     });
   }
 }
