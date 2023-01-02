@@ -12,15 +12,15 @@ export class App {
     this.loadRoutes();
   }
 
-  loadMiddlewares() {
+  private loadMiddlewares() {
     this.server.use(express.json());
   }
 
-  loadRoutes() {
+  private loadRoutes() {
     this.server.use(routes);
   }
 
-  loadEnvironmentVariables() {
+  private loadEnvironmentVariables() {
     dotenv.config();
   }
 
