@@ -1,5 +1,5 @@
 /** @format */
 
-export * from "./appRoutes";
-export * from "./todoRoutes";
+export * from "./app";
+export * from "./todo";
 export * from "./RoutesConfig";
