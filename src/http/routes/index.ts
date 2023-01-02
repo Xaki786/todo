@@ -1,1 +1,5 @@
-export * from "./routes";
+/** @format */
+
+export * from "./appRoutes";
+export * from "./todoRoutes";
+export * from "./RoutesConfig";

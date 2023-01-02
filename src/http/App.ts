@@ -1,6 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
-import { routes } from "./routes";
+import { appRoutes, toDoRoutes } from "./routes";
 
 export class App {
   public server;
@@ -10,6 +10,7 @@ export class App {
     this.loadEnvironmentVariables();
     this.loadMiddlewares();
     this.loadRoutes();
+    this.loadDb();
   }
 
   private loadMiddlewares() {
@@ -17,8 +18,11 @@ export class App {
   }
 
   private loadRoutes() {
-    this.server.use(routes);
+    this.server.use(appRoutes);
+    this.server.use(toDoRoutes);
   }
+
+  private loadDb() {}
 
   private loadEnvironmentVariables() {
     dotenv.config();
