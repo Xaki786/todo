@@ -6,7 +6,7 @@ import { appRoutes, toDoRoutes } from "./routes";
 import cors from "cors";
 import { Sequelize } from "sequelize";
 
-export class App {
+class App {
   public server: Application;
   public db: Sequelize = {} as Sequelize;
 
@@ -45,3 +45,5 @@ export class App {
     }
   }
 }
+
+export const appInstance = new App();
