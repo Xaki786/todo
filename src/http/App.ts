@@ -1,19 +1,27 @@
-import express from "express";
+/** @format */
+
+import express, { Application } from "express";
 import dotenv from "dotenv";
 import { appRoutes, toDoRoutes } from "./routes";
+import cors from "cors";
+import { Sequelize } from "sequelize";
 
 export class App {
-  public server;
+  public server: Application;
+  public db: Sequelize = {} as Sequelize;
 
   constructor() {
     this.server = express();
     this.loadEnvironmentVariables();
     this.loadMiddlewares();
     this.loadRoutes();
-    this.loadDb();
   }
 
   private loadMiddlewares() {
+    const corsOptions = {
+      origin: `http://localhost:${process.env.FRONTEND_PORT}`,
+    };
+    this.server.use(cors(corsOptions));
     this.server.use(express.json());
   }
 
@@ -22,16 +30,18 @@ export class App {
     this.server.use(toDoRoutes);
   }
 
-  private loadDb() {}
-
   private loadEnvironmentVariables() {
     dotenv.config();
   }
 
-  startServer() {
+  async startServer() {
     const PORT = process.env.PORT || 5000;
-    this.server.listen(PORT, () => {
-      console.log(`SERVER is running on [${PORT}]`);
-    });
+    try {
+      this.server.listen(PORT, () => {
+        console.log(`SERVER is running on [${PORT}]`);
+      });
+    } catch (error) {
+      console.log(`Error occurred`);
+    }
   }
 }
