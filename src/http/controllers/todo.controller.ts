@@ -43,7 +43,19 @@ export class TodoController {
     const { todoId } = req.params;
     const dbTodo = await Todo.findByPk(todoId);
     appDevelopmentLogger({ dbTodo }, { context: "fetchSingleTodo" });
-    // const updatedTodo = dbTodo[1].map((t) => t.dataValues)[0];
+    
     return res.json({ task: dbTodo });
+  }
+
+  static async deleteTodo(req: Request, res: Response) {
+    const { todoId } = req.params;
+    const dbTodo = await Todo.destroy({ where: { id: todoId } });
+    appDevelopmentLogger({ dbTodo }, { context: "deleteTodo" });
+    if (!dbTodo) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Resource Not Found" });
+    }
+    return res.json({ success: true, message: "deleted" });
   }
 }

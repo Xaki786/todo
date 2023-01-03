@@ -14,5 +14,5 @@ toDoRoutes
   .route(ROUTES_PATHS.SINGLE_TODO)
   .get(TodoController.fetchSingleTodo)
   .put(TodoController.updateTodo)
-  .delete();
+  .delete(TodoController.deleteTodo);
 export { toDoRoutes };
