@@ -23,18 +23,27 @@ export class TodoController {
   }
 
   static async updateTodo(req: Request, res: Response) {
-    const { id, label } = req.body;
+    const { todoId } = req.params;
+    const { label } = req.body;
     const dbTodo = await Todo.update(
       { label },
       {
         where: {
-          id,
+          id: todoId,
         },
         returning: true,
       }
     );
-    appDevelopmentLogger({ dbTodo });
+    appDevelopmentLogger({ dbTodo }, { context: "updateTodo" });
     const updatedTodo = dbTodo[1].map((t) => t.dataValues)[0];
     return res.json({ task: updatedTodo });
+  }
+
+  static async fetchSingleTodo(req: Request, res: Response) {
+    const { todoId } = req.params;
+    const dbTodo = await Todo.findByPk(todoId);
+    appDevelopmentLogger({ dbTodo }, { context: "fetchSingleTodo" });
+    // const updatedTodo = dbTodo[1].map((t) => t.dataValues)[0];
+    return res.json({ task: dbTodo });
   }
 }
