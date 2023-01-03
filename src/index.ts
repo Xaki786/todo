@@ -1,4 +1,5 @@
-import { App } from "./http";
+/** @format */
 
-const app = new App();
-app.startServer();
+import { appInstance } from "./http";
+
+appInstance.startServer();
