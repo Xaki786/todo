@@ -4,11 +4,9 @@ import express, { Application } from "express";
 import dotenv from "dotenv";
 import { appRoutes, toDoRoutes } from "./routes";
 import cors from "cors";
-import { Sequelize } from "sequelize";
 
 class App {
   public server: Application;
-  public db: Sequelize = {} as Sequelize;
 
   constructor() {
     this.server = express();
