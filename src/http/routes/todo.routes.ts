@@ -8,6 +8,7 @@ const toDoRoutes = Router();
 toDoRoutes
   .route(ROUTES_PATHS.TODOS)
   .get(TodoController.fetchTodos)
-  .post(TodoController.addTodo);
+  .post(TodoController.addTodo)
+  .put(TodoController.updateTodo);
 
 export { toDoRoutes };

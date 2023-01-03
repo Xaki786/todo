@@ -3,6 +3,7 @@
 import { Request, Response } from "express";
 import { Todo } from "../models";
 import { v4 as uuidv4 } from "uuid";
+import { appDevelopmentLogger } from "../../common";
 
 export class TodoController {
   static async fetchTodos(req: Request, res: Response) {
@@ -19,5 +20,21 @@ export class TodoController {
     });
     const todo = dbTodo.dataValues;
     return res.json({ task: todo });
+  }
+
+  static async updateTodo(req: Request, res: Response) {
+    const { id, label } = req.body;
+    const dbTodo = await Todo.update(
+      { label },
+      {
+        where: {
+          id,
+        },
+        returning: true,
+      }
+    );
+    appDevelopmentLogger({ dbTodo });
+    const updatedTodo = dbTodo[1].map((t) => t.dataValues)[0];
+    return res.json({ task: updatedTodo });
   }
 }
