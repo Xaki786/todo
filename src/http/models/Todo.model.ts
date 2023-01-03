@@ -9,13 +9,13 @@ import {
 } from "sequelize";
 import { sequelizeConnection } from "./dbConfig";
 class Todo extends Model<InferAttributes<Todo>, InferCreationAttributes<Todo>> {
-  declare id: CreationOptional<number>;
+  declare id: CreationOptional<string>;
   declare label?: string;
 }
 
 Todo.init(
   {
-    id: { type: DataTypes.INTEGER.UNSIGNED, primaryKey: true, field: "id" },
+    id: { type: DataTypes.STRING, primaryKey: true, field: "id" },
     label: { type: DataTypes.STRING, field: "label" },
   },
   {
