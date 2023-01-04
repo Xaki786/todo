@@ -1,3 +1,3 @@
 /** @format */
 
-export * from "./todo.controller";
+export * from "./task.controller";
