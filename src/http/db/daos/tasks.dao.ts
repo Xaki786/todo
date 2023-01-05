@@ -6,34 +6,35 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 class TaskDao {
-  async getTasksList(limit: number, page: number) {
+  async getUserTasksList(limit: number, page: number, userId: string) {
     const dbTasks = await prisma.task.findMany({
-      include: {
-        author: true,
+      where: {
+        authorId: userId,
       },
     });
     return dbTasks;
   }
 
-  async addTask(task: CreateTaskDto) {
+  async addUserTask(task: CreateTaskDto, userId: string) {
     const dbTask = await prisma.task.create({
       data: {
         id: uuidv4(),
         label: task.label,
-        author: {
-          connect: {
-            email: "mjanwarsi@gmail.com",
-          },
-        },
+        authorId: userId,
       },
     });
     return dbTask;
   }
 
-  async updateTaskById(taskId: string, task: UpdateTaskDto) {
+  async updateUserTaskById(
+    taskId: string,
+    task: UpdateTaskDto,
+    userId: string
+  ) {
     const dbTask = await prisma.task.update({
       where: {
         id: taskId,
+        authorId: userId,
       },
       data: {
         ...task,
@@ -43,17 +44,18 @@ class TaskDao {
     return dbTask;
   }
 
-  async getTaskById(taskId: string) {
+  async getUserTaskById(taskId: string, userId: string) {
     const dbTask = await prisma.task.findUnique({
-      where: { id: taskId },
-      include: { author: true },
+      where: { id: taskId, authorId: userId },
     });
 
     return dbTask;
   }
 
-  async deleteTaskById(taskId: string) {
-    const dbTask = await prisma.task.delete({ where: { id: taskId } });
+  async deleteUserTaskById(taskId: string, userId: string) {
+    const dbTask = await prisma.task.delete({
+      where: { id: taskId, authorId: userId },
+    });
     if (!dbTask) {
       return null;
     }

@@ -2,7 +2,7 @@
 
 import express, { Application } from "express";
 import dotenv from "dotenv";
-import { appRoutes, taskRoutes } from "./routes";
+import { appRoutes, taskRoutes, userRoutes } from "./routes";
 import cors from "cors";
 
 class App {
@@ -26,6 +26,7 @@ class App {
   private loadRoutes() {
     this.server.use(appRoutes);
     this.server.use(taskRoutes);
+    this.server.use(userRoutes);
   }
 
   private loadEnvironmentVariables() {

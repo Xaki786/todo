@@ -2,13 +2,13 @@
 
 export interface CreateUserDto {
   email: string;
-  password: string;
+  hash: string;
   name?: string;
 }
 export interface UpdateUserDto {
   id: string;
   email?: string;
-  password?: string;
+  hash?: string;
 }
 export interface DeleteUserDto {
   id: string;

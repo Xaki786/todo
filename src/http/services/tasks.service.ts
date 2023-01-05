@@ -1,24 +1,24 @@
 /** @format */
 
-import { CRUD } from "../../common/interfaces";
+import { DependantEntityCrud } from "../../common/interfaces";
 import { TasksDaoInstance } from "../db/daos";
 import { CreateTaskDto, UpdateTaskDto } from "../db/dtos";
 
-class TasksService implements CRUD {
-  async getList(limit: number, page: number) {
-    return TasksDaoInstance.getTasksList(limit, page);
+class TasksService implements DependantEntityCrud {
+  async getList(limit: number, page: number, userId: string) {
+    return TasksDaoInstance.getUserTasksList(limit, page, userId);
   }
-  async create(task: CreateTaskDto) {
-    return TasksDaoInstance.addTask(task);
+  async create(task: CreateTaskDto, userId: string) {
+    return TasksDaoInstance.addUserTask(task, userId);
   }
-  async updateById(id: string, task: UpdateTaskDto) {
-    return TasksDaoInstance.updateTaskById(id, task);
+  async updateById(taskId: string, task: UpdateTaskDto, userId: string) {
+    return TasksDaoInstance.updateUserTaskById(taskId, task, userId);
   }
-  async deleteById(id: string) {
-    return TasksDaoInstance.deleteTaskById(id);
+  async deleteById(taskId: string, userId: string) {
+    return TasksDaoInstance.deleteUserTaskById(taskId, userId);
   }
-  async getById(id: string) {
-    return TasksDaoInstance.getTaskById(id);
+  async getById(taskId: string, userId: string) {
+    return TasksDaoInstance.getUserTaskById(taskId, userId);
   }
 }
 
