@@ -1,5 +1,11 @@
 /** @format */
 
+export const USER_FIELDS = {
+  EMAIL: "email",
+  HASH: "hash",
+  NAME: "name",
+  ID: "id",
+};
 export interface CreateUserDto {
   email: string;
   hash: string;

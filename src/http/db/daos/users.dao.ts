@@ -50,6 +50,14 @@ class UserDao {
     }
     return dbUser;
   }
+
+  async getUserByEmail(email: string) {
+    const dbUser = await prisma.user.findUnique({
+      where: { email },
+    });
+
+    return dbUser;
+  }
 }
 
 export const UsersDaoInstance = new UserDao();
