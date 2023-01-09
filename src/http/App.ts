@@ -2,11 +2,14 @@
 
 import express, { Application } from "express";
 import dotenv from "dotenv";
-import { appRoutes, taskRoutes, userRoutes } from "./routes";
+import { TaskRoutes, UserRoutes } from "./routes";
 import cors from "cors";
+import { CommonRoutesConfig } from "./routes/CommonRoutesConfig";
+import { AppRoutes } from "./routes/app.routes";
 
 class App {
   public server: Application;
+  routes: CommonRoutesConfig[] = [];
 
   constructor() {
     this.server = express();
@@ -24,23 +27,33 @@ class App {
   }
 
   private loadRoutes() {
-    this.server.use(appRoutes);
-    this.server.use(taskRoutes);
-    this.server.use(userRoutes);
+    const app = this.server;
+    this.routes.push(
+      new AppRoutes(app),
+      new TaskRoutes(app),
+      new UserRoutes(app)
+    );
   }
 
   private loadEnvironmentVariables() {
     dotenv.config();
   }
 
+  private printRoutes() {
+    this.routes.forEach((route) =>
+      console.log(`${JSON.stringify(route.getName())} has been loaded`)
+    );
+  }
+
   async startServer() {
     const PORT = process.env.PORT || 5000;
     try {
       this.server.listen(PORT, () => {
-        console.log(`SERVER is running on [${PORT}]`);
+        console.log(`SERVER is running on [http://localhost:${PORT}]`);
+        this.printRoutes();
       });
     } catch (error) {
-      console.log(`Error occurred`);
+      console.log(`Error occurred ${error}`);
     }
   }
 }

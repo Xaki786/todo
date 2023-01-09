@@ -1,18 +1,25 @@
 /** @format */
 
-import { Router } from "express";
+import { Application } from "express";
 import { ROUTES_PATHS } from "./RoutesConfig";
 import { TaskControllerInstance } from "../controllers";
-const taskRoutes = Router({ mergeParams: true });
+import { CommonRoutesConfig } from "./CommonRoutesConfig";
 
-taskRoutes
-  .route(ROUTES_PATHS.USER_TASK_LIST)
-  .get(TaskControllerInstance.fetchUserTasksList)
-  .post(TaskControllerInstance.addUserTask);
+export class TaskRoutes extends CommonRoutesConfig {
+  constructor(app: Application) {
+    super(app, "TaskRoutes");
+  }
+  configureRoutes(): Application {
+    this.app
+      .route(ROUTES_PATHS.USER_TASK_LIST)
+      .get(TaskControllerInstance.fetchUserTasksList)
+      .post(TaskControllerInstance.addUserTask);
 
-taskRoutes
-  .route(ROUTES_PATHS.USER_TASK_SINGLE)
-  .get(TaskControllerInstance.fetchUserTask)
-  .put(TaskControllerInstance.updateUserTaskById)
-  .delete(TaskControllerInstance.deleteUserTask);
-export { taskRoutes };
+    this.app
+      .route(ROUTES_PATHS.USER_TASK_SINGLE)
+      .get(TaskControllerInstance.fetchUserTask)
+      .put(TaskControllerInstance.updateUserTaskById)
+      .delete(TaskControllerInstance.deleteUserTask);
+    return this.app;
+  }
+}
