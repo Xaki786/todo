@@ -20,6 +20,9 @@ class UserService implements SingleEntityCrud {
   getById(userId: string) {
     return UsersDaoInstance.getUserById(userId);
   }
+  getByEmail(email: string) {
+    return UsersDaoInstance.getUserByEmail(email);
+  }
 }
 
 export const UserServiceInstance = new UserService();
