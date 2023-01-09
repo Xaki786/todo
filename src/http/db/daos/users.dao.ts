@@ -3,6 +3,7 @@
 import { CreateUserDto, UpdateUserDto, DeleteUserDto } from "../dtos";
 import { v4 as uuidv4 } from "uuid";
 import { PrismaClient } from "@prisma/client";
+import { appDevelopmentLogger } from "../../../common";
 
 const prisma = new PrismaClient();
 class UserDao {
@@ -44,11 +45,16 @@ class UserDao {
   }
 
   async deleteUserById(userId: string) {
-    const dbUser = await prisma.user.delete({ where: { id: userId } });
-    if (!dbUser) {
+    try {
+      const dbUser = await prisma.user.delete({ where: { id: userId } });
+      appDevelopmentLogger({ userId });
+      if (!dbUser) {
+        return null;
+      }
+      return dbUser;
+    } catch (error) {
       return null;
     }
-    return dbUser;
   }
 
   async getUserByEmail(email: string) {

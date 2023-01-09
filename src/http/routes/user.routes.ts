@@ -24,7 +24,11 @@ export class UserRoutes extends CommonRoutesConfig {
     this.app
       .route(ROUTES_PATHS.SINGLE_USER)
       .get(UserControllerInstance.getUserById)
-      .put(UserControllerInstance.updateUserById)
+      .put(
+        UserMiddlewareInstance.isUserValidForUpdate(),
+        BodyValidationMiddlewareInstance.verifyBodyFieldErrors,
+        UserControllerInstance.updateUserById
+      )
       .delete(UserControllerInstance.deleteUserById);
 
     return this.app;
