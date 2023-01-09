@@ -27,7 +27,7 @@ class UserMiddleware {
   isUserValidForUpdate() {
     return envConfigObject.isValidationEnabled
       ? [
-          check(USER_FIELDS.ID).custom(async (id: string) => {
+          check(USER_FIELDS.USER_ID).custom(async (id: string) => {
             const user = await UserServiceInstance.getById(id);
             if (!user) {
               return Promise.reject("Invalid User Id");
@@ -54,7 +54,7 @@ class UserMiddleware {
   isUserValidForDelete() {
     return envConfigObject.isValidationEnabled
       ? [
-          check(USER_FIELDS.ID).custom(async (id: string) => {
+          check(USER_FIELDS.USER_ID).custom(async (id: string) => {
             const user = await UserServiceInstance.getById(id);
             if (!user) {
               return Promise.reject("Invalid User Id");
