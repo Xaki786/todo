@@ -1,30 +1,38 @@
 /** @format */
 
+import { NextFunction, Request, Response } from "express";
 import { body, check } from "express-validator";
 import { envConfigObject } from "../../common/config";
+import { JSON_MESSAGES } from "../controllers/utils";
 import { USER_FIELDS } from "../db/dtos";
 import { UserServiceInstance } from "../services";
 class UserMiddleware {
-  isUserValidForCreation() {
-    return envConfigObject.isValidationEnabled
-      ? [
-          body(USER_FIELDS.EMAIL)
-            .isEmail()
-            .custom(async (value) => {
-              const user = await UserServiceInstance.getByEmail(value);
-              if (user) {
-                return Promise.reject("Email already in use");
-              }
-            }),
-          body(USER_FIELDS.HASH)
-            .isLength({ min: 5 })
-            .withMessage("Must include more than 5 characters"),
-          body(USER_FIELDS.NAME).optional(),
-        ]
-      : [];
+  async isUserValidForCreation(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
+    if (!req.body.email || !req.body.hash) {
+      return res.status(400).json(JSON_MESSAGES.BAD_REQUEST);
+    }
+    envConfigObject.isValidationEnabled && [
+      body(USER_FIELDS.EMAIL)
+        .isEmail()
+        .custom(async (value) => {
+          const user = await UserServiceInstance.getByEmail(value);
+          if (user) {
+            return Promise.reject("Email already in use");
+          }
+        }),
+      body(USER_FIELDS.HASH)
+        .isLength({ min: 5 })
+        .withMessage("Must include more than 5 characters"),
+      body(USER_FIELDS.NAME).optional(),
+    ];
+    return next();
   }
 
-  isUserValidForUpdate() {
+  async isUserValidForUpdate() {
     return envConfigObject.isValidationEnabled
       ? [
           check(USER_FIELDS.USER_ID).custom(async (id: string) => {

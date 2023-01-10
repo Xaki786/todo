@@ -1,9 +1,9 @@
 /** @format */
 
 import { Application } from "express";
-import { ROUTES_PATHS } from "./RoutesConfig";
+import { ROUTES_PATHS } from "./utils/RoutesConfig";
 import { TaskControllerInstance } from "../controllers";
-import { CommonRoutesConfig } from "./CommonRoutesConfig";
+import { CommonRoutesConfig } from "./utils/CommonRoutesConfig";
 
 export class TaskRoutes extends CommonRoutesConfig {
   constructor(app: Application) {
