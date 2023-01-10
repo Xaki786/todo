@@ -2,7 +2,7 @@
 
 import express, { Application } from "express";
 import dotenv from "dotenv";
-import { TaskRoutes, UserRoutes } from "./routes";
+import { AuthRoutes, TaskRoutes, UserRoutes } from "./routes";
 import cors from "cors";
 import { CommonRoutesConfig } from "./routes/CommonRoutesConfig";
 import { AppRoutes } from "./routes/app.routes";
@@ -31,7 +31,8 @@ class App {
     this.routes.push(
       new AppRoutes(app),
       new TaskRoutes(app),
-      new UserRoutes(app)
+      new UserRoutes(app),
+      new AuthRoutes(app)
     );
   }
 

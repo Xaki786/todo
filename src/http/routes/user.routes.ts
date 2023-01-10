@@ -30,8 +30,7 @@ export class UserRoutes extends CommonRoutesConfig {
         UserControllerInstance.updateUserById
       )
       .delete(UserControllerInstance.deleteUserById);
-
-      this.app.route("/login").post(UserControllerInstance.login);
+      
     return this.app;
   }
 }
