@@ -4,7 +4,7 @@ import argon2 from "argon2";
 import { NextFunction, Request, Response } from "express";
 import { body } from "express-validator";
 import { appDevelopmentLogger } from "../../common";
-import { envConfigObject } from "../../common/config";
+import { envConfigObject } from "../../config";
 import { JSON_MESSAGES, verifyAuthToken } from "../controllers/utils";
 
 class AuthMiddleware {

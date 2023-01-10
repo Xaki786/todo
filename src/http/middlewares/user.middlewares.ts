@@ -2,7 +2,7 @@
 
 import { NextFunction, Request, Response } from "express";
 import { body, check } from "express-validator";
-import { envConfigObject } from "../../common/config";
+import { envConfigObject } from "../../config";
 import { JSON_MESSAGES } from "../controllers/utils";
 import { USER_FIELDS } from "../db/dtos";
 import { UserServiceInstance } from "../services";

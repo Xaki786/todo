@@ -4,7 +4,7 @@ import express, { Application } from "express";
 import dotenv from "dotenv";
 import { AuthRoutes, TaskRoutes, UserRoutes } from "./routes";
 import cors from "cors";
-import { CommonRoutesConfig } from "./routes/CommonRoutesConfig";
+import { CommonRoutesConfig } from "./routes/utils/CommonRoutesConfig";
 import { AppRoutes } from "./routes/app.routes";
 
 class App {
@@ -59,4 +59,4 @@ class App {
   }
 }
 
-export const appInstance = new App();
+export const AppInstance = new App();
