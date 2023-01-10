@@ -1,5 +1,5 @@
 /** @format */
 
-import { appInstance } from "./http";
+import { AppInstance } from "./http";
 
-appInstance.startServer();
+AppInstance.startServer();

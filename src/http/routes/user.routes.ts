@@ -1,11 +1,11 @@
 /** @format */
 
 import { Application } from "express";
-import { ROUTES_PATHS } from "./RoutesConfig";
+import { ROUTES_PATHS } from "./utils/RoutesConfig";
 import { UserControllerInstance } from "../controllers";
-import { CommonRoutesConfig } from "./CommonRoutesConfig";
+import { CommonRoutesConfig } from "./utils/CommonRoutesConfig";
 import { BodyValidationMiddlewareInstance } from "../../common/middlewares";
-import { UserMiddlewareInstance } from "../middlewares";
+import { AuthMiddlewareInstance, UserMiddlewareInstance } from "../middlewares";
 
 export class UserRoutes extends CommonRoutesConfig {
   constructor(app: Application) {
@@ -16,7 +16,7 @@ export class UserRoutes extends CommonRoutesConfig {
       .route(ROUTES_PATHS.USERS)
       .get(UserControllerInstance.getUsers)
       .post(
-        UserMiddlewareInstance.isUserValidForCreation(),
+        UserMiddlewareInstance.isUserValidForCreation,
         BodyValidationMiddlewareInstance.verifyBodyFieldErrors,
         UserControllerInstance.addUser
       );
@@ -25,11 +25,15 @@ export class UserRoutes extends CommonRoutesConfig {
       .route(ROUTES_PATHS.SINGLE_USER)
       .get(UserControllerInstance.getUserById)
       .put(
-        UserMiddlewareInstance.isUserValidForUpdate(),
+        UserMiddlewareInstance.isUserValidForUpdate,
         BodyValidationMiddlewareInstance.verifyBodyFieldErrors,
         UserControllerInstance.updateUserById
       )
-      .delete(UserControllerInstance.deleteUserById);
+      .delete(
+        AuthMiddlewareInstance.isLoggedIn,
+        AuthMiddlewareInstance.isAuthorized,
+        UserControllerInstance.deleteUserById
+      );
 
     return this.app;
   }

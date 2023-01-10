@@ -1,6 +1,6 @@
 /** @format */
 
-import { CreateUserDto, UpdateUserDto, DeleteUserDto } from "../dtos";
+import { CreateUserDto, UpdateUserDto } from "../dtos";
 import { v4 as uuidv4 } from "uuid";
 import { PrismaClient } from "@prisma/client";
 import { appDevelopmentLogger } from "../../../common";

@@ -12,4 +12,6 @@ export const ROUTES_PATHS = {
   USER_TASK_LIST: `/${users}/:${userId}/${tasks}`,
   USER_TASK_SINGLE: `/${users}/:${userId}/${tasks}/:${taskId}`,
   HOME: "/",
+  LOGIN: "/login",
+  REGISTER: "/register",
 };

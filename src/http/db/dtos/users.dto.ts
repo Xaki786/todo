@@ -5,6 +5,7 @@ export const USER_FIELDS = {
   HASH: "hash",
   NAME: "name",
   ID: "id",
+  USER_ID: "userId",
 };
 export interface CreateUserDto {
   email: string;
