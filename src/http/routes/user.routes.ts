@@ -31,6 +31,7 @@ export class UserRoutes extends CommonRoutesConfig {
       )
       .delete(
         AuthMiddlewareInstance.isLoggedIn,
+        AuthMiddlewareInstance.isAuthorized,
         UserControllerInstance.deleteUserById
       );
 

@@ -1,7 +1,5 @@
 /** @format */
 
-import { CreateUserDto } from "./users.dto";
-
 export interface CreateTaskDto {
   label: string;
   authorId: string;

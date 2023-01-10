@@ -3,6 +3,7 @@
 import { CreateTaskDto, UpdateTaskDto } from "../dtos";
 import { v4 as uuidv4 } from "uuid";
 import { PrismaClient } from "@prisma/client";
+import { appDevelopmentLogger } from "../../../common";
 
 const prisma = new PrismaClient();
 class TaskDao {
@@ -31,6 +32,7 @@ class TaskDao {
     task: UpdateTaskDto,
     userId: string
   ) {
+    appDevelopmentLogger({ task }, { context: "updateUserTaskById" });
     const dbTask = await prisma.task.update({
       where: {
         id: taskId,

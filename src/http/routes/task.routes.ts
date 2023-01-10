@@ -4,6 +4,7 @@ import { Application } from "express";
 import { ROUTES_PATHS } from "./utils/RoutesConfig";
 import { TaskControllerInstance } from "../controllers";
 import { CommonRoutesConfig } from "./utils/CommonRoutesConfig";
+import { AuthMiddlewareInstance } from "../middlewares";
 
 export class TaskRoutes extends CommonRoutesConfig {
   constructor(app: Application) {
@@ -13,13 +14,25 @@ export class TaskRoutes extends CommonRoutesConfig {
     this.app
       .route(ROUTES_PATHS.USER_TASK_LIST)
       .get(TaskControllerInstance.fetchUserTasksList)
-      .post(TaskControllerInstance.addUserTask);
+      .post(
+        AuthMiddlewareInstance.isLoggedIn,
+        AuthMiddlewareInstance.isAuthorized,
+        TaskControllerInstance.addUserTask
+      );
 
     this.app
       .route(ROUTES_PATHS.USER_TASK_SINGLE)
       .get(TaskControllerInstance.fetchUserTask)
-      .put(TaskControllerInstance.updateUserTaskById)
-      .delete(TaskControllerInstance.deleteUserTask);
+      .put(
+        AuthMiddlewareInstance.isLoggedIn,
+        AuthMiddlewareInstance.isAuthorized,
+        TaskControllerInstance.updateUserTaskById
+      )
+      .delete(
+        AuthMiddlewareInstance.isLoggedIn,
+        AuthMiddlewareInstance.isAuthorized,
+        TaskControllerInstance.deleteUserTask
+      );
     return this.app;
   }
 }
