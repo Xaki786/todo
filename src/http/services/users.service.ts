@@ -1,7 +1,7 @@
 /** @format */
 
 import { SingleEntityCrud } from "../../common/interfaces";
-import { UsersDaoInstance } from "../db/daos/users.dao";
+import { UsersDaoInstance } from "../db/daos";
 import { CreateUserDto, UpdateUserDto } from "../db/dtos";
 
 class UserService implements SingleEntityCrud {
