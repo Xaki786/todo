@@ -1,0 +1,27 @@
+services:
+  api:
+    container_name: api
+    restart: always
+    build: .
+    ports:
+      - ${PORT}:${PORT}
+    depends_on:
+      - db
+    volumes:
+    - .:/app
+    - /app/node_modules
+    
+
+  db:
+    container_name: postgres
+    image: postgres
+    ports:
+      - '5432:${PGPORT}'
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=${PGPASSWORD}
+      - POSTGRES_DB=${PGDATABASE}
+
+volumes: 
+ postgres-data:
