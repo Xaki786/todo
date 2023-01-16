@@ -1,9 +1,10 @@
 FROM node:18-alpine
 WORKDIR /app
-COPY ["package.json", ".env", "tsconfig.json", "./"]
+COPY ["package.json", ".env", "tsconfig.json", ".env" ,"./"]
 COPY prisma ./prisma/
 RUN npm cache clean --force
-RUN npm install --only=production
-RUN npm run generate
+RUN npm install
+RUN npx prisma generate
+EXPOSE 5000
 COPY . .
-CMD [ "npm", "run", "dev" ]
+CMD [ "npm", "run", "dev" ]`
