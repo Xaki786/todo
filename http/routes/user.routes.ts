@@ -4,7 +4,7 @@ import { Application } from "express";
 import { ROUTES_PATHS } from "./utils/RoutesConfig";
 import { UserControllerInstance } from "../controllers";
 import { CommonRoutesConfig } from "./utils/CommonRoutesConfig";
-import { BodyValidationMiddlewareInstance } from "../../common/middlewares";
+import { BodyValidationMiddlewareInstance } from "../../src/common/middlewares";
 import { AuthMiddlewareInstance, UserMiddlewareInstance } from "../middlewares";
 
 export class UserRoutes extends CommonRoutesConfig {

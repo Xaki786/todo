@@ -1,6 +1,6 @@
 /** @format */
 import jwt from "jsonwebtoken";
-import { envConfigObject } from "../../config";
+import { envConfigObject } from "../../src/config";
 export const JSON_MESSAGES = {
   INVALID_CREDENTIALS: "Invalid Credentials",
   USER_ALREADY_PRESENT: "User with this email alreay exists",

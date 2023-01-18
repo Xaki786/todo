@@ -1,7 +1,7 @@
 /** @format */
 
 import { Request, Response } from "express";
-import { exclude } from "../../common";
+import { exclude } from "../../src/common";
 import { AuthMiddlewareInstance } from "../middlewares";
 import { UserServiceInstance } from "../services";
 import { AuthServiceInstance } from "../services/auth.service";

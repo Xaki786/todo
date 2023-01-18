@@ -1,6 +1,6 @@
 /** @format */
 
-import { DependantEntityCrud } from "../../common/interfaces";
+import { DependantEntityCrud } from "../../src/common/interfaces";
 import { TasksDaoInstance } from "../db/daos";
 import { CreateTaskDto, UpdateTaskDto } from "../db/dtos";
 

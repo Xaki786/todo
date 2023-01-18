@@ -1,6 +1,6 @@
 /** @format */
 
-import { SingleEntityCrud } from "../../common/interfaces";
+import { SingleEntityCrud } from "../../src/common/interfaces";
 import { UsersDaoInstance } from "../db/daos";
 import { CreateUserDto, UpdateUserDto } from "../db/dtos";
 
