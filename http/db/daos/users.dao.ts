@@ -3,7 +3,7 @@
 import { CreateUserDto, UpdateUserDto } from "../dtos";
 import { v4 as uuidv4 } from "uuid";
 import { PrismaClient } from "@prisma/client";
-import { appDevelopmentLogger } from "../../../common";
+import { appDevelopmentLogger } from "../../../src/common";
 
 const prisma = new PrismaClient();
 class UserDao {

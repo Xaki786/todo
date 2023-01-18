@@ -1,7 +1,7 @@
 /** @format */
 
 import { Request, Response } from "express";
-import { appDevelopmentLogger } from "../../common";
+import { appDevelopmentLogger } from "../../src/common";
 import { TasksServiceInstance } from "../services";
 class TaskController {
   async fetchUserTasksList(req: Request, res: Response) {

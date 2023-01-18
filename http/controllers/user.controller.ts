@@ -2,7 +2,7 @@
 
 import argon2 from "argon2";
 import { Request, Response } from "express";
-import { appDevelopmentLogger, exclude } from "../../common";
+import { appDevelopmentLogger, exclude } from "../../src/common";
 import { UserServiceInstance } from "../services";
 class UserController {
   async getUsers(req: Request, res: Response) {
