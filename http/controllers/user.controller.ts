@@ -6,18 +6,13 @@ import { appDevelopmentLogger, exclude } from "../../src/common";
 import { UserServiceInstance } from "../services";
 class UserController {
   async getUsers(req: Request, res: Response) {
-    const users = await UserServiceInstance.getList(100, 0);
-    if (users.length) {
-      const usersWithOutHash = users.map((user) =>
-        exclude(user, ["hash"] as never)
-      );
-      return res.status(200).json({ users: usersWithOutHash });
-    }
+    const limit = parseInt(req.body.limit) || 10;
+    const page = parseInt(req.body.page) || 1;
+    const users = await UserServiceInstance.getList(limit, page);
     return res.status(200).json({ users });
   }
 
   async addUser(req: Request, res: Response) {
-    req.body.hash = await argon2.hash(req.body.hash);
     const user = await UserServiceInstance.create(req.body);
     return res.status(200).json({ user });
   }

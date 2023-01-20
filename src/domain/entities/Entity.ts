@@ -1,15 +1,15 @@
-import { v4 as uuid } from "uuid";
+import { UniqueIdGenerator } from "../../Infrastructure/UniqueIdGenerator";
 
 const isEntity = <T>(v: Entity<T>): v is Entity<T> => {
   return v instanceof Entity;
 };
 
 export abstract class Entity<T> {
-  protected readonly _id: string;
+  protected readonly _id: UniqueIdGenerator;
   protected props: T;
 
   constructor(props: T, id?: string) {
-    this._id = id ?? uuid();
+    this._id = id ?? new UniqueIdGenerator();
     this.props = props;
   }
 

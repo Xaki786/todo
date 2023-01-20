@@ -11,4 +11,6 @@ export interface IUserProps {
   hash: string;
   name: string;
   tasks?: ITask[];
+  createdAt?: Date;
+  updatedAt?: Date;
 }

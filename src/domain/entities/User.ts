@@ -1,3 +1,4 @@
+import { UniqueIdGenerator } from "../../Infrastructure/UniqueIdGenerator";
 import { Entity } from "./Entity";
 import { ITask, IUserProps } from "./interfaces";
 
@@ -11,7 +12,7 @@ export class User extends Entity<IUserProps> {
     return new User(props);
   }
 
-  get id(): string {
+  get id(): UniqueIdGenerator {
     return this._id;
   }
 

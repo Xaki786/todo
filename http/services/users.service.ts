@@ -1,27 +1,49 @@
 /** @format */
 
+import { exclude } from "../../src/common";
 import { SingleEntityCrud } from "../../src/common/interfaces";
-import { UsersDaoInstance } from "../db/daos";
-import { CreateUserDto, UpdateUserDto } from "../db/dtos";
+import { User } from "../../src/domain";
+import { IUserProps } from "../../src/domain/entities/interfaces";
+import { UserRepoInstance } from "../../src/Infrastructure";
+import { UserMapper } from "../../src/Infrastructure/mappers";
 
 class UserService implements SingleEntityCrud {
-  getList(limit: number, page: number) {
-    return UsersDaoInstance.getUsersList(limit, page);
+  async getList(limit: number, page: number) {
+    const users = await UserRepoInstance.getList(limit, page);
+    if (users.length) {
+      const usersWithOutHash = users.map((user) =>
+        exclude(user, ["hash"] as never)
+      );
+      return usersWithOutHash;
+    }
+    return [];
   }
-  create(user: CreateUserDto) {
-    return UsersDaoInstance.addUser(user);
+  async create(userProps: IUserProps) {
+    const dbUser = await UserRepoInstance.create(userProps);
+    const user = UserMapper.toDomain(dbUser);
+    const userWithOutHash = exclude(user, ["hash"] as never);
+    return userWithOutHash;
   }
-  updateById(userId: string, user: UpdateUserDto) {
-    return UsersDaoInstance.updateUserById(userId, user);
+  async updateById(userId: string, userProps: IUserProps) {
+    const dbUser = await UserRepoInstance.updateById(userId, userProps);
+    const user = User.create(dbUser);
+    const userWithOutHash = exclude(user, ["hash"] as never);
+    return userWithOutHash;
   }
   deleteById(userId: string) {
-    return UsersDaoInstance.deleteUserById(userId);
+    return UserRepoInstance.deleteById(userId);
   }
-  getById(userId: string) {
-    return UsersDaoInstance.getUserById(userId);
+  async getById(userId: string) {
+    const dbUser = await UserRepoInstance.getById(userId);
+    const user = User.create(dbUser);
+    const userWithOutHash = exclude(user, ["hash"] as never);
+    return userWithOutHash;
   }
-  getByEmail(email: string) {
-    return UsersDaoInstance.getUserByEmail(email);
+  async getByEmail(email: string) {
+    const dbUser = await UserRepoInstance.getByEmail(email);
+    const user = User.create(dbUser);
+    const userWithOutHash = exclude(user, ["hash"] as never);
+    return userWithOutHash;
   }
 }
 
