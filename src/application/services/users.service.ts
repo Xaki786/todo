@@ -4,7 +4,7 @@ import { exclude } from "../../common";
 import { SingleEntityCrud } from "../../common/interfaces";
 import { User } from "../../domain";
 import { IUserProps } from "../../domain/entities/interfaces";
-import { UserRepoInstance } from "../../Infrastructure";
+import { UniqueIdGenerator, UserRepoInstance } from "../../Infrastructure";
 import { UserMapper } from "../../Infrastructure/mappers";
 
 class UserService implements SingleEntityCrud {
@@ -19,31 +19,28 @@ class UserService implements SingleEntityCrud {
     return [];
   }
   async create(userProps: IUserProps) {
-    const dbUser = await UserRepoInstance.create(userProps);
-    const user = UserMapper.toDomain(dbUser);
-    const userWithOutHash = exclude(user, ["hash"] as never);
-    return userWithOutHash;
+    const user = User.create(userProps);
+    const dbUser = await UserRepoInstance.create(UserMapper.toDb(user));
+    return UserMapper.toDomain(dbUser);
   }
-  async updateById(userId: string, userProps: IUserProps) {
-    const dbUser = await UserRepoInstance.updateById(userId, userProps);
-    // const user = User.create(dbUser);
-    const userWithOutHash = exclude(dbUser, ["hash"] as never);
-    return userWithOutHash;
+  async updateById(userId: UniqueIdGenerator, userProps: IUserProps) {
+    const user = User.create({ id: userId, ...userProps });
+    const dbUser = await UserRepoInstance.updateById(
+      user.id,
+      UserMapper.toDb(user)
+    );
+    return UserMapper.toDomain(dbUser);
   }
-  deleteById(userId: string) {
+  deleteById(userId: UniqueIdGenerator) {
     return UserRepoInstance.deleteById(userId);
   }
-  async getById(userId: string) {
+  async getById(userId: UniqueIdGenerator) {
     const dbUser = await UserRepoInstance.getById(userId);
-    const user = User.create(dbUser);
-    const userWithOutHash = exclude(user, ["hash"] as never);
-    return userWithOutHash;
+    return UserMapper.toDomain(dbUser);
   }
   async getByEmail(email: string) {
     const dbUser = await UserRepoInstance.getByEmail(email);
-    const user = User.create(dbUser);
-    const userWithOutHash = exclude(user, ["hash"] as never);
-    return userWithOutHash;
+    return UserMapper.toDomain(dbUser);
   }
 }
 

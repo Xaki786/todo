@@ -32,6 +32,13 @@ export class User extends Entity<IUserProps> {
     this._tasks.push(task);
   }
 
+  get userProps(): IUserProps {
+    return {
+      id: this._id,
+      ...this.props,
+    };
+  }
+
   public updateTask(taskId: string, task: ITask) {
     const taskIndex = this._tasks.findIndex((task) => task.id === taskId);
     if (!taskId) {

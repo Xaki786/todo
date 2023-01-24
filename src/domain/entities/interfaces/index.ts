@@ -1,13 +1,15 @@
+/** @format */
+
+import { UniqueIdGenerator } from "../../../Infrastructure";
+
 export interface ITask {
   id?: string;
   label: string;
   updatedAt?: Date;
   authorId?: string;
 }
-
-export interface IUser {}
 export interface IUserProps {
-  id?: string;
+  id?: UniqueIdGenerator;
   email: string;
   hash: string;
   name: string;

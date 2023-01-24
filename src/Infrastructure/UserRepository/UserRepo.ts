@@ -3,6 +3,7 @@
 import { IUserLogin, IUserProps } from "../../domain/entities/interfaces";
 import { IUserRepo } from "../Interfaces";
 import { PrismaClient } from "@prisma/client";
+import { UniqueIdGenerator } from "../UniqueIdGenerator";
 
 class UserRepo implements IUserRepo {
   private client: PrismaClient;
@@ -27,8 +28,10 @@ class UserRepo implements IUserRepo {
     })) as IUserProps[];
   }
 
-  async exists(userId: string): Promise<boolean> {
-    const user = await this.client.user.findUnique({ where: { id: userId } });
+  async exists(userId: UniqueIdGenerator): Promise<boolean> {
+    const user = await this.client.user.findUnique({
+      where: { id: userId as string },
+    });
     if (user) return true;
     return false;
   }
@@ -42,17 +45,18 @@ class UserRepo implements IUserRepo {
     const dbUser = await this.client.user.create({
       data: {
         ...user,
+        id: user.id as string,
       },
     });
     return dbUser as IUserProps;
   }
   async updateById(
-    id: string,
+    id: UniqueIdGenerator,
     user: Omit<IUserProps, "tasks">
   ): Promise<IUserProps> {
     const dbUser = await this.client.user.update({
       where: {
-        id,
+        id: id as string,
       },
       data: {
         ...user,
@@ -61,9 +65,11 @@ class UserRepo implements IUserRepo {
 
     return dbUser as IUserProps;
   }
-  async deleteById(id: string): Promise<any> {
+  async deleteById(id: UniqueIdGenerator): Promise<any> {
     try {
-      const dbUser = await this.client.user.delete({ where: { id } });
+      const dbUser = await this.client.user.delete({
+        where: { id: id as string },
+      });
       if (!dbUser) {
         return false;
       }
@@ -72,9 +78,9 @@ class UserRepo implements IUserRepo {
       return false;
     }
   }
-  async getById(id: string): Promise<IUserProps> {
+  async getById(id: UniqueIdGenerator): Promise<IUserProps> {
     const dbUser = await this.client.user.findUnique({
-      where: { id },
+      where: { id: id as string },
       include: { tasks: true },
     });
 

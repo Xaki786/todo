@@ -2,8 +2,10 @@
 
 import { getAuthToken } from "../../../http/controllers/utils";
 import { exclude, PasswordManager } from "../../common";
+import { User } from "../../domain";
 import { IUserProps } from "../../domain/entities/interfaces";
 import { UserRepoInstance } from "../../Infrastructure";
+import { UserMapper } from "../../Infrastructure/mappers";
 
 class AuthService {
   async login(user: { email: string; hash: string }) {
@@ -30,10 +32,10 @@ class AuthService {
       return null;
     }
     userProps.hash = await PasswordManager.encryptPassword(userProps.hash);
-    const dbUser = await UserRepoInstance.create(userProps);
+    const user = User.create(userProps);
+    const dbUser = await UserRepoInstance.create(UserMapper.toDb(user));
     const token = getAuthToken(dbUser.id as string);
-    const userWithOutHash = exclude(dbUser, ["hash"] as never);
-    return { ...userWithOutHash, token };
+    return { ...UserMapper.toDomain(dbUser), token };
   }
 }
 
