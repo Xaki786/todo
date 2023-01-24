@@ -1,11 +1,11 @@
 /** @format */
 
-import { exclude } from "../../src/common";
-import { SingleEntityCrud } from "../../src/common/interfaces";
-import { User } from "../../src/domain";
-import { IUserProps } from "../../src/domain/entities/interfaces";
-import { UserRepoInstance } from "../../src/Infrastructure";
-import { UserMapper } from "../../src/Infrastructure/mappers";
+import { exclude } from "../../common";
+import { SingleEntityCrud } from "../../common/interfaces";
+import { User } from "../../domain";
+import { IUserProps } from "../../domain/entities/interfaces";
+import { UserRepoInstance } from "../../Infrastructure";
+import { UserMapper } from "../../Infrastructure/mappers";
 
 class UserService implements SingleEntityCrud {
   async getList(limit: number, page: number) {
@@ -26,8 +26,8 @@ class UserService implements SingleEntityCrud {
   }
   async updateById(userId: string, userProps: IUserProps) {
     const dbUser = await UserRepoInstance.updateById(userId, userProps);
-    const user = User.create(dbUser);
-    const userWithOutHash = exclude(user, ["hash"] as never);
+    // const user = User.create(dbUser);
+    const userWithOutHash = exclude(dbUser, ["hash"] as never);
     return userWithOutHash;
   }
   deleteById(userId: string) {

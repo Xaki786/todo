@@ -19,7 +19,6 @@ export class AuthRoutes extends CommonRoutesConfig {
       .post(
         AuthMiddlewareInstance.isValidUser,
         UserMiddlewareInstance.isUserValidForCreation,
-        AuthMiddlewareInstance.encryptPassword,
         AuthControllerInstance.register
       );
     return this.app;

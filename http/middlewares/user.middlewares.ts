@@ -6,7 +6,7 @@ import { appDevelopmentLogger } from "../../src/common";
 import { envConfigObject } from "../../src/config";
 import { JSON_MESSAGES } from "../controllers/utils";
 import { USER_FIELDS } from "../db/dtos";
-import { UserServiceInstance } from "../services";
+import { UserServiceInstance } from "../../src/application";
 class UserMiddleware {
   async isUserValidForCreation(
     req: Request,

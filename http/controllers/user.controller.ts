@@ -3,7 +3,7 @@
 import argon2 from "argon2";
 import { Request, Response } from "express";
 import { appDevelopmentLogger, exclude } from "../../src/common";
-import { UserServiceInstance } from "../services";
+import { UserServiceInstance } from "../../src/application";
 class UserController {
   async getUsers(req: Request, res: Response) {
     const limit = parseInt(req.body.limit) || 10;

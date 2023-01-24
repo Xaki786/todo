@@ -18,7 +18,6 @@ export class UserRoutes extends CommonRoutesConfig {
       .post(
         UserMiddlewareInstance.isUserValidForCreation,
         BodyValidationMiddlewareInstance.verifyBodyFieldErrors,
-        AuthMiddlewareInstance.encryptPassword,
         UserControllerInstance.addUser
       );
 

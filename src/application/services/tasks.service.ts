@@ -1,8 +1,8 @@
 /** @format */
 
-import { DependantEntityCrud } from "../../src/common/interfaces";
-import { TasksDaoInstance } from "../db/daos";
-import { CreateTaskDto, UpdateTaskDto } from "../db/dtos";
+import { DependantEntityCrud } from "../../common/interfaces";
+import { TasksDaoInstance } from "../../../http/db/daos";
+import { CreateTaskDto, UpdateTaskDto } from "../../../http/db/dtos";
 
 class TasksService implements DependantEntityCrud {
   async getList(limit: number, page: number, userId: string) {

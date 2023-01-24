@@ -1,4 +1,5 @@
 /** @format */
+import argon2 from "argon2";
 
 export function getEnvironment() {
   return process.env.NODE_ENV || "development";
@@ -28,4 +29,19 @@ export function exclude<User, Key extends keyof User>(
     delete user[key];
   }
   return user;
+}
+
+export class PasswordManager {
+  public static encryptPassword = async (
+    plainPassword: string
+  ): Promise<string> => {
+    return await argon2.hash(plainPassword);
+  };
+
+  public static verifyPassword = async (
+    plainPassword: string,
+    hashedPassword: string
+  ): Promise<boolean> => {
+    return await argon2.verify(hashedPassword, plainPassword);
+  };
 }

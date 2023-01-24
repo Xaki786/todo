@@ -1,4 +1,6 @@
-import { IUserProps } from "../../domain/entities/interfaces";
+/** @format */
+
+import { IUserLogin, IUserProps } from "../../domain/entities/interfaces";
 import { IUserRepo } from "../Interfaces";
 import { PrismaClient } from "@prisma/client";
 
@@ -7,6 +9,17 @@ class UserRepo implements IUserRepo {
   constructor() {
     this.client = new PrismaClient();
   }
+
+  async login(user: IUserLogin): Promise<IUserProps> {
+    const loggedInUser = await this.client.user.findUnique({
+      where: {
+        email: user.email,
+        hash: user.hash,
+      },
+    });
+    return loggedInUser as IUserProps;
+  }
+
   async getList(limit: number, page: number): Promise<IUserProps[]> {
     return (await this.client.user.findMany({
       skip: limit * (page - 1),
@@ -25,7 +38,7 @@ class UserRepo implements IUserRepo {
     if (user) return true;
     return false;
   }
-  async create(user: IUserProps): Promise<IUserProps> {
+  async create(user: Omit<IUserProps, "tasks">): Promise<IUserProps> {
     const dbUser = await this.client.user.create({
       data: {
         ...user,
@@ -33,7 +46,10 @@ class UserRepo implements IUserRepo {
     });
     return dbUser as IUserProps;
   }
-  async updateById(id: string, user: IUserProps): Promise<IUserProps> {
+  async updateById(
+    id: string,
+    user: Omit<IUserProps, "tasks">
+  ): Promise<IUserProps> {
     const dbUser = await this.client.user.update({
       where: {
         id,
@@ -67,7 +83,6 @@ class UserRepo implements IUserRepo {
   async getByEmail(email: string): Promise<IUserProps> {
     const dbUser = await this.client.user.findUnique({
       where: { email },
-      include: { tasks: true },
     });
 
     return dbUser as IUserProps;

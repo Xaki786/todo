@@ -2,7 +2,7 @@
 
 import { Request, Response } from "express";
 import { appDevelopmentLogger } from "../../src/common";
-import { TasksServiceInstance } from "../services";
+import { TasksServiceInstance } from "../../src/application";
 class TaskController {
   async fetchUserTasksList(req: Request, res: Response) {
     const { userId } = req.params;

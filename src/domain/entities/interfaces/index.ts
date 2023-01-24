@@ -2,6 +2,7 @@ export interface ITask {
   id?: string;
   label: string;
   updatedAt?: Date;
+  authorId?: string;
 }
 
 export interface IUser {}
@@ -13,4 +14,9 @@ export interface IUserProps {
   tasks?: ITask[];
   createdAt?: Date;
   updatedAt?: Date;
+}
+
+export interface IUserLogin {
+  email: string;
+  hash: string;
 }
