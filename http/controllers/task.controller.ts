@@ -2,17 +2,21 @@
 
 import { Request, Response } from "express";
 import { TasksServiceInstance } from "../../src/application";
+import { appDevelopmentLogger } from "../../src/common";
 import { JSON_MESSAGES } from "./utils";
 class TaskController {
   async fetchUserTasksList(req: Request, res: Response) {
     const { userId } = req.params;
-    const tasks = await TasksServiceInstance.getList(100, 0, userId);
+    const limit = parseInt(req.body.limit) || 10;
+    const page = parseInt(req.body.page) || 1;
+    const tasks = await TasksServiceInstance.getList(limit, page, userId);
     return res.status(200).json({ success: true, tasks });
   }
 
   async addUserTask(req: Request, res: Response) {
     const { userId } = req.params;
     const task = await TasksServiceInstance.create(req.body, userId);
+    appDevelopmentLogger({ task }, { context: "Task Create Controller" });
     if (!task) {
       return res
         .status(500)

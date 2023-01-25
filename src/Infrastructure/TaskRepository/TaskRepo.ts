@@ -1,6 +1,6 @@
 /** @format */
 
-import { ITask } from "../../domain/entities/interfaces";
+import { ITaskProps } from "../../domain/entities/interfaces";
 import { ITaskRepo } from "../Interfaces";
 import { PrismaClient } from "@prisma/client";
 class TaskRepo implements ITaskRepo {
@@ -12,7 +12,7 @@ class TaskRepo implements ITaskRepo {
     limit: number,
     page: number,
     userId: string
-  ): Promise<ITask[]> {
+  ): Promise<ITaskProps[]> {
     const dbTasks = await this.client.task.findMany({
       where: {
         authorId: userId,
@@ -22,14 +22,21 @@ class TaskRepo implements ITaskRepo {
     });
     return dbTasks;
   }
-  async addUserTask(task: ITask, userId: string): Promise<ITask> {
-    throw new Error("Method not implemented.");
+  async addUserTask(task: ITaskProps, userId: string): Promise<ITaskProps> {
+    const dbTask = await this.client.task.create({
+      data: {
+        id: task.id as string,
+        label: task.label,
+        authorId: userId,
+      },
+    });
+    return dbTask;
   }
   async updateUserTaskById(
     taskId: string,
-    task: ITask,
+    task: ITaskProps,
     userId: string
-  ): Promise<ITask> {
+  ): Promise<ITaskProps> {
     const dbTask = await this.client.task.update({
       where: {
         id: taskId,
@@ -42,12 +49,12 @@ class TaskRepo implements ITaskRepo {
 
     return dbTask;
   }
-  async getUserTaskById(taskId: string, userId: string): Promise<ITask> {
+  async getUserTaskById(taskId: string, userId: string): Promise<ITaskProps> {
     const dbTask = await this.client.task.findUnique({
       where: { id: taskId, authorId: userId },
     });
 
-    return dbTask as ITask;
+    return dbTask as ITaskProps;
   }
   async deleteUserTaskById(taskId: string, userId: string): Promise<boolean> {
     const dbTask = await this.client.task.delete({

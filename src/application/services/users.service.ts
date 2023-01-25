@@ -1,6 +1,7 @@
 /** @format */
 
 import { exclude } from "../../common";
+import { Result } from "../../common/ErrorHandling";
 import { SingleEntityCrud } from "../../common/interfaces";
 import { User } from "../../domain";
 import { IUserProps } from "../../domain/entities/interfaces";
@@ -19,12 +20,20 @@ class UserService implements SingleEntityCrud {
     return [];
   }
   async create(userProps: IUserProps) {
-    const user = User.create(userProps);
+    const userOrError: Result<User> = User.create(userProps);
+    if (userOrError.isFailure) {
+      return null;
+    }
+    const user = userOrError.getValue();
     const dbUser = await UserRepoInstance.create(UserMapper.toDb(user));
-    return UserMapper.toDomain(dbUser);
+    return UserMapper.toService(dbUser);
   }
   async updateById(userId: UniqueIdGenerator, userProps: IUserProps) {
-    const user = User.create({ id: userId, ...userProps });
+    const userOrError: Result<User> = User.create({ id: userId, ...userProps });
+    if (userOrError.isFailure) {
+      return null;
+    }
+    const user = userOrError.getValue();
     const dbUser = await UserRepoInstance.updateById(
       user.id,
       UserMapper.toDb(user)
