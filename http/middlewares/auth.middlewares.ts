@@ -10,20 +10,12 @@ import { JSON_MESSAGES, verifyAuthToken } from "../controllers/utils";
 class AuthMiddleware {
   async isPasswordCorrect(encryptedPassword: string, password: string) {
     try {
-      appDevelopmentLogger({ encryptedPassword, password });
       const isVerified = await argon2.verify(encryptedPassword, password);
       return isVerified;
     } catch (error) {
       return false;
     }
-  }
-
-  async encryptPassword(req: Request, res: Response, next: NextFunction) {
-    if (req.body.hash) {
-      req.body.hash = await argon2.hash(req.body.hash);
-    }
-    return next();
-  }
+  }  
 
   async isValidUser(req: Request, res: Response, next: NextFunction) {
     if (!req.body.hash || !req.body.email) {

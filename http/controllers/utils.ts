@@ -7,6 +7,8 @@ export const JSON_MESSAGES = {
   BAD_REQUEST: "Bad Request",
   INTERNAL_SERVER_ERROR: "Internal Server Error",
   UN_AUTHORIZED: "Unauthorized",
+  RESOURCE_NOT_FOUND: "Resource Not Found",
+  DELETED: "Deleted",
 };
 
 export const getAuthToken = (id: string) =>

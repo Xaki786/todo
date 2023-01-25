@@ -1,34 +1,36 @@
 /** @format */
 
-import argon2 from "argon2";
 import { Request, Response } from "express";
-import { appDevelopmentLogger, exclude } from "../../src/common";
-import { UserServiceInstance } from "../services";
+import { UserServiceInstance } from "../../src/application";
+import { JSON_MESSAGES } from "./utils";
 class UserController {
   async getUsers(req: Request, res: Response) {
-    const users = await UserServiceInstance.getList(100, 0);
-    if (users.length) {
-      const usersWithOutHash = users.map((user) =>
-        exclude(user, ["hash"] as never)
-      );
-      return res.status(200).json({ users: usersWithOutHash });
-    }
-    return res.status(200).json({ users });
+    const limit = parseInt(req.body.limit) || 10;
+    const page = parseInt(req.body.page) || 1;
+    const users = await UserServiceInstance.getList(limit, page);
+    return res.status(200).json({ success: true, users });
   }
 
   async addUser(req: Request, res: Response) {
-    req.body.hash = await argon2.hash(req.body.hash);
     const user = await UserServiceInstance.create(req.body);
-    return res.status(200).json({ user });
+    if (!user) {
+      return res
+        .status(500)
+        .json({ success: false, message: JSON_MESSAGES.INTERNAL_SERVER_ERROR });
+    }
+    return res.status(200).json({ success: true, user });
   }
 
   async getUserById(req: Request, res: Response) {
     const { userId } = req.params;
     const user = await UserServiceInstance.getById(userId);
-    const userWithOutHash = exclude(user, ["hash"] as never);
-    appDevelopmentLogger({ userWithOutHash }, { context: "getUserById" });
+    if (!user) {
+      return res
+        .status(404)
+        .json({ success: false, message: JSON_MESSAGES.RESOURCE_NOT_FOUND });
+    }
 
-    return res.status(200).json({ user: userWithOutHash });
+    return res.status(200).json({ success: true, user });
   }
   async updateUserById(req: Request, res: Response) {
     const { userId } = req.params;
@@ -36,20 +38,24 @@ class UserController {
       req.body.hash = undefined;
     }
     const user = await UserServiceInstance.updateById(userId, req.body);
-    appDevelopmentLogger({ user }, { context: "updateUserById" });
-    return res.status(200).json({ user });
+    if (!user) {
+      return res
+        .status(500)
+        .json({ success: false, message: JSON_MESSAGES.INTERNAL_SERVER_ERROR });
+    }
+
+    return res.status(200).json({ success: true, user });
   }
 
   async deleteUserById(req: Request, res: Response) {
     const { userId } = req.params;
     const user = await UserServiceInstance.deleteById(userId);
-    appDevelopmentLogger({ user }, { context: "deleteUserById" });
     if (!user) {
       return res
         .status(404)
-        .json({ success: false, error: "Resource Not Found" });
+        .json({ success: false, error: JSON_MESSAGES.RESOURCE_NOT_FOUND });
     }
-    return res.json({ success: true, message: "deleted" });
+    return res.json({ success: true, message: JSON_MESSAGES.DELETED });
   }
 }
 
