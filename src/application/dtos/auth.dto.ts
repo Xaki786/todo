@@ -1,10 +1,10 @@
 /** @format */
 
-export interface RegisterDto {
+export interface IRegisterDto {
   email: string;
   hash: string;
 }
-export interface LoginDto {
+export interface ILoginDto {
   email: string;
   hash: string;
 }

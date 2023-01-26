@@ -13,7 +13,7 @@ export interface IUserProps {
   id?: UniqueIdGenerator;
   email: string;
   hash: string;
-  name: string;
+  name?: string;
   tasks?: ITaskProps[];
   createdAt?: Date;
   updatedAt?: Date;

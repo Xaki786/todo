@@ -41,4 +41,13 @@ export class Result<T> {
   public static fail<U>(error?: string): Result<U> {
     return new Result(false, error);
   }
+
+  public static combine<T>(results: Result<T>[]): Result<T> {
+    for (let result of results) {
+      if (result.isFailure) {
+        return result;
+      }
+    }
+    return Result.ok<T>();
+  }
 }

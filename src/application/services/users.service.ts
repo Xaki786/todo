@@ -1,16 +1,24 @@
 /** @format */
 
-import { exclude } from "../../common";
+import {
+  ICreateUserDto,
+  IDeleteUserDto,
+  IGetUsersListDto,
+  IUpdateUserDto,
+} from "../dtos";
+import { appDevelopmentLogger, exclude } from "../../common";
 import { Result } from "../../common/ErrorHandling";
-import { SingleEntityCrud } from "../../common/interfaces";
+import { ISingleEntityCrud } from "../../common/interfaces";
 import { User } from "../../domain";
-import { IUserProps } from "../../domain/entities/interfaces";
 import { UniqueIdGenerator, UserRepoInstance } from "../../Infrastructure";
 import { UserMapper } from "../../Infrastructure/mappers";
 
-class UserService implements SingleEntityCrud {
-  async getList(limit: number, page: number) {
-    const users = await UserRepoInstance.getList(limit, page);
+class UserService implements ISingleEntityCrud {
+  async getList(getUsersListDto: IGetUsersListDto) {
+    const users = await UserRepoInstance.getList(
+      getUsersListDto.limit,
+      getUsersListDto.page
+    );
     if (users.length) {
       const usersWithOutHash = users.map((user) =>
         exclude(user, ["hash"] as never)
@@ -19,37 +27,48 @@ class UserService implements SingleEntityCrud {
     }
     return [];
   }
-  async create(userProps: IUserProps) {
-    const userOrError: Result<User> = User.create(userProps);
-    if (userOrError.isFailure) {
-      return null;
-    }
-    const user = userOrError.getValue();
-    const dbUser = await UserRepoInstance.create(UserMapper.toDb(user));
-    return UserMapper.toService(dbUser);
+
+  async deleteAllUsers() {
+    return await UserRepoInstance.deleteAll();
   }
-  async updateById(userId: UniqueIdGenerator, userProps: IUserProps) {
-    const userOrError: Result<User> = User.create({ id: userId, ...userProps });
+  async create(createUserDto: ICreateUserDto) {
+    const userOrError: Result<User> = User.create({ ...createUserDto });
     if (userOrError.isFailure) {
       return null;
     }
     const user = userOrError.getValue();
-    const dbUser = await UserRepoInstance.updateById(
-      user.id,
-      UserMapper.toDb(user)
+    const dbUser = await UserRepoInstance.create(
+      UserMapper.toDbFromDomain(user)
     );
-    return UserMapper.toDomain(dbUser);
+    return UserMapper.toServiceFromDb(dbUser);
   }
-  deleteById(userId: UniqueIdGenerator) {
-    return UserRepoInstance.deleteById(userId);
+  async updateById(updateUserDto: IUpdateUserDto) {
+    const dbUser = await UserRepoInstance.getById(updateUserDto.id);
+    const userOrError: Result<User> = User.create({ ...updateUserDto });
+    if (userOrError.isFailure) {
+      appDevelopmentLogger({ error: userOrError });
+      return null;
+    }
+    const user = userOrError.getValue();
+    // const dbUser = await UserRepoInstance.updateById(
+    //   updateUserDto.id,
+    // );
+    return user.userProps;
+  }
+  async deleteById(deleteUserDto: IDeleteUserDto) {
+    return await UserRepoInstance.deleteById(deleteUserDto.id);
   }
   async getById(userId: UniqueIdGenerator) {
     const dbUser = await UserRepoInstance.getById(userId);
-    return UserMapper.toDomain(dbUser);
+    const userOrError = UserMapper.toDomainFromDb(dbUser);
+    if (userOrError.isFailure) {
+      return null;
+    }
+    return UserMapper.toServiceFromDb(dbUser);
   }
   async getByEmail(email: string) {
     const dbUser = await UserRepoInstance.getByEmail(email);
-    return UserMapper.toDomain(dbUser);
+    return UserMapper.toDomainFromDb(dbUser);
   }
 }
 

@@ -1,13 +1,20 @@
 /** @format */
 
+import {
+  ICreateUserDto,
+  IDeleteUserDto,
+  IGetUserByEmailDto,
+  IGetUsersListDto,
+  IUpdateUserDto,
+} from "../../application/dtos";
 import { UniqueIdGenerator } from "../../Infrastructure";
 
-export interface SingleEntityCrud {
-  getList(limit: number, page: number): Promise<any>;
-  create(resource: any): Promise<any>;
-  updateById(id: UniqueIdGenerator, resource: any): Promise<any>;
-  deleteById(id: UniqueIdGenerator): Promise<any>;
-  getById(id: UniqueIdGenerator): Promise<any>;
+export interface ISingleEntityCrud {
+  getList(getUsersListDto: IGetUsersListDto): Promise<unknown>;
+  create(createUserDto: ICreateUserDto): Promise<unknown>;
+  updateById(updateUserDto: IUpdateUserDto): Promise<unknown>;
+  deleteById(deleteUserDto: IDeleteUserDto): Promise<unknown>;
+  getById(getUserByEmailDto: IGetUserByEmailDto): Promise<unknown>;
 }
 
 export interface DependantEntityCrud {

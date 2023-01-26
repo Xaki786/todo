@@ -6,15 +6,16 @@ import { User } from "../../domain";
 import { IUserProps } from "../../domain/entities/interfaces";
 import { UserRepoInstance } from "../../Infrastructure";
 import { UserMapper } from "../../Infrastructure/mappers";
+import { ILoginDto, IRegisterDto } from "../dtos";
 
 class AuthService {
-  async login(user: { email: string; hash: string }) {
-    const dbUser = await UserRepoInstance.getByEmail(user.email);
+  async login(loginDto: ILoginDto) {
+    const dbUser = await UserRepoInstance.getByEmail(loginDto.email);
     if (!dbUser) {
       return null;
     }
     const isVerifiedUser = await PasswordManager.verifyPassword(
-      user.hash,
+      loginDto.hash,
       dbUser.hash
     );
     if (!isVerifiedUser) {
@@ -25,17 +26,23 @@ class AuthService {
     return { ...userWithOutHash, token };
   }
 
-  async register(userProps: IUserProps) {
+  async register(registerDto: IRegisterDto) {
     const isUserWithSameEmailPresent =
-      await UserRepoInstance.userWithSameEmailExists(userProps.email);
+      await UserRepoInstance.userWithSameEmailExists(registerDto.email);
     if (isUserWithSameEmailPresent) {
       return null;
     }
-    userProps.hash = await PasswordManager.encryptPassword(userProps.hash);
-    const user = User.create(userProps);
-    const dbUser = await UserRepoInstance.create(UserMapper.toDb(user));
+    registerDto.hash = await PasswordManager.encryptPassword(registerDto.hash);
+    const userOrError = User.create(registerDto);
+    if (userOrError.isFailure) {
+      return null;
+    }
+    const user = userOrError.getValue();
+    const dbUser = await UserRepoInstance.create(
+      UserMapper.toDbFromDomain(user)
+    );
     const token = getAuthToken(dbUser.id as string);
-    return { ...UserMapper.toDomain(dbUser), token };
+    return { ...UserMapper.toServiceFromDb(dbUser), token };
   }
 }
 

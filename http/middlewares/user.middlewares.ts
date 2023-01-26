@@ -5,7 +5,7 @@ import { body, check } from "express-validator";
 import { appDevelopmentLogger } from "../../src/common";
 import { envConfigObject } from "../../src/config";
 import { JSON_MESSAGES } from "../controllers/utils";
-import { USER_FIELDS } from "../db/dtos";
+import { USER_FIELDS } from "../../src/application/dtos";
 import { UserServiceInstance } from "../../src/application";
 class UserMiddleware {
   async isUserValidForCreation(

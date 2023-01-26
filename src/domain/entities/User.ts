@@ -3,7 +3,7 @@
 import { Guard, IGuardProps, Result } from "../../common/ErrorHandling";
 import { UniqueIdGenerator } from "../../Infrastructure/UniqueIdGenerator";
 import { Entity } from "./Entity";
-import { ITaskProps, IUserProps } from "./interfaces";
+import { IUserProps } from "./interfaces";
 import { Task } from "./Task";
 
 export class User extends Entity<IUserProps> {
@@ -41,10 +41,6 @@ export class User extends Entity<IUserProps> {
     return this._tasks;
   }
 
-  public addTask(task: Task) {
-    this._tasks.push(task);
-  }
-
   get userProps(): IUserProps {
     return {
       id: this._id,
@@ -52,26 +48,12 @@ export class User extends Entity<IUserProps> {
     };
   }
 
-  public updateTask(taskToBeUpdated: Task) {
-    const taskIndex = this._tasks.findIndex(
-      (task) => task.id === taskToBeUpdated.id && task.authorId === this._id
-    );
-    if (!taskIndex) {
-      return Result.fail<User>("Task Not Found");
+  set name(name: string) {
+    if (name) {
+      this.props.name = name;
     }
-    this._tasks[taskIndex] = taskToBeUpdated;
-    return Result.ok<User>(this);
   }
-
-  public deleteTask(taskId: string) {
-    const taskIndex = this._tasks.findIndex((task) => task.id === taskId);
-    if (!taskId) {
-      throw new Error("Task Not Found");
-    }
-    this._tasks.splice(taskIndex, 1);
-  }
-
-  public getTasks() {
-    return this._tasks;
+  set email(email: string) {
+    this.props.email = email;
   }
 }
