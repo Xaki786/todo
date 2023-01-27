@@ -3,7 +3,6 @@
 import { getAuthToken } from "../../../http/controllers/utils";
 import { exclude, PasswordManager } from "../../common";
 import { User } from "../../domain";
-import { IUserProps } from "../../domain/entities/interfaces";
 import { UserRepoInstance } from "../../Infrastructure";
 import { UserMapper } from "../../Infrastructure/mappers";
 import { ILoginDto, IRegisterDto } from "../dtos";
@@ -14,14 +13,15 @@ class AuthService {
     if (!dbUser) {
       return null;
     }
+    const user = UserMapper.toDomainFromDb(dbUser).getValue();
     const isVerifiedUser = await PasswordManager.verifyPassword(
       loginDto.hash,
-      dbUser.hash
+      user.userProps.hash
     );
     if (!isVerifiedUser) {
       return null;
     }
-    const userWithOutHash = exclude(dbUser, ["hash"] as never);
+    const userWithOutHash = UserMapper.toService(user.userProps);
     const token = getAuthToken(dbUser.id as string);
     return { ...userWithOutHash, token };
   }
@@ -38,11 +38,9 @@ class AuthService {
       return null;
     }
     const user = userOrError.getValue();
-    const dbUser = await UserRepoInstance.create(
-      UserMapper.toDbFromDomain(user)
-    );
-    const token = getAuthToken(dbUser.id as string);
-    return { ...UserMapper.toServiceFromDb(dbUser), token };
+    await UserRepoInstance.create(UserMapper.toDbFromDomain(user));
+    const token = getAuthToken(user.id as string);
+    return { ...UserMapper.toService(user.userProps), token };
   }
 }
 

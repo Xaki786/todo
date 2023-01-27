@@ -23,10 +23,16 @@ export class UserRoutes extends CommonRoutesConfig {
 
     this.app
       .route(ROUTES_PATHS.SINGLE_USER)
-      .get(UserControllerInstance.getUserById)
+      .get(
+        AuthMiddlewareInstance.isLoggedIn,
+        AuthMiddlewareInstance.isAuthorized,
+        UserControllerInstance.getUserById
+      )
       .put(
         UserMiddlewareInstance.isUserValidForUpdate,
         BodyValidationMiddlewareInstance.verifyBodyFieldErrors,
+        AuthMiddlewareInstance.isLoggedIn,
+        AuthMiddlewareInstance.isAuthorized,
         UserControllerInstance.updateUserById
       )
       .delete(

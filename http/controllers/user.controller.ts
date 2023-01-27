@@ -37,7 +37,10 @@ class UserController {
     if (req.body.hash) {
       req.body.hash = undefined;
     }
-    const user = await UserServiceInstance.updateById({ userId, ...req.body });
+    const user = await UserServiceInstance.updateById({
+      id: userId,
+      ...req.body,
+    });
     if (!user) {
       return res
         .status(500)

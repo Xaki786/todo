@@ -14,8 +14,8 @@ export class UserMapper {
     return User.create(dbUser);
   }
 
-  public static toServiceFromDb(dbUser: IUserProps) {
-    const userWithOutHash = exclude(dbUser, ["hash"] as never);
+  public static toService(userProps: IUserProps) {
+    const userWithOutHash = exclude(userProps, ["hash"] as never);
     return userWithOutHash;
   }
 

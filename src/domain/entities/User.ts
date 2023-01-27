@@ -54,6 +54,8 @@ export class User extends Entity<IUserProps> {
     }
   }
   set email(email: string) {
-    this.props.email = email;
-  }
+    if (email) {
+      this.props.email = email;
+    }
+  } 
 }
