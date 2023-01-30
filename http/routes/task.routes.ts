@@ -2,9 +2,9 @@
 
 import { Application } from "express";
 import { ROUTES_PATHS } from "./utils/RoutesConfig";
-import { TaskControllerInstance } from "../controllers";
+import { TaskControllerInstance } from "@http/controllers";
 import { CommonRoutesConfig } from "./utils/CommonRoutesConfig";
-import { AuthMiddlewareInstance } from "../middlewares";
+import { AuthMiddlewareInstance } from "@http/middlewares";
 
 export class TaskRoutes extends CommonRoutesConfig {
   constructor(app: Application) {

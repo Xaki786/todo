@@ -2,10 +2,9 @@
 
 import express, { Application } from "express";
 import dotenv from "dotenv";
-import { AuthRoutes, TaskRoutes, UserRoutes } from "./routes";
+import { AuthRoutes, TaskRoutes, UserRoutes, AppRoutes } from "./routes";
 import cors from "cors";
 import { CommonRoutesConfig } from "./routes/utils/CommonRoutesConfig";
-import { AppRoutes } from "./routes/app.routes";
 
 class App {
   public server: Application;

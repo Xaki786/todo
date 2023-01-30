@@ -2,10 +2,13 @@
 
 import { Application } from "express";
 import { ROUTES_PATHS } from "./utils/RoutesConfig";
-import { UserControllerInstance } from "../controllers";
+import { UserControllerInstance } from "@http/controllers";
 import { CommonRoutesConfig } from "./utils/CommonRoutesConfig";
-import { BodyValidationMiddlewareInstance } from "../../src/common/middlewares";
-import { AuthMiddlewareInstance, UserMiddlewareInstance } from "../middlewares";
+import { BodyValidationMiddlewareInstance } from "@common/middlewares";
+import {
+  AuthMiddlewareInstance,
+  UserMiddlewareInstance,
+} from "@http/middlewares";
 
 export class UserRoutes extends CommonRoutesConfig {
   constructor(app: Application) {

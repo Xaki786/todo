@@ -1,7 +1,7 @@
 /** @format */
 
 import { Application, Request, Response } from "express";
-import { UserControllerInstance } from "../controllers";
+import { UserControllerInstance } from "@http/controllers";
 import { CommonRoutesConfig } from "./utils/CommonRoutesConfig";
 import { ROUTES_PATHS } from "./utils/RoutesConfig";
 

@@ -9,7 +9,7 @@ import {
 import { appDevelopmentLogger, exclude } from "../../common";
 import { Result } from "../../common/ErrorHandling";
 import { ISingleEntityCrud } from "../../common/interfaces";
-import { User } from "../../domain";
+import { User } from "@domain";
 import { UniqueIdGenerator, UserRepoInstance } from "../../Infrastructure";
 import { UserMapper } from "../../Infrastructure/mappers";
 
