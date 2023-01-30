@@ -1,7 +1,7 @@
 /** @format */
 
 import { Request, Response } from "express";
-import { AuthServiceInstance } from "../../src/application";
+import { AuthServiceInstance } from "@application";
 import { JSON_MESSAGES } from "./utils";
 
 class AuthController {

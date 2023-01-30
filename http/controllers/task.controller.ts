@@ -1,8 +1,8 @@
 /** @format */
 
 import { Request, Response } from "express";
-import { TasksServiceInstance } from "../../src/application";
-import { appDevelopmentLogger } from "../../src/common";
+import { TasksServiceInstance } from "@application";
+import { appDevelopmentLogger } from "@common";
 import { JSON_MESSAGES } from "./utils";
 class TaskController {
   async fetchUserTasksList(req: Request, res: Response) {

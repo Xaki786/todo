@@ -1,7 +1,7 @@
 /** @format */
 
 import { Request, Response } from "express";
-import { UserServiceInstance } from "../../src/application";
+import { UserServiceInstance } from "@application";
 import { JSON_MESSAGES } from "./utils";
 class UserController {
   async getUsers(req: Request, res: Response) {
