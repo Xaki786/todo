@@ -1,10 +1,10 @@
 /** @format */
 
-import { IUserLogin, IUserProps } from "../../domain/entities/interfaces";
+import { IUserLogin, IUserProps } from "@domain";
 import { IUserRepo } from "../Interfaces";
 import { PrismaClient } from "@prisma/client";
 import { UniqueIdGenerator } from "../UniqueIdGenerator";
-import { appDevelopmentLogger } from "../../common";
+import { appDevelopmentLogger } from "@common";
 
 class UserRepo implements IUserRepo {
   private client: PrismaClient;

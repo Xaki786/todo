@@ -1,8 +1,7 @@
 /** @format */
 
-import { Result } from "../../common/ErrorHandling";
-import { ITaskProps } from "../../domain/entities/interfaces";
-import { Task } from "../../domain/entities/Task";
+import { ITaskProps } from "@domain";
+import { Task } from "@domain";
 
 export class TaskMapper {
   public static toDomain(dbTask: ITaskProps) {

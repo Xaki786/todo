@@ -1,6 +1,6 @@
 /** @format */
 
-import { ITaskProps } from "../../domain/entities/interfaces";
+import { ITaskProps } from "@domain";
 import { ITaskRepo } from "../Interfaces";
 import { PrismaClient } from "@prisma/client";
 class TaskRepo implements ITaskRepo {

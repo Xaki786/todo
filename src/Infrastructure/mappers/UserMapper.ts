@@ -1,10 +1,8 @@
 /** @format */
 
-import { ICreateUserDto } from "../../application/dtos";
-import { exclude } from "../../common";
-import { Result } from "../../common/ErrorHandling";
-import { User } from "../../domain";
-import { IUserProps } from "../../domain/entities/interfaces";
+import { ICreateUserDto } from "@application";
+import { exclude } from "@common";
+import { User, IUserProps } from "@domain";
 
 export class UserMapper {
   public static toDomainFromDto(createUserDto: ICreateUserDto) {

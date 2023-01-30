@@ -1,6 +1,6 @@
 /** @format */
 
-import { ITaskProps, IUserProps } from "../../domain/entities/interfaces";
+import { ITaskProps, IUserProps } from "@domain";
 import { UniqueIdGenerator } from "../UniqueIdGenerator";
 
 export interface IUserRepo {
