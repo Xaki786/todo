@@ -6,12 +6,13 @@ import {
   IGetUsersListDto,
   IUpdateUserDto,
 } from "../dtos";
-import { appDevelopmentLogger, exclude } from "../../common";
-import { Result } from "../../common/ErrorHandling";
-import { ISingleEntityCrud } from "../../common/interfaces";
+import { exclude, Result, ISingleEntityCrud } from "@common";
 import { User } from "@domain";
-import { UniqueIdGenerator, UserRepoInstance } from "../../Infrastructure";
-import { UserMapper } from "../../Infrastructure/mappers";
+import {
+  UniqueIdGenerator,
+  UserRepoInstance,
+  UserMapper,
+} from "@Infrastructure";
 
 class UserService implements ISingleEntityCrud {
   async getList(getUsersListDto: IGetUsersListDto) {

@@ -1,12 +1,8 @@
 /** @format */
 
-import { DependantEntityCrud } from "../../common/interfaces";
-import { CreateTaskDto, UpdateTaskDto } from "../dtos";
-import { TaskRepoInstance } from "../../Infrastructure/TaskRepository";
-import { Task } from "../../domain/entities/Task";
-import { ITaskProps } from "../../domain/entities/interfaces";
-import { Result } from "../../common/ErrorHandling";
-import { TaskMapper, UserMapper } from "../../Infrastructure/mappers";
+import { DependantEntityCrud, Result } from "@common";
+import { TaskRepoInstance, TaskMapper, UserMapper } from "@Infrastructure";
+import { Task, ITaskProps } from "@domain";
 
 class TasksService implements DependantEntityCrud {
   async getList(limit: number, page: number, userId: string) {

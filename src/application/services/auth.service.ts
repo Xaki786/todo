@@ -1,10 +1,9 @@
 /** @format */
 
-import { getAuthToken } from "../../../http/controllers/utils";
-import { exclude, PasswordManager } from "../../common";
-import { User } from "../../domain";
-import { UserRepoInstance } from "../../Infrastructure";
-import { UserMapper } from "../../Infrastructure/mappers";
+import { getAuthToken } from "@http/controllers/utils";
+import { PasswordManager } from "@common";
+import { User } from "@domain";
+import { UserRepoInstance, UserMapper } from "@Infrastructure";
 import { ILoginDto, IRegisterDto } from "../dtos";
 
 class AuthService {
