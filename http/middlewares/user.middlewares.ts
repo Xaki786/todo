@@ -2,7 +2,6 @@
 
 import { NextFunction, Request, Response } from "express";
 import { body, check } from "express-validator";
-import { appDevelopmentLogger } from "@common";
 import { envConfigObject } from "@config";
 import { JSON_MESSAGES } from "@http/controllers/utils";
 import { UserServiceInstance, USER_FIELDS } from "@application";
@@ -33,10 +32,8 @@ class UserMiddleware {
   }
 
   async isUserValidForUpdate(req: Request, res: Response, next: NextFunction) {
-    appDevelopmentLogger("I was here");
     envConfigObject.isValidationEnabled && [
       check(USER_FIELDS.USER_ID).custom(async (id: string) => {
-        appDevelopmentLogger({ id });
         const user = await UserServiceInstance.getById(id);
         if (!user) {
           return Promise.reject("Invalid User Id");

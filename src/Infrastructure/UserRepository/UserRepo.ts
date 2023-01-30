@@ -4,7 +4,6 @@ import { IUserLogin, IUserProps } from "@domain";
 import { IUserRepo } from "../Interfaces";
 import { PrismaClient } from "@prisma/client";
 import { UniqueIdGenerator } from "../UniqueIdGenerator";
-import { appDevelopmentLogger } from "@common";
 
 class UserRepo implements IUserRepo {
   private client: PrismaClient;
@@ -64,7 +63,6 @@ class UserRepo implements IUserRepo {
     });
   }
   async deleteById(id: UniqueIdGenerator): Promise<any> {
-    appDevelopmentLogger({ id });
     try {
       const dbUser = await this.client.user.delete({
         where: { id: id as string },

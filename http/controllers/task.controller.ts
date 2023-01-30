@@ -2,7 +2,6 @@
 
 import { Request, Response } from "express";
 import { TasksServiceInstance } from "@application";
-import { appDevelopmentLogger } from "@common";
 import { JSON_MESSAGES } from "./utils";
 class TaskController {
   async fetchUserTasksList(req: Request, res: Response) {
@@ -26,7 +25,6 @@ class TaskController {
         .json({ success: false, message: JSON_MESSAGES.BAD_REQUEST });
     }
     const task = await TasksServiceInstance.create(req.body, userId);
-    appDevelopmentLogger({ task }, { context: "Task Create Controller" });
     if (!task) {
       return res
         .status(500)
