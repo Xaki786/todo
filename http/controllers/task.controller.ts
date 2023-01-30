@@ -12,8 +12,8 @@ class TaskController {
         .status(400)
         .json({ success: false, message: JSON_MESSAGES.BAD_REQUEST });
     }
-    const limit = parseInt(req.body.limit) || 10;
-    const page = parseInt(req.body.page) || 1;
+    const limit = Number(req.body.limit) || 10;
+    const page = Number(req.body.page) || 1;
     const tasks = await TasksServiceInstance.getList(limit, page, userId);
     return res.status(200).json({ success: true, tasks });
   }
