@@ -6,8 +6,8 @@ import {
   IGetUserByEmailDto,
   IGetUsersListDto,
   IUpdateUserDto,
-} from "../../application/dtos";
-import { UniqueIdGenerator } from "../../Infrastructure";
+} from "@application";
+import { UniqueIdGenerator } from "@Infrastructure";
 
 export interface ISingleEntityCrud {
   getList(getUsersListDto: IGetUsersListDto): Promise<unknown>;
