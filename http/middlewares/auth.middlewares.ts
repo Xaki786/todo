@@ -3,9 +3,9 @@
 import argon2 from "argon2";
 import { NextFunction, Request, Response } from "express";
 import { body } from "express-validator";
-import { appDevelopmentLogger } from "../../src/common";
-import { envConfigObject } from "../../src/config";
-import { JSON_MESSAGES, verifyAuthToken } from "../controllers/utils";
+import { appDevelopmentLogger } from "@common";
+import { envConfigObject } from "@config";
+import { JSON_MESSAGES, verifyAuthToken } from "@http/controllers/utils";
 
 class AuthMiddleware {
   async isPasswordCorrect(encryptedPassword: string, password: string) {

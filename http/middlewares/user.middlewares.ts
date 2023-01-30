@@ -2,11 +2,11 @@
 
 import { NextFunction, Request, Response } from "express";
 import { body, check } from "express-validator";
-import { appDevelopmentLogger } from "../../src/common";
-import { envConfigObject } from "../../src/config";
-import { JSON_MESSAGES } from "../controllers/utils";
-import { USER_FIELDS } from "../../src/application/dtos";
-import { UserServiceInstance } from "../../src/application";
+import { appDevelopmentLogger } from "@common";
+import { envConfigObject } from "@config";
+import { JSON_MESSAGES } from "@http/controllers/utils";
+import { USER_FIELDS } from "@application/dtos";
+import { UserServiceInstance } from "@application";
 class UserMiddleware {
   async isUserValidForCreation(
     req: Request,
