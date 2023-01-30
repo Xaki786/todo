@@ -1,6 +1,6 @@
 /** @format */
 
-import { UniqueIdGenerator } from "../../../Infrastructure";
+import { UniqueIdGenerator } from "@Infrastructure";
 
 export interface ITaskProps {
   id?: UniqueIdGenerator;

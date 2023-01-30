@@ -1,7 +1,7 @@
 /** @format */
 
-import { Guard, IGuardProps, Result } from "../../common/ErrorHandling";
-import { UniqueIdGenerator } from "../../Infrastructure/UniqueIdGenerator";
+import { Guard, IGuardProps, Result } from "@common";
+import { UniqueIdGenerator } from "@Infrastructure";
 import { Entity } from "./Entity";
 import { IUserProps } from "./interfaces";
 import { Task } from "./Task";

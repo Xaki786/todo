@@ -1,6 +1,6 @@
 /** @format */
 
-import { UniqueIdGenerator } from "../../Infrastructure/UniqueIdGenerator";
+import { UniqueIdGenerator } from "@Infrastructure";
 
 const isEntity = <T>(v: Entity<T>): v is Entity<T> => {
   return v instanceof Entity;
