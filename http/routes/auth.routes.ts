@@ -1,7 +1,7 @@
 /** @format */
 
 import { Application } from "express";
-import { AuthControllerInstance } from "@http/controllers";
+import { LoginUserControllerInstance } from "@http/controllers";
 import {
   AuthMiddlewareInstance,
   UserMiddlewareInstance,
@@ -17,7 +17,9 @@ export class AuthRoutes extends CommonRoutesConfig {
   configureRoutes(): Application {
     this.app
       .route(ROUTES_PATHS.LOGIN)
-      .post(AuthMiddlewareInstance.isValidUser, AuthControllerInstance.login);
+      .post(AuthMiddlewareInstance.isValidUser, (req, res) =>
+        LoginUserControllerInstance.execute(req, res)
+      );
     this.app
       .route(ROUTES_PATHS.REGISTER)
       .post(
