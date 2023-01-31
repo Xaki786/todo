@@ -10,7 +10,7 @@ import {
   InvalidUserDataError,
   UnExpextedDatabaseError,
   UserAlreadyExistError,
-} from "./errors";
+} from "../errors";
 
 class CreateUserService
   implements IService<ICreateUserRequestDto, ICreateUserResponseDto>

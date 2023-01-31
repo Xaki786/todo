@@ -1,11 +1,11 @@
 /** @format */
 
-import { ICreateUserDto } from "@application";
+import { ICreateUserRequestDto } from "@application";
 import { exclude } from "@common";
 import { User, IUserProps } from "@domain";
 
 export class UserMapper {
-  public static toDomainFromDto(createUserDto: ICreateUserDto) {
+  public static toDomainFromDto(createUserDto: ICreateUserRequestDto) {
     return User.create(createUserDto);
   }
   public static toDomainFromDb(dbUser: IUserProps) {

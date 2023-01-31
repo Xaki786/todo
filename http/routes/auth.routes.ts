@@ -8,6 +8,7 @@ import {
 } from "@http/middlewares";
 import { CommonRoutesConfig } from "./utils/CommonRoutesConfig";
 import { ROUTES_PATHS } from "./utils/RoutesConfig";
+import { RegisterUserControllerInstance } from "@http/controllers/RegisterUserController";
 
 export class AuthRoutes extends CommonRoutesConfig {
   constructor(app: Application) {
@@ -22,7 +23,7 @@ export class AuthRoutes extends CommonRoutesConfig {
       .post(
         AuthMiddlewareInstance.isValidUser,
         UserMiddlewareInstance.isUserValidForCreation,
-        AuthControllerInstance.register
+        (req, res) => RegisterUserControllerInstance.execute(req, res)
       );
     return this.app;
   }

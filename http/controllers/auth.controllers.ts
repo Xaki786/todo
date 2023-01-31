@@ -15,15 +15,6 @@ class AuthController {
     return res.status(200).json({ user });
   }
 
-  async register(req: Request, res: Response) {
-    const user = await AuthServiceInstance.register(req.body);
-    if (!user) {
-      return res
-        .status(400)
-        .json({ message: JSON_MESSAGES.USER_ALREADY_PRESENT });
-    }
-    return res.status(200).json({ user });
-  }
 }
 
 export const AuthControllerInstance = new AuthController();

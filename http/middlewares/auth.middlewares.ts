@@ -4,7 +4,8 @@ import argon2 from "argon2";
 import { NextFunction, Request, Response } from "express";
 import { body } from "express-validator";
 import { envConfigObject } from "@config";
-import { JSON_MESSAGES, verifyAuthToken } from "@http/controllers/utils";
+import { JSON_MESSAGES } from "@http/controllers/utils";
+import { VerifyAuthToken } from "@Infrastructure";
 
 class AuthMiddleware {
   async isPasswordCorrect(encryptedPassword: string, password: string) {
@@ -38,7 +39,7 @@ class AuthMiddleware {
         .status(401)
         .json({ message: JSON_MESSAGES.INVALID_CREDENTIALS });
     }
-    const decoded = verifyAuthToken(token) as {
+    const decoded = (await VerifyAuthToken.verifyToken(token)) as {
       id: string;
       iat?: Date;
       exp?: Date;

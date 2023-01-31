@@ -34,10 +34,10 @@ class UserRepo implements IUserRepo {
     name,
   }: {
     id?: string;
-    name: string;
-    email: string;
+    name?: string;
+    email?: string;
   }): Promise<boolean> {
-    const user = await this.client.user.findMany({
+    const users = await this.client.user.findMany({
       where: {
         OR: [
           { id: { equals: id } },
@@ -46,7 +46,7 @@ class UserRepo implements IUserRepo {
         ],
       },
     });
-    if (user) return true;
+    if (users.length) return true;
     return false;
   }
 

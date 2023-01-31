@@ -1,11 +1,6 @@
 /** @format */
 
-import {
-  ICreateUserDto,
-  IDeleteUserDto,
-  IGetUsersListDto,
-  IUpdateUserDto,
-} from "../dtos";
+import { IDeleteUserDto, IGetUsersListDto, IUpdateUserDto } from "../dtos";
 import { exclude, Result, ISingleEntityCrud } from "@common";
 import { User } from "@domain";
 import {
@@ -32,17 +27,6 @@ class UserService implements ISingleEntityCrud {
   async deleteAllUsers() {
     return await UserRepoInstance.deleteAll();
   }
-  async create(createUserDto: ICreateUserDto) {
-    const userOrError: Result<User> = User.create({ ...createUserDto });
-    if (userOrError.isFailure) {
-      return null;
-    }
-    const user = userOrError.getValue();
-    await UserRepoInstance.create(
-      UserMapper.toDbFromDomain(user)
-    );
-    return user;
-  }
   async updateById(updateUserDto: IUpdateUserDto) {
     const dbUser = await UserRepoInstance.getById(updateUserDto.id);
     if (!dbUser) {
@@ -55,7 +39,7 @@ class UserService implements ISingleEntityCrud {
     if (updateUserDto.hasOwnProperty("email") && updateUserDto.email) {
       user.email = updateUserDto.email;
     }
-    await UserRepoInstance.updateById(user.id, user.userProps);    
+    await UserRepoInstance.updateById(user.id, user.userProps);
     return UserMapper.toService(user.userProps);
   }
   async deleteById(deleteUserDto: IDeleteUserDto) {
@@ -63,7 +47,7 @@ class UserService implements ISingleEntityCrud {
   }
   async getById(userId: UniqueIdGenerator) {
     const dbUser = await UserRepoInstance.getById(userId);
-    const user = UserMapper.toDomainFromDb(dbUser).getValue();    
+    const user = UserMapper.toDomainFromDb(dbUser).getValue();
     return UserMapper.toService(user.userProps);
   }
   async getByEmail(email: string) {
