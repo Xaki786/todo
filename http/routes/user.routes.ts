@@ -9,6 +9,7 @@ import {
   AuthMiddlewareInstance,
   UserMiddlewareInstance,
 } from "@http/middlewares";
+import { CreateUserControllerInstance } from "@http/controllers/CreateUserController";
 
 export class UserRoutes extends CommonRoutesConfig {
   constructor(app: Application) {
@@ -21,7 +22,7 @@ export class UserRoutes extends CommonRoutesConfig {
       .post(
         UserMiddlewareInstance.isUserValidForCreation,
         BodyValidationMiddlewareInstance.verifyBodyFieldErrors,
-        UserControllerInstance.addUser
+        (req, res) => CreateUserControllerInstance.execute(req, res)
       );
 
     this.app

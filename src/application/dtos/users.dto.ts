@@ -9,10 +9,6 @@ export const USER_FIELDS = {
   ID: "id",
   USER_ID: "userId",
 };
-export interface ICreateUserDto {
-  email: string;
-  hash: string;
-}
 export interface IUpdateUserDto {
   id: UniqueIdGenerator;
   email?: string;
