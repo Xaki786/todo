@@ -3,9 +3,8 @@
 import argon2 from "argon2";
 import { NextFunction, Request, Response } from "express";
 import { body } from "express-validator";
-import { appDevelopmentLogger } from "../../src/common";
-import { envConfigObject } from "../../src/config";
-import { JSON_MESSAGES, verifyAuthToken } from "../controllers/utils";
+import { envConfigObject } from "@config";
+import { JSON_MESSAGES, verifyAuthToken } from "@http/controllers/utils";
 
 class AuthMiddleware {
   async isPasswordCorrect(encryptedPassword: string, password: string) {
@@ -15,7 +14,7 @@ class AuthMiddleware {
     } catch (error) {
       return false;
     }
-  }  
+  }
 
   async isValidUser(req: Request, res: Response, next: NextFunction) {
     if (!req.body.hash || !req.body.email) {
@@ -34,7 +33,6 @@ class AuthMiddleware {
 
   async isLoggedIn(req: Request, res: Response, next: NextFunction) {
     const token = req.header("Authorization")?.replace("Bearer ", "");
-    appDevelopmentLogger({ token });
     if (!token) {
       return res
         .status(401)
@@ -51,7 +49,6 @@ class AuthMiddleware {
         .json({ message: JSON_MESSAGES.INVALID_CREDENTIALS });
     }
     req.body.userId = decoded.id;
-    appDevelopmentLogger({ decoded });
     return next();
   }
 
@@ -60,7 +57,7 @@ class AuthMiddleware {
     if (userId !== req.body.userId) {
       return res.status(401).json({ message: JSON_MESSAGES.UN_AUTHORIZED });
     }
-    delete req.body.userId
+    delete req.body.userId;
     return next();
   }
 }

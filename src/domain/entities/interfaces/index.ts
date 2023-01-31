@@ -1,19 +1,20 @@
 /** @format */
 
-import { UniqueIdGenerator } from "../../../Infrastructure";
+import { UniqueIdGenerator } from "@Infrastructure";
 
-export interface ITask {
-  id?: string;
+export interface ITaskProps {
+  id?: UniqueIdGenerator;
   label: string;
   updatedAt?: Date;
-  authorId?: string;
+  authorId?: UniqueIdGenerator;
+  createdAt?: Date;
 }
 export interface IUserProps {
   id?: UniqueIdGenerator;
   email: string;
   hash: string;
-  name: string;
-  tasks?: ITask[];
+  name?: string;
+  tasks?: ITaskProps[];
   createdAt?: Date;
   updatedAt?: Date;
 }

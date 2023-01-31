@@ -1,6 +1,6 @@
 /** @format */
 
-import { UniqueIdGenerator } from "../../Infrastructure/UniqueIdGenerator";
+import { UniqueIdGenerator } from "@Infrastructure";
 
 const isEntity = <T>(v: Entity<T>): v is Entity<T> => {
   return v instanceof Entity;
@@ -11,7 +11,7 @@ export abstract class Entity<T> {
   protected props: T;
 
   constructor(props: T, id?: UniqueIdGenerator) {
-    this._id = id ? id : UniqueIdGenerator.generateId();
+    this._id = id ?? UniqueIdGenerator.generateId();
     this.props = props;
   }
 

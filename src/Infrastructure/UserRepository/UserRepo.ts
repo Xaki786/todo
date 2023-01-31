@@ -1,6 +1,6 @@
 /** @format */
 
-import { IUserLogin, IUserProps } from "../../domain/entities/interfaces";
+import { IUserLogin, IUserProps } from "@domain";
 import { IUserRepo } from "../Interfaces";
 import { PrismaClient } from "@prisma/client";
 import { UniqueIdGenerator } from "../UniqueIdGenerator";
@@ -41,20 +41,19 @@ class UserRepo implements IUserRepo {
     if (user) return true;
     return false;
   }
-  async create(user: Omit<IUserProps, "tasks">): Promise<IUserProps> {
-    const dbUser = await this.client.user.create({
+  async create(user: Omit<IUserProps, "tasks">): Promise<void> {
+    await this.client.user.create({
       data: {
         ...user,
         id: user.id as string,
       },
     });
-    return dbUser as IUserProps;
   }
   async updateById(
     id: UniqueIdGenerator,
     user: Omit<IUserProps, "tasks">
-  ): Promise<IUserProps> {
-    const dbUser = await this.client.user.update({
+  ): Promise<void> {
+    await this.client.user.update({
       where: {
         id: id as string,
       },
@@ -62,8 +61,6 @@ class UserRepo implements IUserRepo {
         ...user,
       },
     });
-
-    return dbUser as IUserProps;
   }
   async deleteById(id: UniqueIdGenerator): Promise<any> {
     try {
@@ -81,7 +78,6 @@ class UserRepo implements IUserRepo {
   async getById(id: UniqueIdGenerator): Promise<IUserProps> {
     const dbUser = await this.client.user.findUnique({
       where: { id: id as string },
-      include: { tasks: true },
     });
 
     return dbUser as IUserProps;
@@ -92,6 +88,10 @@ class UserRepo implements IUserRepo {
     });
 
     return dbUser as IUserProps;
+  }
+  async deleteAll() {
+    const count = await this.client.user.deleteMany();
+    return count;
   }
 }
 

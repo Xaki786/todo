@@ -1,15 +1,28 @@
-import { UniqueIdGenerator } from "../../Infrastructure/UniqueIdGenerator";
+/** @format */
+
+import { Guard, IGuardProps, Result } from "@common";
+import { UniqueIdGenerator } from "@Infrastructure";
 import { Entity } from "./Entity";
-import { ITask, IUserProps } from "./interfaces";
+import { IUserProps } from "./interfaces";
+import { Task } from "./Task";
 
 export class User extends Entity<IUserProps> {
-  private _tasks: ITask[] = [];
+  private _tasks: Task[] = [];
   private constructor({ id, ...data }: IUserProps) {
     super(data, id);
   }
 
   public static create(props: IUserProps) {
-    return new User(props);
+    const guardedProps: IGuardProps[] = [
+      { arguement: props.email, arguementName: "email" },
+      { arguement: props.hash, arguementName: "hash" },
+    ];
+    const guardResult = Guard.guardAgainstNullOrUndefinedBulk(guardedProps);
+    if (!guardResult.succeeded) {
+      return Result.fail<User>(guardResult.message);
+    }
+    const user = new User({ ...props, name: props?.name || "" });
+    return Result.ok<User>(user);
   }
 
   get id(): UniqueIdGenerator {
@@ -24,12 +37,8 @@ export class User extends Entity<IUserProps> {
     return this.email;
   }
 
-  get tasks(): ITask[] {
+  get tasks(): Task[] {
     return this._tasks;
-  }
-
-  public addTask(task: ITask) {
-    this._tasks.push(task);
   }
 
   get userProps(): IUserProps {
@@ -39,20 +48,14 @@ export class User extends Entity<IUserProps> {
     };
   }
 
-  public updateTask(taskId: string, task: ITask) {
-    const taskIndex = this._tasks.findIndex((task) => task.id === taskId);
-    if (!taskId) {
-      throw new Error("Task Not Found");
+  set name(name: string) {
+    if (name) {
+      this.props.name = name;
     }
-    this._tasks[taskIndex] = task;
-    this._tasks[taskIndex].updatedAt = new Date();
   }
-
-  public deleteTask(taskId: string) {
-    const taskIndex = this._tasks.findIndex((task) => task.id === taskId);
-    if (!taskId) {
-      throw new Error("Task Not Found");
+  set email(email: string) {
+    if (email) {
+      this.props.email = email;
     }
-    this._tasks.splice(taskIndex, 1);
-  }
+  } 
 }

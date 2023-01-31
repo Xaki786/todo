@@ -1,17 +1,29 @@
 /** @format */
 
 import { Request, Response } from "express";
-import { TasksServiceInstance } from "../../src/application";
+import { TasksServiceInstance } from "@application";
 import { JSON_MESSAGES } from "./utils";
 class TaskController {
   async fetchUserTasksList(req: Request, res: Response) {
     const { userId } = req.params;
-    const tasks = await TasksServiceInstance.getList(100, 0, userId);
+    if (!userId) {
+      return res
+        .status(400)
+        .json({ success: false, message: JSON_MESSAGES.BAD_REQUEST });
+    }
+    const limit = Number(req.body.limit) || 10;
+    const page = Number(req.body.page) || 1;
+    const tasks = await TasksServiceInstance.getList(limit, page, userId);
     return res.status(200).json({ success: true, tasks });
   }
 
   async addUserTask(req: Request, res: Response) {
     const { userId } = req.params;
+    if (!userId) {
+      return res
+        .status(400)
+        .json({ success: false, message: JSON_MESSAGES.BAD_REQUEST });
+    }
     const task = await TasksServiceInstance.create(req.body, userId);
     if (!task) {
       return res
@@ -23,6 +35,11 @@ class TaskController {
 
   async updateUserTaskById(req: Request, res: Response) {
     const { taskId, userId } = req.params;
+    if (!userId || !taskId) {
+      return res
+        .status(400)
+        .json({ success: false, message: JSON_MESSAGES.BAD_REQUEST });
+    }
     const task = await TasksServiceInstance.updateById(
       taskId,
       req.body,
@@ -38,6 +55,11 @@ class TaskController {
 
   async fetchUserTask(req: Request, res: Response) {
     const { taskId, userId } = req.params;
+    if (!userId || !taskId) {
+      return res
+        .status(400)
+        .json({ success: false, message: JSON_MESSAGES.BAD_REQUEST });
+    }
     const task = await TasksServiceInstance.getById(taskId, userId);
     if (!task) {
       return res
@@ -49,6 +71,11 @@ class TaskController {
 
   async deleteUserTask(req: Request, res: Response) {
     const { taskId, userId } = req.params;
+    if (!userId || !taskId) {
+      return res
+        .status(400)
+        .json({ success: false, message: JSON_MESSAGES.BAD_REQUEST });
+    }
     const isDeleted = await TasksServiceInstance.deleteById(taskId, userId);
     if (!isDeleted) {
       return res
