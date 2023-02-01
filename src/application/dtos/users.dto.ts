@@ -13,10 +13,6 @@ export interface IGetUsersListDto {
   limit: number;
   page: number;
 }
-
-export interface IGetUserByIdDto {
-  id: UniqueIdGenerator;
-}
 export interface IGetUserByEmailDto {
   email: string;
 }

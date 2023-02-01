@@ -7,6 +7,7 @@ import {
   UserControllerInstance,
   CreateUserControllerInstance,
   UpdateUserControllerInstance,
+  GetUserControllerInstance,
 } from "@http/controllers";
 import { CommonRoutesConfig } from "./utils/CommonRoutesConfig";
 import { BodyValidationMiddlewareInstance } from "@common";
@@ -34,7 +35,7 @@ export class UserRoutes extends CommonRoutesConfig {
       .get(
         AuthMiddlewareInstance.isLoggedIn,
         AuthMiddlewareInstance.isAuthorized,
-        UserControllerInstance.getUserById
+        (req, res) => GetUserControllerInstance.execute(req, res)
       )
       .put(
         UserMiddlewareInstance.isUserValidForUpdate,

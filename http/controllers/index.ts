@@ -9,3 +9,4 @@ export * from "./LoginUserController";
 export * from "./RegisterUserController";
 export * from "./DeleteUserController";
 export * from "./BaseController";
+export * from "./GetUserController";

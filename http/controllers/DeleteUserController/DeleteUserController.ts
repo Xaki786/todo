@@ -12,7 +12,7 @@ import { UniqueIdGenerator } from "@Infrastructure";
 import { BaseController } from "../BaseController";
 
 class DeleteUserController extends BaseController {
-  service: IService<IDeleteUserRequestDto, IDeleteUserResponseDto>;
+  private service: IService<IDeleteUserRequestDto, IDeleteUserResponseDto>;
   constructor(
     service: IService<IDeleteUserRequestDto, IDeleteUserResponseDto>
   ) {
