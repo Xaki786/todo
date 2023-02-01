@@ -9,11 +9,6 @@ export const USER_FIELDS = {
   ID: "id",
   USER_ID: "userId",
 };
-export interface IUpdateUserDto {
-  id: UniqueIdGenerator;
-  email?: string;
-  name?: string;
-}
 export interface IDeleteUserDto {
   id: UniqueIdGenerator;
 }

@@ -1,8 +1,7 @@
 /** @format */
 
-import { IDeleteUserDto, IGetUsersListDto, IUpdateUserDto } from "../dtos";
-import { exclude, Result, ISingleEntityCrud } from "@common";
-import { User } from "@domain";
+import { IDeleteUserDto, IGetUsersListDto } from "../dtos";
+import { exclude, ISingleEntityCrud } from "@common";
 import {
   UniqueIdGenerator,
   UserRepoInstance,
@@ -26,21 +25,6 @@ class UserService implements ISingleEntityCrud {
 
   async deleteAllUsers() {
     return await UserRepoInstance.deleteAll();
-  }
-  async updateById(updateUserDto: IUpdateUserDto) {
-    const dbUser = await UserRepoInstance.getById(updateUserDto.id);
-    if (!dbUser) {
-      return null;
-    }
-    const user = UserMapper.toDomainFromDb(dbUser).getValue();
-    if (updateUserDto.hasOwnProperty("name") && updateUserDto.name) {
-      user.name = updateUserDto.name;
-    }
-    if (updateUserDto.hasOwnProperty("email") && updateUserDto.email) {
-      user.email = updateUserDto.email;
-    }
-    await UserRepoInstance.updateById(user.id, user.userProps);
-    return UserMapper.toService(user.userProps);
   }
   async deleteById(deleteUserDto: IDeleteUserDto) {
     return await UserRepoInstance.deleteById(deleteUserDto.id);

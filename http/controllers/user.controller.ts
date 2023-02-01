@@ -9,17 +9,7 @@ class UserController {
     const page = Number(req.body.page) || 1;
     const users = await UserServiceInstance.getList({ limit, page });
     return res.status(200).json({ success: true, users });
-  }
-
-  async addUser(req: Request, res: Response) {
-    const user = await UserServiceInstance.create(req.body);
-    if (!user) {
-      return res
-        .status(500)
-        .json({ success: false, message: JSON_MESSAGES.INTERNAL_SERVER_ERROR });
-    }
-    return res.status(200).json({ success: true, user });
-  }
+  }  
 
   async getUserById(req: Request, res: Response) {
     const { userId } = req.params;
@@ -31,24 +21,7 @@ class UserController {
     }
 
     return res.status(200).json({ success: true, user });
-  }
-  async updateUserById(req: Request, res: Response) {
-    const { userId } = req.params;
-    if (req.body.hash) {
-      req.body.hash = undefined;
-    }
-    const user = await UserServiceInstance.updateById({
-      id: userId,
-      ...req.body,
-    });
-    if (!user) {
-      return res
-        .status(500)
-        .json({ success: false, message: JSON_MESSAGES.INTERNAL_SERVER_ERROR });
-    }
-
-    return res.status(200).json({ success: true, user });
-  }
+  }  
 
   async deleteUserById(req: Request, res: Response) {
     const { userId } = req.params;

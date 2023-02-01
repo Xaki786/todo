@@ -10,6 +10,7 @@ import {
   UserMiddlewareInstance,
 } from "@http/middlewares";
 import { CreateUserControllerInstance } from "@http/controllers/CreateUserController";
+import { UpdateUserControllerInstance } from "@http/controllers/UpdateUserController";
 
 export class UserRoutes extends CommonRoutesConfig {
   constructor(app: Application) {
@@ -37,7 +38,7 @@ export class UserRoutes extends CommonRoutesConfig {
         BodyValidationMiddlewareInstance.verifyBodyFieldErrors,
         AuthMiddlewareInstance.isLoggedIn,
         AuthMiddlewareInstance.isAuthorized,
-        UserControllerInstance.updateUserById
+        (req, res) => UpdateUserControllerInstance.execute(req, res)
       )
       .delete(
         AuthMiddlewareInstance.isLoggedIn,
