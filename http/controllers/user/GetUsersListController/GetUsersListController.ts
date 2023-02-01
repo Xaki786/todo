@@ -8,7 +8,7 @@ import {
   UnExpextedDatabaseError,
   UserNotFoundError,
 } from "@application";
-import { BaseController } from "../BaseController";
+import { BaseController } from "@http/controllers/BaseController";
 
 class GetUsersListController extends BaseController {
   private service: IService<IGetUsersListRequestDto, IGetUsersListResponseDto>;

@@ -9,7 +9,7 @@ import {
   UserNotFoundError,
 } from "@application";
 import { UniqueIdGenerator } from "@Infrastructure";
-import { BaseController } from "../BaseController";
+import { BaseController } from "@http/controllers/BaseController";
 
 class DeleteUserController extends BaseController {
   private service: IService<IDeleteUserRequestDto, IDeleteUserResponseDto>;

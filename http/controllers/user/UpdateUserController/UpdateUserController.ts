@@ -1,31 +1,38 @@
 /** @format */
 
 import {
-  GetUserServiceInstance,
-  IGetUserRequestDto,
-  IGetUserResponseDto,
   IService,
+  IUpdateUserRequestDto,
+  IUpdateUserResponseDto,
   UnExpextedDatabaseError,
+  UpdateUserServiceInstance,
   UserNotFoundError,
 } from "@application";
 import { UniqueIdGenerator } from "@Infrastructure";
-import { BaseController } from "../BaseController";
+import { BaseController } from "@http/controllers/BaseController";
 
-class GetUserController extends BaseController {
-  private service: IService<IGetUserRequestDto, IGetUserResponseDto>;
-  constructor(service: IService<IGetUserRequestDto, IGetUserResponseDto>) {
+class UpdateUserController extends BaseController {
+  private service: IService<IUpdateUserRequestDto, IUpdateUserResponseDto>;
+  constructor(
+    service: IService<IUpdateUserRequestDto, IUpdateUserResponseDto>
+  ) {
     super();
     this.service = service;
   }
 
   protected async executeImplementation(): Promise<any> {
-    const getUserDto: IGetUserRequestDto = {
+    const updateUserDto: IUpdateUserRequestDto = {
       id: this.request?.params.userId as UniqueIdGenerator,
+      email: this.request?.body.email,
+      name: this.request?.body.name,
     };
-    const result = await this.service.execute(getUserDto);
+
+    const result = await this.service.execute(updateUserDto);
+
     if (result.success) {
       return this.ok(result.value);
     }
+
     switch (result.error.constructor) {
       case UnExpextedDatabaseError:
         return this.internalServerError(result.error.message);
@@ -39,6 +46,6 @@ class GetUserController extends BaseController {
   }
 }
 
-export const GetUserControllerInstance = new GetUserController(
-  GetUserServiceInstance
+export const UpdateUserControllerInstance = new UpdateUserController(
+  UpdateUserServiceInstance
 );

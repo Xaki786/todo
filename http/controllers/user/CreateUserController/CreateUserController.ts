@@ -1,6 +1,6 @@
 /** @format */
 
-import { BaseController } from "../BaseController";
+import { BaseController } from "@http/controllers/BaseController";
 import {
   ICreateUserRequestDto,
   IService,

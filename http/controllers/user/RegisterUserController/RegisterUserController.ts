@@ -11,7 +11,7 @@ import {
   UserAlreadyExistError,
   PasswordEncryptionError,
 } from "@application";
-import { BaseController } from "../BaseController";
+import { BaseController } from "@http/controllers/BaseController";
 
 class RegisterUserController extends BaseController {
   private service: IService<IRegisterUserRequestDto, IRegisterUserResponseDto>;

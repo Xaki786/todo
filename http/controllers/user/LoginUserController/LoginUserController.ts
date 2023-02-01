@@ -11,7 +11,7 @@ import {
   InvalidCredentialsError,
   LoginUserServiceInstance,
 } from "@application";
-import { BaseController } from "../BaseController";
+import { BaseController } from "@http/controllers/BaseController";
 
 class LoginUserController extends BaseController {
   private service: IService<ILoginUserRequestDto, ILoginUserResponseDto>;
