@@ -6,6 +6,7 @@ import { TaskControllerInstance } from "@http/controllers";
 import { CommonRoutesConfig } from "./utils/CommonRoutesConfig";
 import { AuthMiddlewareInstance } from "@http/middlewares";
 import { CreateTaskControllerInstance } from "@http/controllers/task/CreateTaskController";
+import { GetTaskListControllerInstance } from "@http/controllers/task/CreateTaskController/GetTaskListController";
 
 export class TaskRoutes extends CommonRoutesConfig {
   constructor(app: Application) {
@@ -14,7 +15,11 @@ export class TaskRoutes extends CommonRoutesConfig {
   configureRoutes(): Application {
     this.app
       .route(ROUTES_PATHS.USER_TASK_LIST)
-      .get(TaskControllerInstance.fetchUserTasksList)
+      .get(
+        AuthMiddlewareInstance.isLoggedIn,
+        AuthMiddlewareInstance.isAuthorized,
+        (req, res) => GetTaskListControllerInstance.execute(req, res)
+      )
       .post(
         AuthMiddlewareInstance.isLoggedIn,
         AuthMiddlewareInstance.isAuthorized,

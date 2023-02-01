@@ -23,11 +23,7 @@ export interface IUserRepo {
 }
 
 export interface ITaskRepo {
-  getUserTasksList(
-    limit: number,
-    page: number,
-    userId: string
-  ): Promise<ITaskProps[]>;
+  getList(limit: number, page: number, userId: string): Promise<ITaskProps[]>;
 
   create(task: ITaskProps): Promise<void>;
   updateUserTaskById(

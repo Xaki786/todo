@@ -7,11 +7,7 @@ import { Task, ITaskProps } from "@domain";
 class TasksService implements DependantEntityCrud {
   async getList(limit: number, page: number, userId: string) {
     try {
-      const dbTasks = await TaskRepoInstance.getUserTasksList(
-        limit,
-        page,
-        userId
-      );
+      const dbTasks = await TaskRepoInstance.getList(limit, page, userId);
       const tasksOrErrors = dbTasks.map((dbTask) =>
         TaskMapper.toDomain(dbTask)
       );

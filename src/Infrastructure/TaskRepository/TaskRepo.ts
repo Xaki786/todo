@@ -8,7 +8,7 @@ class TaskRepo implements ITaskRepo {
   constructor() {
     this.client = new PrismaClient();
   }
-  async getUserTasksList(
+  async getList(
     limit: number,
     page: number,
     userId: string
