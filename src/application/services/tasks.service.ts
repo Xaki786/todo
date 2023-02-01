@@ -29,31 +29,6 @@ class TasksService implements DependantEntityCrud {
     }
   }
 
-  async create(taskProps: ITaskProps, userId: string) {
-    const taskOrError: Result<Task> = TaskMapper.toDomain({
-      ...taskProps,
-      authorId: userId,
-    });
-
-    if (taskOrError.isFailure) {
-      return null;
-    }
-    const task = taskOrError.getValue();
-    try {
-      const dbTask = await TaskRepoInstance.addUserTask(
-        TaskMapper.toDb(task),
-        userId
-      );
-      if (!dbTask) {
-        return null;
-      }
-    } catch (error) {
-      return null;
-    }
-
-    return task;
-  }
-
   async updateById(taskId: string, taskProps: ITaskProps, userId: string) {
     const taskOrError: Result<Task> = Task.create({
       id: taskId,

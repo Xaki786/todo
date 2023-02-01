@@ -29,7 +29,7 @@ export interface ITaskRepo {
     userId: string
   ): Promise<ITaskProps[]>;
 
-  addUserTask(task: ITaskProps, userId: UniqueIdGenerator): Promise<ITaskProps>;
+  create(task: ITaskProps): Promise<void>;
   updateUserTaskById(
     taskId: string,
     task: ITaskProps,

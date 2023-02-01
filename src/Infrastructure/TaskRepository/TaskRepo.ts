@@ -22,15 +22,14 @@ class TaskRepo implements ITaskRepo {
     });
     return dbTasks;
   }
-  async addUserTask(task: ITaskProps, userId: string): Promise<ITaskProps> {
-    const dbTask = await this.client.task.create({
+  async create(task: ITaskProps): Promise<void> {
+    await this.client.task.create({
       data: {
         id: task.id as string,
         label: task.label,
-        authorId: userId,
+        authorId: task.authorId as string,
       },
     });
-    return dbTask;
   }
   async updateUserTaskById(
     taskId: string,

@@ -8,7 +8,6 @@ export interface DependantEntityCrud {
     page: number,
     parentResourceId: UniqueIdGenerator
   ): Promise<any>;
-  create(childResource: any, parentResourceId: UniqueIdGenerator): Promise<any>;
   updateById(
     childResourceId: string,
     childResource: any,

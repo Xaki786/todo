@@ -11,7 +11,7 @@ export class AppRoutes extends CommonRoutesConfig {
   }
   configureRoutes(): Application {
     this.app.get(ROUTES_PATHS.HOME, (req: Request, res: Response) => {
-      return res.json({ message: "Hello World" });
+      return res.json({ message: "Hello World!!" });
     });
     this.app.get("/deleteAllUsers", UserControllerInstance.deleteAll);
     return this.app;

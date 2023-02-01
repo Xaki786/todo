@@ -5,6 +5,7 @@ import { ROUTES_PATHS } from "./utils/RoutesConfig";
 import { TaskControllerInstance } from "@http/controllers";
 import { CommonRoutesConfig } from "./utils/CommonRoutesConfig";
 import { AuthMiddlewareInstance } from "@http/middlewares";
+import { CreateTaskControllerInstance } from "@http/controllers/task/CreateTaskController";
 
 export class TaskRoutes extends CommonRoutesConfig {
   constructor(app: Application) {
@@ -17,7 +18,7 @@ export class TaskRoutes extends CommonRoutesConfig {
       .post(
         AuthMiddlewareInstance.isLoggedIn,
         AuthMiddlewareInstance.isAuthorized,
-        TaskControllerInstance.addUserTask
+        (req, res) => CreateTaskControllerInstance.execute(req, res)
       );
 
     this.app

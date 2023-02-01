@@ -10,18 +10,7 @@ class TaskController {
     const page = Number(req.body.page) || 1;
     const tasks = await TasksServiceInstance.getList(limit, page, userId);
     return res.status(200).json({ success: true, tasks });
-  }
-
-  async addUserTask(req: Request, res: Response) {
-    const { userId } = req.params;
-    const task = await TasksServiceInstance.create(req.body, userId);
-    if (!task) {
-      return res
-        .status(500)
-        .json({ success: false, message: JSON_MESSAGES.INTERNAL_SERVER_ERROR });
-    }
-    return res.status(200).json({ success: true, task });
-  }
+  }  
 
   async updateUserTaskById(req: Request, res: Response) {
     const { taskId, userId } = req.params;
