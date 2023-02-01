@@ -4,7 +4,6 @@ import {
   IDeleteUserDto,
   IGetUserByEmailDto,
   IGetUsersListDto,
-  IUpdateUserDto,
 } from "@application";
 import { UniqueIdGenerator } from "@Infrastructure";
 
