@@ -9,4 +9,5 @@ export * from "./LoginUserService";
 export * from "./UpdateUserService";
 export * from "./DeleteUserService";
 export * from "./ServiceResult";
+export * from "./GetUsersListService";
 export * from "./errors";

@@ -4,10 +4,10 @@ import { Application } from "express";
 import { ROUTES_PATHS } from "./utils/RoutesConfig";
 import {
   DeleteUserControllerInstance,
-  UserControllerInstance,
   CreateUserControllerInstance,
   UpdateUserControllerInstance,
   GetUserControllerInstance,
+  GetUsersListControllerInstance,
 } from "@http/controllers";
 import { CommonRoutesConfig } from "./utils/CommonRoutesConfig";
 import { BodyValidationMiddlewareInstance } from "@common";
@@ -23,7 +23,7 @@ export class UserRoutes extends CommonRoutesConfig {
   configureRoutes(): Application {
     this.app
       .route(ROUTES_PATHS.USERS)
-      .get(UserControllerInstance.getUsers)
+      .get((req, res) => GetUsersListControllerInstance.execute(req, res))
       .post(
         UserMiddlewareInstance.isUserValidForCreation,
         BodyValidationMiddlewareInstance.verifyBodyFieldErrors,

@@ -1,11 +1,6 @@
 /** @format */
 
-import { IGetUsersListDto } from "@application";
 import { UniqueIdGenerator } from "@Infrastructure";
-
-export interface ISingleEntityCrud {
-  getList(getUsersListDto: IGetUsersListDto): Promise<unknown>;
-}
 
 export interface DependantEntityCrud {
   getList(

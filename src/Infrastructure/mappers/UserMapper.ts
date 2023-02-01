@@ -11,6 +11,9 @@ export class UserMapper {
   public static toDomainFromDb(dbUser: IUserProps) {
     return User.create(dbUser);
   }
+  public static toDomainFromDbBulk(dbUser: IUserProps[]) {
+    return dbUser.map((dbUser) => UserMapper.toDomainFromDb(dbUser));
+  }
 
   public static toService(userProps: IUserProps) {
     const userWithOutHash = exclude(userProps, ["hash"] as never);
