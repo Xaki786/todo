@@ -5,7 +5,15 @@ import { UniqueIdGenerator } from "../UniqueIdGenerator";
 
 export interface IUserRepo {
   getList(limit: number, page: number): Promise<IUserProps[]>;
-  exists(userId: UniqueIdGenerator): Promise<boolean>;
+  exists({
+    name,
+    email,
+    id,
+  }: {
+    id?: UniqueIdGenerator;
+    email?: string;
+    name?: string;
+  }): Promise<boolean>;
   userWithSameEmailExists(email: string): Promise<boolean>;
   create(user: IUserProps): Promise<void>;
   updateById(id: UniqueIdGenerator, resource: IUserProps): Promise<void>;

@@ -28,11 +28,25 @@ class UserRepo implements IUserRepo {
     })) as IUserProps[];
   }
 
-  async exists(userId: UniqueIdGenerator): Promise<boolean> {
-    const user = await this.client.user.findUnique({
-      where: { id: userId as string },
+  async exists({
+    id,
+    email,
+    name,
+  }: {
+    id?: string;
+    name?: string;
+    email?: string;
+  }): Promise<boolean> {
+    const users = await this.client.user.findMany({
+      where: {
+        OR: [
+          { id: { equals: id } },
+          { email: { equals: email } },
+          { name: { equals: name } },
+        ],
+      },
     });
-    if (user) return true;
+    if (users.length) return true;
     return false;
   }
 
