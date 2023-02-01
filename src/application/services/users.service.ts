@@ -1,6 +1,6 @@
 /** @format */
 
-import { IDeleteUserDto, IGetUsersListDto } from "../dtos";
+import { IGetUsersListDto } from "../dtos";
 import { exclude, ISingleEntityCrud } from "@common";
 import {
   UniqueIdGenerator,
@@ -26,9 +26,7 @@ class UserService implements ISingleEntityCrud {
   async deleteAllUsers() {
     return await UserRepoInstance.deleteAll();
   }
-  async deleteById(deleteUserDto: IDeleteUserDto) {
-    return await UserRepoInstance.deleteById(deleteUserDto.id);
-  }
+
   async getById(userId: UniqueIdGenerator) {
     const dbUser = await UserRepoInstance.getById(userId);
     const user = UserMapper.toDomainFromDb(dbUser).getValue();

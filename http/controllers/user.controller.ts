@@ -21,18 +21,7 @@ class UserController {
     }
 
     return res.status(200).json({ success: true, user });
-  }  
-
-  async deleteUserById(req: Request, res: Response) {
-    const { userId } = req.params;
-    const user = await UserServiceInstance.deleteById({ id: userId });
-    if (!user) {
-      return res
-        .status(404)
-        .json({ success: false, error: JSON_MESSAGES.RESOURCE_NOT_FOUND });
-    }
-    return res.json({ success: true, message: JSON_MESSAGES.DELETED });
-  }
+  }    
 
   async deleteAll(req: Request, res: Response) {
     const count = await UserServiceInstance.deleteAllUsers();

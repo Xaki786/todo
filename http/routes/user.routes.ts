@@ -2,15 +2,18 @@
 
 import { Application } from "express";
 import { ROUTES_PATHS } from "./utils/RoutesConfig";
-import { UserControllerInstance } from "@http/controllers";
+import {
+  DeleteUserControllerInstance,
+  UserControllerInstance,
+  CreateUserControllerInstance,
+  UpdateUserControllerInstance,
+} from "@http/controllers";
 import { CommonRoutesConfig } from "./utils/CommonRoutesConfig";
 import { BodyValidationMiddlewareInstance } from "@common";
 import {
   AuthMiddlewareInstance,
   UserMiddlewareInstance,
 } from "@http/middlewares";
-import { CreateUserControllerInstance } from "@http/controllers/CreateUserController";
-import { UpdateUserControllerInstance } from "@http/controllers/UpdateUserController";
 
 export class UserRoutes extends CommonRoutesConfig {
   constructor(app: Application) {
@@ -43,7 +46,7 @@ export class UserRoutes extends CommonRoutesConfig {
       .delete(
         AuthMiddlewareInstance.isLoggedIn,
         AuthMiddlewareInstance.isAuthorized,
-        UserControllerInstance.deleteUserById
+        (req, res) => DeleteUserControllerInstance.execute(req, res)
       );
 
     return this.app;

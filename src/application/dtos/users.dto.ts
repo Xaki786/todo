@@ -9,10 +9,6 @@ export const USER_FIELDS = {
   ID: "id",
   USER_ID: "userId",
 };
-export interface IDeleteUserDto {
-  id: UniqueIdGenerator;
-}
-
 export interface IGetUsersListDto {
   limit: number;
   page: number;
