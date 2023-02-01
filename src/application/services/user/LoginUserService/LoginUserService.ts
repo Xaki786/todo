@@ -10,12 +10,14 @@ import {
   UserRepoInstance,
   GenerateAuthToken,
 } from "@Infrastructure";
-import { ServiceResult, ServiceResultType } from "../ServiceResult";
 import {
+  ServiceResult,
+  ServiceResultType,
   JWTGenerateError,
   UnExpextedDatabaseError,
   UserNotFoundError,
-} from "../errors";
+} from "@application/services";
+
 import { PasswordDecryptionError, InvalidCredentialsError } from "./errors";
 
 class LoginUserService

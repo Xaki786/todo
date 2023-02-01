@@ -5,12 +5,13 @@ import { IService } from "@application/interfaces";
 import { Result } from "@common";
 import { User } from "@domain";
 import { IUserRepo, UserMapper, UserRepoInstance } from "@Infrastructure";
-import { ServiceResult, ServiceResultType } from "../ServiceResult";
 import {
+  ServiceResult,
+  ServiceResultType,
   InvalidUserDataError,
   UnExpextedDatabaseError,
   UserAlreadyExistError,
-} from "../errors";
+} from "@application/services";
 
 class CreateUserService
   implements IService<ICreateUserRequestDto, ICreateUserResponseDto>

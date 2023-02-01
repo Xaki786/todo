@@ -10,13 +10,14 @@ import {
   UserRepoInstance,
   GenerateAuthToken,
 } from "@Infrastructure";
-import { ServiceResult, ServiceResultType } from "../ServiceResult";
 import {
+  ServiceResult,
+  ServiceResultType,
   InvalidUserDataError,
   JWTGenerateError,
   UnExpextedDatabaseError,
   UserAlreadyExistError,
-} from "../errors";
+} from "@application/services";
 import { PasswordEncryptionError } from "./errors";
 class RegisterUserService
   implements IService<IRegisterUserRequestDto, IRegisterUserResponseDto>

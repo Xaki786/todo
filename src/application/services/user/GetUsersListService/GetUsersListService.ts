@@ -8,8 +8,13 @@ import {
   UserMapper,
   UserRepoInstance,
 } from "@Infrastructure";
-import { UnExpextedDatabaseError, UserNotFoundError } from "../errors";
-import { ServiceResult, ServiceResultType } from "../ServiceResult";
+
+import {
+  ServiceResult,
+  ServiceResultType,
+  UnExpextedDatabaseError,
+  UserNotFoundError,
+} from "@application/services";
 import {
   IGetUsersListRequestDto,
   IGetUsersListResponseDto,

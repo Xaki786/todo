@@ -3,8 +3,12 @@
 import { IService } from "@application/interfaces";
 import { IUserProps } from "@domain";
 import { IUserRepo, UserMapper, UserRepoInstance } from "@Infrastructure";
-import { UnExpextedDatabaseError, UserNotFoundError } from "../errors";
-import { ServiceResult, ServiceResultType } from "../ServiceResult";
+import {
+  ServiceResult,
+  ServiceResultType,
+  UnExpextedDatabaseError,
+  UserNotFoundError,
+} from "@application/services";
 import { IUpdateUserRequestDto, IUpdateUserResponseDto } from "./dtos";
 
 class UpdateUserService
