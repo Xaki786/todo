@@ -9,18 +9,6 @@ class UserController {
     const page = Number(req.body.page) || 1;
     const users = await UserServiceInstance.getList({ limit, page });
     return res.status(200).json({ success: true, users });
-  }  
-
-  async getUserById(req: Request, res: Response) {
-    const { userId } = req.params;
-    const user = await UserServiceInstance.getById(userId);
-    if (!user) {
-      return res
-        .status(404)
-        .json({ success: false, message: JSON_MESSAGES.RESOURCE_NOT_FOUND });
-    }
-
-    return res.status(200).json({ success: true, user });
   }    
 
   async deleteAll(req: Request, res: Response) {

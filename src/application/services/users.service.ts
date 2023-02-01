@@ -26,17 +26,6 @@ class UserService implements ISingleEntityCrud {
   async deleteAllUsers() {
     return await UserRepoInstance.deleteAll();
   }
-
-  async getById(userId: UniqueIdGenerator) {
-    const dbUser = await UserRepoInstance.getById(userId);
-    const user = UserMapper.toDomainFromDb(dbUser).getValue();
-    return UserMapper.toService(user.userProps);
-  }
-  async getByEmail(email: string) {
-    const dbUser = await UserRepoInstance.getByEmail(email);
-    const user = UserMapper.toDomainFromDb(dbUser).getValue();
-    return UserMapper.toService(user.userProps);
-  }
 }
 
 export const UserServiceInstance = new UserService();
