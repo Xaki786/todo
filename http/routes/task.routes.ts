@@ -2,11 +2,16 @@
 
 import { Application } from "express";
 import { ROUTES_PATHS } from "./utils/RoutesConfig";
-import { TaskControllerInstance } from "@http/controllers";
+import {
+  TaskControllerInstance,
+  UpdateTaskControllerInstance,
+} from "@http/controllers";
 import { CommonRoutesConfig } from "./utils/CommonRoutesConfig";
 import { AuthMiddlewareInstance } from "@http/middlewares";
-import { CreateTaskControllerInstance } from "@http/controllers/task/CreateTaskController";
-import { GetTaskListControllerInstance } from "@http/controllers/task/CreateTaskController/GetTaskListController";
+import {
+  CreateTaskControllerInstance,
+  GetTaskListControllerInstance,
+} from "@http/controllers";
 
 export class TaskRoutes extends CommonRoutesConfig {
   constructor(app: Application) {
@@ -32,7 +37,7 @@ export class TaskRoutes extends CommonRoutesConfig {
       .put(
         AuthMiddlewareInstance.isLoggedIn,
         AuthMiddlewareInstance.isAuthorized,
-        TaskControllerInstance.updateUserTaskById
+        (req, res) => UpdateTaskControllerInstance.execute(req, res)
       )
       .delete(
         AuthMiddlewareInstance.isLoggedIn,

@@ -35,7 +35,7 @@ class TasksService implements DependantEntityCrud {
       return null;
     }
     const task = taskOrError.getValue();
-    const dbTask = await TaskRepoInstance.updateUserTaskById(
+    const dbTask = await TaskRepoInstance.updateById(
       taskId,
       TaskMapper.toDb(task),
       userId
@@ -46,14 +46,14 @@ class TasksService implements DependantEntityCrud {
     return TaskMapper.toDomain(dbTask);
   }
   async deleteById(taskId: string, userId: string): Promise<boolean> {
-    const deletedTask = await TaskRepoInstance.deleteUserTaskById(
+    const deletedTask = await TaskRepoInstance.deleteById(
       taskId,
       userId
     );
     return deletedTask;
   }
   async getById(taskId: string, userId: string) {
-    const dbTask = await TaskRepoInstance.getUserTaskById(taskId, userId);
+    const dbTask = await TaskRepoInstance.getById(taskId, userId);
     return dbTask;
   }
 }

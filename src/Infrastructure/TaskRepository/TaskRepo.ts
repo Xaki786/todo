@@ -31,7 +31,23 @@ class TaskRepo implements ITaskRepo {
       },
     });
   }
-  async updateUserTaskById(
+
+  async exists({
+    id,
+    label,
+  }: {
+    id?: string;
+    label?: string;
+  }): Promise<boolean> {
+    const tasks = await this.client.task.findMany({
+      where: {
+        OR: [{ id: { equals: id } }, { label: { equals: label } }],
+      },
+    });
+    if (tasks.length) return true;
+    return false;
+  }
+  async updateById(
     taskId: string,
     task: ITaskProps,
     userId: string
@@ -48,14 +64,14 @@ class TaskRepo implements ITaskRepo {
 
     return dbTask;
   }
-  async getUserTaskById(taskId: string, userId: string): Promise<ITaskProps> {
+  async getById(taskId: string, userId: string): Promise<ITaskProps> {
     const dbTask = await this.client.task.findUnique({
       where: { id: taskId, authorId: userId },
     });
 
     return dbTask as ITaskProps;
   }
-  async deleteUserTaskById(taskId: string, userId: string): Promise<boolean> {
+  async deleteById(taskId: string, userId: string): Promise<boolean> {
     const dbTask = await this.client.task.delete({
       where: { id: taskId, authorId: userId },
     });

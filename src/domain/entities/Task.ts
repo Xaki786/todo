@@ -37,7 +37,7 @@ export class Task extends Entity<ITaskProps> {
   }
 
   get taskProps() {
-    return { id: this._id, ...this.props };
+    return {...this.props };
   }
 
   get id() {
@@ -54,5 +54,9 @@ export class Task extends Entity<ITaskProps> {
 
   set createdAt(date: Date) {
     this.props.createdAt = date;
+  }
+
+  set label(label: string) {
+    this.props.label = label;
   }
 }
