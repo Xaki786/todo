@@ -3,6 +3,7 @@
 import { Application } from "express";
 import { ROUTES_PATHS } from "./utils/RoutesConfig";
 import {
+  GetTaskControllerInstance,
   TaskControllerInstance,
   UpdateTaskControllerInstance,
 } from "@http/controllers";
@@ -33,7 +34,7 @@ export class TaskRoutes extends CommonRoutesConfig {
 
     this.app
       .route(ROUTES_PATHS.USER_TASK_SINGLE)
-      .get(TaskControllerInstance.fetchUserTask)
+      .get((req, res) => GetTaskControllerInstance.execute(req, res))
       .put(
         AuthMiddlewareInstance.isLoggedIn,
         AuthMiddlewareInstance.isAuthorized,
