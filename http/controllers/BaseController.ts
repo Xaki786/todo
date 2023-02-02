@@ -15,21 +15,21 @@ export abstract class BaseController {
   protected abstract executeImplementation(): Promise<any>;
 
   protected ok<T>(value: T) {
-    this.response?.status(200).json({success: true,...value});
+    this.response?.status(200).json({ success: true, result: value });
   }
 
   protected created<T>(value: T) {
-    this.response?.status(201).json({success: true,...value});
+    this.response?.status(201).json({ success: true, result: value });
   }
 
   protected badRequest(message?: string) {
     const jsonMessage = message ?? "Bad Request";
-    this.response?.status(400).json({success: false, message: jsonMessage });
+    this.response?.status(400).json({ success: false, message: jsonMessage });
   }
 
   protected notFound(message?: string) {
     const jsonMessage = message ?? "Not Found";
-    this.response?.status(404).json({success: false, message: jsonMessage });
+    this.response?.status(404).json({ success: false, message: jsonMessage });
   }
 
   protected internalServerError(message?: string): void {

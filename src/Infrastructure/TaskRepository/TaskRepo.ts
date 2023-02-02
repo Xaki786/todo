@@ -8,7 +8,7 @@ class TaskRepo implements ITaskRepo {
   constructor() {
     this.client = new PrismaClient();
   }
-  async getUserTasksList(
+  async getList(
     limit: number,
     page: number,
     userId: string
@@ -22,17 +22,32 @@ class TaskRepo implements ITaskRepo {
     });
     return dbTasks;
   }
-  async addUserTask(task: ITaskProps, userId: string): Promise<ITaskProps> {
-    const dbTask = await this.client.task.create({
+  async create(task: ITaskProps): Promise<void> {
+    await this.client.task.create({
       data: {
         id: task.id as string,
         label: task.label,
-        authorId: userId,
+        authorId: task.authorId as string,
       },
     });
-    return dbTask;
   }
-  async updateUserTaskById(
+
+  async exists({
+    id,
+    label,
+  }: {
+    id?: string;
+    label?: string;
+  }): Promise<boolean> {
+    const tasks = await this.client.task.findMany({
+      where: {
+        OR: [{ id: { equals: id } }, { label: { equals: label } }],
+      },
+    });
+    if (tasks.length) return true;
+    return false;
+  }
+  async updateById(
     taskId: string,
     task: ITaskProps,
     userId: string
@@ -49,21 +64,17 @@ class TaskRepo implements ITaskRepo {
 
     return dbTask;
   }
-  async getUserTaskById(taskId: string, userId: string): Promise<ITaskProps> {
+  async getById(taskId: string, userId: string): Promise<ITaskProps> {
     const dbTask = await this.client.task.findUnique({
       where: { id: taskId, authorId: userId },
     });
 
     return dbTask as ITaskProps;
   }
-  async deleteUserTaskById(taskId: string, userId: string): Promise<boolean> {
-    const dbTask = await this.client.task.delete({
+  async deleteById(taskId: string, userId: string): Promise<void> {
+    await this.client.task.delete({
       where: { id: taskId, authorId: userId },
     });
-    if (!dbTask) {
-      return false;
-    }
-    return true;
   }
 }
 

@@ -8,7 +8,7 @@ import {
 } from "@http/middlewares";
 import { CommonRoutesConfig } from "./utils/CommonRoutesConfig";
 import { ROUTES_PATHS } from "./utils/RoutesConfig";
-import { RegisterUserControllerInstance } from "@http/controllers/RegisterUserController";
+import { RegisterUserControllerInstance } from "@http/controllers";
 
 export class AuthRoutes extends CommonRoutesConfig {
   constructor(app: Application) {

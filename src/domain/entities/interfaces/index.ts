@@ -6,7 +6,7 @@ export interface ITaskProps {
   id?: UniqueIdGenerator;
   label: string;
   updatedAt?: Date;
-  authorId?: UniqueIdGenerator;
+  authorId: UniqueIdGenerator;
   createdAt?: Date;
 }
 export interface IUserProps {

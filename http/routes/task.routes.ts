@@ -2,9 +2,17 @@
 
 import { Application } from "express";
 import { ROUTES_PATHS } from "./utils/RoutesConfig";
-import { TaskControllerInstance } from "@http/controllers";
+import {
+  DeleteTaskControllerInstance,
+  GetTaskControllerInstance,
+  UpdateTaskControllerInstance,
+} from "@http/controllers";
 import { CommonRoutesConfig } from "./utils/CommonRoutesConfig";
 import { AuthMiddlewareInstance } from "@http/middlewares";
+import {
+  CreateTaskControllerInstance,
+  GetTaskListControllerInstance,
+} from "@http/controllers";
 
 export class TaskRoutes extends CommonRoutesConfig {
   constructor(app: Application) {
@@ -13,25 +21,29 @@ export class TaskRoutes extends CommonRoutesConfig {
   configureRoutes(): Application {
     this.app
       .route(ROUTES_PATHS.USER_TASK_LIST)
-      .get(TaskControllerInstance.fetchUserTasksList)
+      .get(
+        AuthMiddlewareInstance.isLoggedIn,
+        AuthMiddlewareInstance.isAuthorized,
+        (req, res) => GetTaskListControllerInstance.execute(req, res)
+      )
       .post(
         AuthMiddlewareInstance.isLoggedIn,
         AuthMiddlewareInstance.isAuthorized,
-        TaskControllerInstance.addUserTask
+        (req, res) => CreateTaskControllerInstance.execute(req, res)
       );
 
     this.app
       .route(ROUTES_PATHS.USER_TASK_SINGLE)
-      .get(TaskControllerInstance.fetchUserTask)
+      .get((req, res) => GetTaskControllerInstance.execute(req, res))
       .put(
         AuthMiddlewareInstance.isLoggedIn,
         AuthMiddlewareInstance.isAuthorized,
-        TaskControllerInstance.updateUserTaskById
+        (req, res) => UpdateTaskControllerInstance.execute(req, res)
       )
       .delete(
         AuthMiddlewareInstance.isLoggedIn,
         AuthMiddlewareInstance.isAuthorized,
-        TaskControllerInstance.deleteUserTask
+        (req, res) => DeleteTaskControllerInstance.execute(req, res)
       );
     return this.app;
   }
