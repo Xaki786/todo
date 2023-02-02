@@ -56,5 +56,5 @@ export interface ITaskRepo {
   deleteById(
     taskId: UniqueIdGenerator,
     userId: UniqueIdGenerator
-  ): Promise<boolean>;
+  ): Promise<void>;
 }

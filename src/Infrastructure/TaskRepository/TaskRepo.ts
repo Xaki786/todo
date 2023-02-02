@@ -71,14 +71,10 @@ class TaskRepo implements ITaskRepo {
 
     return dbTask as ITaskProps;
   }
-  async deleteById(taskId: string, userId: string): Promise<boolean> {
-    const dbTask = await this.client.task.delete({
+  async deleteById(taskId: string, userId: string): Promise<void> {
+    await this.client.task.delete({
       where: { id: taskId, authorId: userId },
     });
-    if (!dbTask) {
-      return false;
-    }
-    return true;
   }
 }
 

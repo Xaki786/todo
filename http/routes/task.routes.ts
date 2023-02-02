@@ -3,8 +3,8 @@
 import { Application } from "express";
 import { ROUTES_PATHS } from "./utils/RoutesConfig";
 import {
+  DeleteTaskControllerInstance,
   GetTaskControllerInstance,
-  TaskControllerInstance,
   UpdateTaskControllerInstance,
 } from "@http/controllers";
 import { CommonRoutesConfig } from "./utils/CommonRoutesConfig";
@@ -43,7 +43,7 @@ export class TaskRoutes extends CommonRoutesConfig {
       .delete(
         AuthMiddlewareInstance.isLoggedIn,
         AuthMiddlewareInstance.isAuthorized,
-        TaskControllerInstance.deleteUserTask
+        (req, res) => DeleteTaskControllerInstance.execute(req, res)
       );
     return this.app;
   }
