@@ -12,6 +12,7 @@ import {
 } from "@application/services/ServiceResult";
 import { Result } from "@common";
 import { ITaskProps } from "@domain";
+import { ErrorStatusCodes } from "@http";
 import {
   ITaskRepo,
   IUserRepo,
@@ -46,12 +47,18 @@ class GetTasksListService
       });
     } catch (error) {
       return ServiceResult.fail(
-        new UnExpextedDatabaseError("Error fetching user in tasks service")
+        new UnExpextedDatabaseError(
+          ErrorStatusCodes.DATABASE_ERROR,
+          "Error fetching user in tasks service"
+        )
       );
     }
     if (!isUserPresent) {
       return ServiceResult.fail(
-        new UserNotFoundError("User not found in tasks service")
+        new UserNotFoundError(
+          ErrorStatusCodes.NOT_FOUND,
+          "User not found in tasks service"
+        )
       );
     }
 
@@ -64,14 +71,20 @@ class GetTasksListService
       );
     } catch (error) {
       return ServiceResult.fail(
-        new UnExpextedDatabaseError("Error fetching tasks list")
+        new UnExpextedDatabaseError(
+          ErrorStatusCodes.DATABASE_ERROR,
+          "Error fetching tasks list"
+        )
       );
     }
     const tasksOrErrors = dbTasks.map((dbTask) => TaskMapper.toDomain(dbTask));
     const combinedTasksOrErros = Result.combine(tasksOrErrors);
     if (combinedTasksOrErros.isFailure) {
       return ServiceResult.fail(
-        new InvalidTaskData(combinedTasksOrErros.error as string)
+        new InvalidTaskData(
+          ErrorStatusCodes.BAD_REQUEST,
+          combinedTasksOrErros.error as string
+        )
       );
     }
     const tasks: ITaskResponseDto[] = tasksOrErrors

@@ -12,6 +12,7 @@ import {
   UnExpextedDatabaseError,
   UserAlreadyExistError,
 } from "@application/services";
+import { ErrorStatusCodes } from "@http";
 
 class CreateUserService
   implements IService<ICreateUserRequestDto, ICreateUserResponseDto>
@@ -23,23 +24,47 @@ class CreateUserService
   async execute(
     createUserDto: ICreateUserRequestDto
   ): Promise<ServiceResultType<ICreateUserResponseDto>> {
-    const isUserAlreadyPresent = await this.userRepo.exists({
-      email: createUserDto.email,
-    });
+    let isUserAlreadyPresent = false;
+
+    try {
+      isUserAlreadyPresent = await this.userRepo.exists({
+        email: createUserDto.email,
+      });
+    } catch (error) {
+      return ServiceResult.fail(
+        new UnExpextedDatabaseError(
+          ErrorStatusCodes.DATABASE_ERROR,
+          "Error creating user"
+        )
+      );
+    }
     if (isUserAlreadyPresent) {
       return ServiceResult.fail(
-        new UserAlreadyExistError("User with same email already exists")
+        new UserAlreadyExistError(
+          ErrorStatusCodes.BAD_REQUEST,
+          "User with same email already exists"
+        )
       );
     }
     const userOrError: Result<User> = User.create(createUserDto);
     if (userOrError.isFailure) {
-      return ServiceResult.fail(new InvalidUserDataError("Invalid User Data"));
+      return ServiceResult.fail(
+        new InvalidUserDataError(
+          ErrorStatusCodes.INTERNAL_SERVER_ERROR,
+          "Invalid User Data in Domain"
+        )
+      );
     }
     const user = userOrError.getValue();
     try {
       await this.userRepo.create(UserMapper.toDbFromDomain(user));
-    } catch (error: unknown) {
-      return ServiceResult.fail(new UnExpextedDatabaseError(error as string));
+    } catch (error) {
+      return ServiceResult.fail(
+        new UnExpextedDatabaseError(
+          ErrorStatusCodes.DATABASE_ERROR,
+          error as string
+        )
+      );
     }
     return ServiceResult.success({
       email: user.email,

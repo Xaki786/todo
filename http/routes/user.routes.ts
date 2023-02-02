@@ -23,11 +23,13 @@ export class UserRoutes extends CommonRoutesConfig {
   configureRoutes(): Application {
     this.app
       .route(ROUTES_PATHS.USERS)
-      .get((req, res) => GetUsersListControllerInstance.execute(req, res))
+      .get((req, res, next) =>
+        GetUsersListControllerInstance.execute(req, res, next)
+      )
       .post(
         UserMiddlewareInstance.isUserValidForCreation,
         BodyValidationMiddlewareInstance.verifyBodyFieldErrors,
-        (req, res) => CreateUserControllerInstance.execute(req, res)
+        (req, res, next) => CreateUserControllerInstance.execute(req, res, next)
       );
 
     this.app
@@ -35,19 +37,19 @@ export class UserRoutes extends CommonRoutesConfig {
       .get(
         AuthMiddlewareInstance.isLoggedIn,
         AuthMiddlewareInstance.isAuthorized,
-        (req, res) => GetUserControllerInstance.execute(req, res)
+        (req, res, next) => GetUserControllerInstance.execute(req, res, next)
       )
       .put(
         UserMiddlewareInstance.isUserValidForUpdate,
         BodyValidationMiddlewareInstance.verifyBodyFieldErrors,
         AuthMiddlewareInstance.isLoggedIn,
         AuthMiddlewareInstance.isAuthorized,
-        (req, res) => UpdateUserControllerInstance.execute(req, res)
+        (req, res, next) => UpdateUserControllerInstance.execute(req, res, next)
       )
       .delete(
         AuthMiddlewareInstance.isLoggedIn,
         AuthMiddlewareInstance.isAuthorized,
-        (req, res) => DeleteUserControllerInstance.execute(req, res)
+        (req, res, next) => DeleteUserControllerInstance.execute(req, res, next)
       );
 
     return this.app;

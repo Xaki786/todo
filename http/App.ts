@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import { AuthRoutes, TaskRoutes, UserRoutes, AppRoutes } from "./routes";
 import cors from "cors";
 import { CommonRoutesConfig } from "./routes/utils/CommonRoutesConfig";
+import { errorHandlingMiddleware } from "./middlewares/errors.middleware";
 
 class App {
   public server: Application;
@@ -15,6 +16,7 @@ class App {
     this.loadEnvironmentVariables();
     this.loadMiddlewares();
     this.loadRoutes();
+    this.loadErrorMiddlewares();
   }
 
   private loadMiddlewares() {
@@ -23,6 +25,10 @@ class App {
     };
     this.server.use(cors(corsOptions));
     this.server.use(express.json());
+  }
+
+  private loadErrorMiddlewares() {
+    this.server.use(errorHandlingMiddleware);
   }
 
   private loadRoutes() {

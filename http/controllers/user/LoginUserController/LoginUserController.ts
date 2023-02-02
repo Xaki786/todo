@@ -25,25 +25,7 @@ class LoginUserController extends BaseController {
     if (result.success) {
       return this.ok(result.value);
     }
-    switch (result.error.constructor) {
-      case UserNotFoundError:
-        return this.notFound("Invalid Credentials");
-
-      case UnExpextedDatabaseError:
-        return this.internalServerError(result.error.message);
-
-      case PasswordDecryptionError:
-        return this.internalServerError("Invalid Credentials");
-
-      case JWTGenerateError:
-        return this.internalServerError(result.error.message);
-
-      case InvalidCredentialsError:
-        return this.badRequest("Invalid Credentials");
-
-      default:
-        return this.internalServerError("Something Went Wrong");
-    }
+    return this.handleErrors?.(result.error);
   }
 }
 
