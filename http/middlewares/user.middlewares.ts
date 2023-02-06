@@ -5,7 +5,50 @@ import { body, check } from "express-validator";
 import { envConfigObject } from "@config";
 import { JSON_MESSAGES } from "@http/controllers/utils";
 import { USER_FIELDS } from "@http/routes";
-class UserMiddleware {
+import { AnyZodObject, z, ZodIssue } from "zod";
+import { CreateUserValidationError, UpdateUserValidationError } from "./errors";
+import { combineZodValidationErrors } from "./utils";
+import { toZod } from "tozod";
+import { ICreateUserRequestDto, IUpdateUserRequestDto } from "@application";
+import { Validator } from "./Validator";
+
+export class UserSchema {
+  static CreateUserSchema: toZod<ICreateUserRequestDto> = z
+    .object({
+      body: {
+        email: z.string().email(),
+        hash: z
+          .string()
+          .trim()
+          .min(1, { message: "password can not be empty" }),
+      },
+    })
+    .required();
+
+  static UpdateUserSchema: toZod<IUpdateUserRequestDto> = z.object({
+    id: z.string().uuid(),
+    email: z.string().email().optional(),
+    name: z.string().optional(),
+  });
+}
+export class UserMiddleware {
+  static validate(schema: AnyZodObject) {
+    return async (req: Request, res: Response, next: NextFunction) => {
+      const validator = new Validator(req, res, next);
+      await validator.execute(schema);
+    };
+  }
+  static validateUpdateUser(schema: AnyZodObject) {
+    return async (req: Request, res: Response, next: NextFunction) => {
+      try {
+        await schema.parseAsync(req.body);
+        return next();
+      } catch (error: any) {
+        const errors = combineZodValidationErrors(error.errors as ZodIssue[]);
+        return next(new UpdateUserValidationError(errors));
+      }
+    };
+  }
   async isUserValidForCreation(
     req: Request,
     res: Response,

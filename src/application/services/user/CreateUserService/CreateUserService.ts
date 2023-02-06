@@ -67,9 +67,9 @@ class CreateUserService
       );
     }
     return ServiceResult.success({
-      email: user.email,
+      email: user.userProps.email as string,
       id: user.id,
-      name: user.name,
+      name: user.userProps.name as string,
     });
   }
 }

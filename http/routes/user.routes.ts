@@ -13,7 +13,10 @@ import { CommonRoutesConfig } from "./utils/CommonRoutesConfig";
 import { BodyValidationMiddlewareInstance } from "@common";
 import {
   AuthMiddlewareInstance,
+  UserSchema,
   UserMiddlewareInstance,
+  UserMiddleware,
+  Validator,
 } from "@http/middlewares";
 
 export class UserRoutes extends CommonRoutesConfig {
@@ -27,8 +30,10 @@ export class UserRoutes extends CommonRoutesConfig {
         GetUsersListControllerInstance.execute(req, res, next)
       )
       .post(
-        UserMiddlewareInstance.isUserValidForCreation,
-        BodyValidationMiddlewareInstance.verifyBodyFieldErrors,
+        (req, res, next) => {
+          const validator = new Validator(req, res, next);
+          validator.execute(UserSchema.CreateUserSchema);
+        },
         (req, res, next) => CreateUserControllerInstance.execute(req, res, next)
       );
 
@@ -40,8 +45,10 @@ export class UserRoutes extends CommonRoutesConfig {
         (req, res, next) => GetUserControllerInstance.execute(req, res, next)
       )
       .put(
-        UserMiddlewareInstance.isUserValidForUpdate,
-        BodyValidationMiddlewareInstance.verifyBodyFieldErrors,
+        (req, res, next) => {
+          const validator = new Validator(req, res, next);
+          validator.execute(UserSchema.UpdateUserSchema);
+        },
         AuthMiddlewareInstance.isLoggedIn,
         AuthMiddlewareInstance.isAuthorized,
         (req, res, next) => UpdateUserControllerInstance.execute(req, res, next)

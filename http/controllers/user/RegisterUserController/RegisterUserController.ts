@@ -1,17 +1,11 @@
 /** @format */
 
 import {
-  InvalidUserDataError,
   IRegisterUserRequestDto,
   IRegisterUserResponseDto,
   IService,
-  JWTGenerateError,
   RegisterUserServiceInstance,
-  UnExpextedDatabaseError,
-  UserAlreadyExistError,
-  PasswordEncryptionError,
 } from "@application";
-import { appDevelopmentLogger } from "@common";
 import { BaseController } from "@http/controllers/BaseController";
 
 class RegisterUserController extends BaseController {

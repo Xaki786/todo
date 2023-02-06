@@ -3,7 +3,7 @@
 import { UniqueIdGenerator } from "@Infrastructure";
 
 export interface IUpdateUserRequestDto {
-  id: UniqueIdGenerator;
+  id: UniqueIdGenerator | string;
   email?: string;
   name?: string;
 }

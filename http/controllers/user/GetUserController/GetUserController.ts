@@ -5,8 +5,6 @@ import {
   IGetUserRequestDto,
   IGetUserResponseDto,
   IService,
-  UnExpextedDatabaseError,
-  UserNotFoundError,
 } from "@application";
 import { UniqueIdGenerator } from "@Infrastructure";
 import { BaseController } from "@http/controllers/BaseController";
@@ -20,7 +18,7 @@ class GetUserController extends BaseController {
 
   protected async executeImplementation(): Promise<any> {
     const getUserDto: IGetUserRequestDto = {
-      id: this.request?.params.userId as UniqueIdGenerator,
+      id: this.request?.params.id as UniqueIdGenerator,
     };
     const result = await this.service.execute(getUserDto);
     if (result.success) {
