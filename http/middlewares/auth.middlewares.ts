@@ -49,13 +49,13 @@ class AuthMiddleware {
         .status(401)
         .json({ message: JSON_MESSAGES.INVALID_CREDENTIALS });
     }
-    req.body.userId = decoded.id;
+    req.body.decodedId = decoded.id;
     return next();
   }
 
   async isAuthorized(req: Request, res: Response, next: NextFunction) {
     const { userId } = req.params;
-    if (userId !== req.body.userId) {
+    if (userId !== req.body.decodedId) {
       return res.status(401).json({ message: JSON_MESSAGES.UN_AUTHORIZED });
     }
     delete req.body.userId;

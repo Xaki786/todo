@@ -10,12 +10,9 @@ import {
   GetUsersListControllerInstance,
 } from "@http/controllers";
 import { CommonRoutesConfig } from "./utils/CommonRoutesConfig";
-import { BodyValidationMiddlewareInstance } from "@common";
 import {
   AuthMiddlewareInstance,
   UserSchema,
-  UserMiddlewareInstance,
-  UserMiddleware,
   Validator,
 } from "@http/middlewares";
 

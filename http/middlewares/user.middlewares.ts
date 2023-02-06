@@ -25,10 +25,20 @@ export class UserSchema {
     })
     .required();
 
-  static UpdateUserSchema: toZod<IUpdateUserRequestDto> = z.object({
-    id: z.string().uuid(),
-    email: z.string().email().optional(),
-    name: z.string().optional(),
+  static UpdateUserSchema: toZod<{
+    body: Omit<IUpdateUserRequestDto, "id">;
+  }> = z.object({
+    params: z.object({
+      userId: z.string().uuid(),
+    }),
+    body: z.object({
+      email: z.string().email().optional(),
+      name: z
+        .string()
+        .trim()
+        .min(1, { message: "Name can not be empty" })
+        .optional(),
+    }),
   });
 }
 export class UserMiddleware {
