@@ -13,15 +13,15 @@ import { ICreateUserRequestDto, IUpdateUserRequestDto } from "@application";
 import { Validator } from "./Validator";
 
 export class UserSchema {
-  static CreateUserSchema: toZod<ICreateUserRequestDto> = z
+  static CreateUserSchema: toZod<{ body: ICreateUserRequestDto }> = z
     .object({
-      body: {
+      body: z.object({
         email: z.string().email(),
         hash: z
           .string()
           .trim()
           .min(1, { message: "password can not be empty" }),
-      },
+      }),
     })
     .required();
 

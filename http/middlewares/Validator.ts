@@ -19,6 +19,7 @@ export class Validator {
       await schema.parseAsync({
         body: this.request.body,
         params: this.request.params,
+        query: this.request.query,
       });
       return this.next();
     } catch (error: any) {
