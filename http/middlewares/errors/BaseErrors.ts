@@ -27,7 +27,8 @@ export class BaseError extends Error implements IResponseError {
   }
   logError(err: BaseError) {
     console.log("=========================================================");
-    logger.log("info", this.debugMessage);
+    logger.log("info", `Debug Message: ${this.debugMessage}`);
+    logger.log("info", this.constructor.name);
     console.log("=========================================================");
     logger.log("error", err.stack);
     console.log("=========================================================");
@@ -50,7 +51,8 @@ export class BaseValidationError extends Error implements IResponseError {
   }
   logError(err: BaseError) {
     console.log("=========================================================");
-    logger.log("info", this.debugMessage);
+    logger.log("info", `Debug Message: ${this.debugMessage}`);
+    logger.log("info", this.constructor.name);
     console.log("=========================================================");
 
     logger.log("error", err.stack);

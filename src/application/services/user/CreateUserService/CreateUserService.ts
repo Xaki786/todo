@@ -30,11 +30,12 @@ class CreateUserService
       isUserAlreadyPresent = await this.userRepo.exists({
         email: createUserDto.email,
       });
-    } catch (error) {
+    } catch (error:unknown) {
       return ServiceResult.fail(
         new UnExpextedDatabaseError(
           ErrorStatusCodes.DATABASE_ERROR,
-          "Error creating user"
+          "Database Error",
+          `Error creating user ${error as string}`
         )
       );
     }
@@ -42,7 +43,8 @@ class CreateUserService
       return ServiceResult.fail(
         new UserAlreadyExistError(
           ErrorStatusCodes.BAD_REQUEST,
-          "User with same email already exists"
+          "User with same email already exists",
+          "Duplicate Email in Create User Service"
         )
       );
     }
@@ -51,7 +53,8 @@ class CreateUserService
       return ServiceResult.fail(
         new InvalidUserDataError(
           ErrorStatusCodes.INTERNAL_SERVER_ERROR,
-          "Invalid User Data in Domain"
+          "Database Error",
+          `Invalid User Data in Domain ${userOrError.getError()}`
         )
       );
     }
@@ -62,7 +65,8 @@ class CreateUserService
       return ServiceResult.fail(
         new UnExpextedDatabaseError(
           ErrorStatusCodes.DATABASE_ERROR,
-          error as string
+          "Database Error",
+          `Error creating user in User create service ${error as string}`
         )
       );
     }
