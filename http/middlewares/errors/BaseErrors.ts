@@ -51,7 +51,7 @@ export class BaseValidationError extends Error implements IResponseError {
   }
   logError(err: BaseError) {
     console.log("=========================================================");
-    logger.log("info", `Debug Message: ${this.debugMessage}`);
+    logger.log("info", `Debug Message: ${JSON.stringify(this.debugMessage)}`);
     logger.log("info", this.constructor.name);
     console.log("=========================================================");
 

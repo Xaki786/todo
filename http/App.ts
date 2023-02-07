@@ -56,7 +56,7 @@ class App {
     const PORT = process.env.PORT || 5000;
     try {
       this.server.listen(PORT, () => {
-        logger.log("error", `SERVER is running on [http://localhost:${PORT}]`);
+        logger.log("info", `SERVER is running on [http://localhost:${PORT}]`);
         this.printRoutes();
       });
     } catch (error) {
