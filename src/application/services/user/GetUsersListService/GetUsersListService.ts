@@ -26,13 +26,16 @@ class GetUsersListService
   implements IService<IGetUsersListRequestDto, IGetUsersListResponseDto>
 {
   private userRepo: IUserRepo;
+
   constructor(userRepo: IUserRepo) {
     this.userRepo = userRepo;
   }
+
   async execute(
     getUsersListDto: IGetUsersListRequestDto
   ): Promise<ServiceResultType<IGetUsersListResponseDto>> {
     let dbUsers: IUserProps[] = [];
+
     try {
       dbUsers = await this.userRepo.getList(
         getUsersListDto.limit,
@@ -47,6 +50,7 @@ class GetUsersListService
         )
       );
     }
+
     if (dbUsers.length === 0) {
       return ServiceResult.fail(
         new UserNotFoundError(
@@ -56,6 +60,7 @@ class GetUsersListService
         )
       );
     }
+
     const users = UserMapper.toDomainFromDbBulk(dbUsers);
     const usersResponse: IGetUsersListResponseDto = {
       users: users
@@ -69,6 +74,7 @@ class GetUsersListService
             } as IUserResponseDto)
         ),
     };
+
     return ServiceResult.success(usersResponse);
   }
 }

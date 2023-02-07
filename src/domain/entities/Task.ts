@@ -10,28 +10,37 @@ export class Task extends Entity<ITaskProps> {
   }
 
   public static create(taskProps: ITaskProps) {
+
     const guardedProps: IGuardProps[] = [
       { arguement: taskProps.authorId, arguementName: "author id" },
       { arguement: taskProps.label, arguementName: "label" },
     ];
+
     const guardResult = Guard.guardAgainstNullOrUndefinedBulk(guardedProps);
+
     if (!guardResult.succeeded) {
       return Result.fail<Task>(guardResult.message);
     }
+
     const task = new Task(taskProps);
+
     return Result.ok<Task>(task);
   }
 
   public static update(taskProps: ITaskProps) {
+
     const guardedProps: IGuardProps[] = [
       { arguement: taskProps.authorId, arguementName: "author id" },
       { arguement: taskProps.id, arguementName: "task id" },
       { arguement: taskProps.label, arguementName: "label" },
     ];
+
     const guardResult = Guard.guardAgainstNullOrUndefinedBulk(guardedProps);
+
     if (!guardResult.succeeded) {
       return Result.fail<Task>(guardResult.message);
     }
+    
     const task = new Task(taskProps);
     return Result.ok<Task>(task);
   }

@@ -26,10 +26,12 @@ class UpdateTaskService
 {
   private userRepo: IUserRepo;
   private taskRepo: ITaskRepo;
+
   constructor(userRepo: IUserRepo, taskRepo: ITaskRepo) {
     this.taskRepo = taskRepo;
     this.userRepo = userRepo;
   }
+
   async execute(
     updateTaskDto: IUpdateTaskRequestDto
   ): Promise<ServiceResultType<IUpdateTaskResponseDto>> {
@@ -87,6 +89,7 @@ class UpdateTaskService
 
     const task = TaskMapper.toDomain(dbTask).getValue();
     task.label = updateTaskDto.label;
+
     try {
       await this.taskRepo.updateById(task.id, task.taskProps, task.authorId);
     } catch (error) {

@@ -10,6 +10,7 @@ export class AppRoutes extends CommonRoutesConfig {
   constructor(app: Application) {
     super(app, "AppRoutes");
   }
+
   configureRoutes(): Application {
     this.app.get(ROUTES_PATHS.HOME, (req: Request, res: Response) => {
       return res.json({ message: "Hello World" });

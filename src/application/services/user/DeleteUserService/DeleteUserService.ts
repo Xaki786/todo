@@ -16,9 +16,11 @@ class DeleteUserService
   implements IService<IDeleteUserRequestDto, IDeleteUserResponseDto>
 {
   userRepo: IUserRepo;
+
   constructor(userRepo: IUserRepo) {
     this.userRepo = userRepo;
   }
+
   async execute(
     deleteUserDto: IDeleteUserRequestDto
   ): Promise<ServiceResultType<IDeleteUserResponseDto>> {
@@ -45,6 +47,7 @@ class DeleteUserService
         )
       );
     }
+
     const user = UserMapper.toDomainFromDb(dbUser).getValue();
 
     try {

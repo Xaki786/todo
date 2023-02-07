@@ -5,15 +5,13 @@ import {
   IDeleteTaskRequestDto,
   IDeleteTaskResponseDto,
   IService,
-  TaskNotFoundError,
-  UnExpextedDatabaseError,
-  UserNotFoundError,
 } from "@application";
 import { BaseController } from "@http/controllers/BaseController";
 import { UniqueIdGenerator } from "@Infrastructure";
 
 class DeleteTaskController extends BaseController {
   private service: IService<IDeleteTaskRequestDto, IDeleteTaskResponseDto>;
+
   constructor(
     service: IService<IDeleteTaskRequestDto, IDeleteTaskResponseDto>
   ) {

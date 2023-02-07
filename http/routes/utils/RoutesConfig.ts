@@ -4,6 +4,7 @@ const tasks = "tasks";
 const users = "users";
 const taskId = "taskId";
 const userId = "userId";
+
 export const ROUTES_PATHS = {
   TASKS: `/${tasks}`,
   SINGLE_TASK: `/${tasks}/:${taskId}`,

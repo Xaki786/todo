@@ -1,12 +1,13 @@
 /** @format */
 
+import { PrismaClient } from "@prisma/client";
 import { IUserLogin, IUserProps } from "@domain";
 import { IUserRepo } from "../Interfaces";
-import { PrismaClient } from "@prisma/client";
 import { UniqueIdGenerator } from "../UniqueIdGenerator";
 
 class UserRepo implements IUserRepo {
   private client: PrismaClient;
+
   constructor() {
     this.client = new PrismaClient();
   }

@@ -11,6 +11,7 @@ import { BaseController } from "@http/controllers/BaseController";
 
 class GetUserController extends BaseController {
   private service: IService<IGetUserRequestDto, IGetUserResponseDto>;
+
   constructor(service: IService<IGetUserRequestDto, IGetUserResponseDto>) {
     super();
     this.service = service;

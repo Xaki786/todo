@@ -11,6 +11,7 @@ export class AuthRoutes extends CommonRoutesConfig {
   constructor(app: Application) {
     super(app, "AuthRoutes");
   }
+
   configureRoutes(): Application {
     this.app.route(ROUTES_PATHS.LOGIN).post(
       (req, res, next) => {

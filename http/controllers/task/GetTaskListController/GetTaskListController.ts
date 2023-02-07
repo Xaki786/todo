@@ -4,22 +4,21 @@ import {
   GetTasksListServiceInstance,
   IGetTasksListRequestDto,
   IGetTasksListResponseDto,
-  InvalidTaskData,
   IService,
-  UnExpextedDatabaseError,
-  UserNotFoundError,
 } from "@application";
 import { BaseController } from "@http/controllers/BaseController";
 import { UniqueIdGenerator } from "@Infrastructure";
 
 class GetTaskListController extends BaseController {
   private service: IService<IGetTasksListRequestDto, IGetTasksListResponseDto>;
+
   constructor(
     service: IService<IGetTasksListRequestDto, IGetTasksListResponseDto>
   ) {
     super();
     this.service = service;
   }
+
   protected async executeImplementation(): Promise<any> {
     const getTasksListDto: IGetTasksListRequestDto = {
       limit: Number(this.request?.body.limit || 10),
