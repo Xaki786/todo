@@ -47,15 +47,27 @@ export class TaskRoutes extends CommonRoutesConfig {
 
     this.app
       .route(ROUTES_PATHS.USER_TASK_SINGLE)
-      .get((req, res, next) =>
-        GetTaskControllerInstance.execute(req, res, next)
+      .get(
+        (req, res, next) => {
+          const validator = new Validator(req, res, next);
+          validator.execute(TaskSchema.GetTaskSchema);
+        },
+        (req, res, next) => GetTaskControllerInstance.execute(req, res, next)
       )
       .put(
+        (req, res, next) => {
+          const validator = new Validator(req, res, next);
+          validator.execute(TaskSchema.UpdateTaskSchema);
+        },
         AuthMiddlewareInstance.isLoggedIn,
         AuthMiddlewareInstance.isAuthorized,
         (req, res, next) => UpdateTaskControllerInstance.execute(req, res, next)
       )
       .delete(
+        (req, res, next) => {
+          const validator = new Validator(req, res, next);
+          validator.execute(TaskSchema.DeleteTaskSchema);
+        },
         AuthMiddlewareInstance.isLoggedIn,
         AuthMiddlewareInstance.isAuthorized,
         (req, res, next) => DeleteTaskControllerInstance.execute(req, res, next)
