@@ -45,7 +45,8 @@ class GetTaskService
       return ServiceResult.fail(
         new UnExpextedDatabaseError(
           ErrorStatusCodes.DATABASE_ERROR,
-          "Error fetching user in get task"
+          "Database Error",
+          `Error Fetching user in get Task Service ${error as string}`
         )
       );
     }
@@ -54,7 +55,8 @@ class GetTaskService
       return ServiceResult.fail(
         new UserNotFoundError(
           ErrorStatusCodes.NOT_FOUND,
-          "User not found in get task"
+          "Invalid Credentials",
+          "User not found in get task service"
         )
       );
     }
@@ -65,7 +67,8 @@ class GetTaskService
       return ServiceResult.fail(
         new UnExpextedDatabaseError(
           ErrorStatusCodes.DATABASE_ERROR,
-          "Error fetching task"
+          "Database Error",
+          `Error Fetching task in get Task Service ${error as string}`
         )
       );
     }
@@ -74,7 +77,8 @@ class GetTaskService
       return ServiceResult.fail(
         new TaskNotFoundError(
           ErrorStatusCodes.NOT_FOUND,
-          "Task not found in get task"
+          "Task Not Found",
+          "Task not found in get task service"
         )
       );
     }
