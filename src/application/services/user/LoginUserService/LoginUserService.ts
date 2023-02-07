@@ -40,14 +40,19 @@ class LoginUserService
       return ServiceResult.fail(
         new UnExpextedDatabaseError(
           ErrorStatusCodes.DATABASE_ERROR,
-          "Error Fetching User"
+          "Database Error",
+          `Error Fetching user in Login User Service ${error as string}`
         )
       );
     }
 
     if (!dbUser) {
       return ServiceResult.fail(
-        new UserNotFoundError(ErrorStatusCodes.NOT_FOUND, "User Not Found")
+        new UserNotFoundError(
+          ErrorStatusCodes.NOT_FOUND,
+          "Invalid Credentials",
+          "User Not Found in Login User Service"
+        )
       );
     }
 
@@ -63,7 +68,8 @@ class LoginUserService
       return ServiceResult.fail(
         new PasswordDecryptionError(
           ErrorStatusCodes.INTERNAL_SERVER_ERROR,
-          error as string
+          "Internal Serer Error",
+          `Error Decrypting password in Login User Service ${error as string}`
         )
       );
     }
@@ -72,7 +78,8 @@ class LoginUserService
       return ServiceResult.fail(
         new InvalidCredentialsError(
           ErrorStatusCodes.UNAUTHORIZED,
-          "Invalid Credentials"
+          "Invalid Credentials",
+          `Password didn't match in Login User Service`
         )
       );
     }
@@ -84,7 +91,8 @@ class LoginUserService
       return ServiceResult.fail(
         new JWTGenerateError(
           ErrorStatusCodes.INTERNAL_SERVER_ERROR,
-          error as string
+          "Internal Serer Error",
+          `Error Generating Token in Login User Service ${error as string}`
         )
       );
     }
