@@ -14,6 +14,12 @@ export class AppRoutes extends CommonRoutesConfig {
       return res.json({ message: "Hello World" });
     });
     this.app.get("/deleteAllUsers", UserControllerInstance.deleteAll);
+    this.app.use((req, res, next) => {
+      res.status(404).json({
+        success: false,
+        message: "Resource Not Found",
+      });
+    });
     return this.app;
   }
 }
