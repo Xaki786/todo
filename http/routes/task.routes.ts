@@ -8,7 +8,11 @@ import {
   UpdateTaskControllerInstance,
 } from "@http/controllers";
 import { CommonRoutesConfig } from "./utils/CommonRoutesConfig";
-import { AuthMiddlewareInstance } from "@http/middlewares";
+import {
+  AuthMiddlewareInstance,
+  TaskSchema,
+  Validator,
+} from "@http/middlewares";
 import {
   CreateTaskControllerInstance,
   GetTaskListControllerInstance,
@@ -22,12 +26,20 @@ export class TaskRoutes extends CommonRoutesConfig {
     this.app
       .route(ROUTES_PATHS.USER_TASK_LIST)
       .get(
+        (req, res, next) => {
+          const validator = new Validator(req, res, next);
+          validator.execute(TaskSchema.GetTasksListSchema);
+        },
         AuthMiddlewareInstance.isLoggedIn,
         AuthMiddlewareInstance.isAuthorized,
         (req, res, next) =>
           GetTaskListControllerInstance.execute(req, res, next)
       )
       .post(
+        (req, res, next) => {
+          const validator = new Validator(req, res, next);
+          validator.execute(TaskSchema.CreateTaskSchema);
+        },
         AuthMiddlewareInstance.isLoggedIn,
         AuthMiddlewareInstance.isAuthorized,
         (req, res, next) => CreateTaskControllerInstance.execute(req, res, next)

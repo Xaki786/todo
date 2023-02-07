@@ -4,9 +4,7 @@ import {
   IService,
   IUpdateUserRequestDto,
   IUpdateUserResponseDto,
-  UnExpextedDatabaseError,
   UpdateUserServiceInstance,
-  UserNotFoundError,
 } from "@application";
 import { UniqueIdGenerator } from "@Infrastructure";
 import { BaseController } from "@http/controllers/BaseController";
