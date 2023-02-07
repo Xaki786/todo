@@ -49,7 +49,8 @@ class GetTasksListService
       return ServiceResult.fail(
         new UnExpextedDatabaseError(
           ErrorStatusCodes.DATABASE_ERROR,
-          "Error fetching user in tasks service"
+          "Database Error",
+          `Error fetching user in get tasks list service ${error as string}`
         )
       );
     }
@@ -57,7 +58,8 @@ class GetTasksListService
       return ServiceResult.fail(
         new UserNotFoundError(
           ErrorStatusCodes.NOT_FOUND,
-          "User not found in tasks service"
+          "Invalid Credentials",
+          "User not found in get tasks list service"
         )
       );
     }
@@ -78,12 +80,13 @@ class GetTasksListService
       );
     }
     const tasksOrErrors = dbTasks.map((dbTask) => TaskMapper.toDomain(dbTask));
-    const combinedTasksOrErros = Result.combine(tasksOrErrors);
-    if (combinedTasksOrErros.isFailure) {
+    const combinedTasksOrErrors = Result.combine(tasksOrErrors);
+    if (combinedTasksOrErrors.isFailure) {
       return ServiceResult.fail(
         new InvalidTaskData(
-          ErrorStatusCodes.BAD_REQUEST,
-          combinedTasksOrErros.error as string
+          ErrorStatusCodes.INTERNAL_SERVER_ERROR,
+          "Internal Server",
+          `Invalid data in domain task: ${combinedTasksOrErrors.getError()}`
         )
       );
     }
