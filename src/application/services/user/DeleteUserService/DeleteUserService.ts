@@ -30,14 +30,19 @@ class DeleteUserService
       return ServiceResult.fail(
         new UnExpextedDatabaseError(
           ErrorStatusCodes.DATABASE_ERROR,
-          "Error fetching User"
+          "Database Error",
+          `Error Fetching user in Delete User Service ${error as string}`
         )
       );
     }
 
     if (!dbUser) {
       return ServiceResult.fail(
-        new UserNotFoundError(ErrorStatusCodes.NOT_FOUND, "User Not Found")
+        new UserNotFoundError(
+          ErrorStatusCodes.NOT_FOUND,
+          "Invalid User",
+          "User Not Found in Delete User Service"
+        )
       );
     }
     const user = UserMapper.toDomainFromDb(dbUser).getValue();
@@ -48,7 +53,8 @@ class DeleteUserService
       return ServiceResult.fail(
         new UnExpextedDatabaseError(
           ErrorStatusCodes.DATABASE_ERROR,
-          "Error Deleteing user"
+          "Database Error",
+          `Error Deleteing user: ${error as string}`
         )
       );
     }
