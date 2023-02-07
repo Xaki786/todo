@@ -42,13 +42,18 @@ class GetUsersListService
       return ServiceResult.fail(
         new UnExpextedDatabaseError(
           ErrorStatusCodes.DATABASE_ERROR,
-          "Error Fetching users list"
+          "Database Error",
+          `Error Fetching user in Get User List Service ${error as string}`
         )
       );
     }
     if (dbUsers.length === 0) {
       return ServiceResult.fail(
-        new UserNotFoundError(ErrorStatusCodes.NOT_FOUND, "Users not found")
+        new UserNotFoundError(
+          ErrorStatusCodes.NOT_FOUND,
+          "Users not found",
+          "Users not found in Get Users List Service"
+        )
       );
     }
     const users = UserMapper.toDomainFromDbBulk(dbUsers);
