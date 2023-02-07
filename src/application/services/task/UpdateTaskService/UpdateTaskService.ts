@@ -44,7 +44,8 @@ class UpdateTaskService
       return ServiceResult.fail(
         new UnExpextedDatabaseError(
           ErrorStatusCodes.DATABASE_ERROR,
-          "Error fetching user in update task"
+          "Database Error",
+          `Error Fetching user in Update Task Service ${error as string}`
         )
       );
     }
@@ -53,7 +54,8 @@ class UpdateTaskService
       return ServiceResult.fail(
         new UserNotFoundError(
           ErrorStatusCodes.NOT_FOUND,
-          "User not found in updating task"
+          "Invalid Credentials",
+          "User not found in update task service"
         )
       );
     }
@@ -67,7 +69,8 @@ class UpdateTaskService
       return ServiceResult.fail(
         new UnExpextedDatabaseError(
           ErrorStatusCodes.DATABASE_ERROR,
-          "Error fetching task in update task"
+          "Database Error",
+          `Error Fetching task in Update Task Service ${error as string}`
         )
       );
     }
@@ -76,7 +79,8 @@ class UpdateTaskService
       return ServiceResult.fail(
         new TaskNotFoundError(
           ErrorStatusCodes.NOT_FOUND,
-          "Task not found in updating task"
+          "Task not found",
+          "Task not found in update task service"
         )
       );
     }
@@ -89,7 +93,8 @@ class UpdateTaskService
       return ServiceResult.fail(
         new UnExpextedDatabaseError(
           ErrorStatusCodes.DATABASE_ERROR,
-          "Error updating task"
+          "Database Error",
+          "Error updating task in update task service"
         )
       );
     }
