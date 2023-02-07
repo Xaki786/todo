@@ -20,6 +20,7 @@ export class UserRoutes extends CommonRoutesConfig {
   constructor(app: Application) {
     super(app, "UserRoutes");
   }
+
   configureRoutes(): Application {
     this.app
       .route(ROUTES_PATHS.USERS)

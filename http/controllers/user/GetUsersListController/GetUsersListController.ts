@@ -5,13 +5,12 @@ import {
   IGetUsersListRequestDto,
   IGetUsersListResponseDto,
   IService,
-  UnExpextedDatabaseError,
-  UserNotFoundError,
 } from "@application";
 import { BaseController } from "@http/controllers/BaseController";
 
 class GetUsersListController extends BaseController {
   private service: IService<IGetUsersListRequestDto, IGetUsersListResponseDto>;
+
   constructor(
     service: IService<IGetUsersListRequestDto, IGetUsersListResponseDto>
   ) {

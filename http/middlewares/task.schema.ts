@@ -1,8 +1,8 @@
 /** @format */
 
-import { ICreateTaskRequestDto, IUpdateTaskRequestDto } from "@application";
 import { toZod } from "tozod";
 import { z } from "zod";
+import { ICreateTaskRequestDto, IUpdateTaskRequestDto } from "@application";
 export class TaskSchema {
   static CreateTaskSchema: toZod<{
     params: { userId: string };

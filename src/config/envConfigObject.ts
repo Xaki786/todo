@@ -1,6 +1,7 @@
 /** @format */
 
 import dotenv from "dotenv";
+
 const getEnvConfigObject = () => {
   dotenv.config();
   return {

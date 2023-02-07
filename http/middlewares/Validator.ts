@@ -9,11 +9,13 @@ export class Validator {
   private response: Response;
   private request: Request;
   private next: NextFunction;
+
   constructor(req: Request, res: Response, next: NextFunction) {
     this.request = req;
     this.response = res;
     this.next = next;
   }
+
   async execute(schema: AnyZodObject) {
     try {
       await schema.parseAsync({

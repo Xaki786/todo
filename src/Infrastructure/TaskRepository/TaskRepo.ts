@@ -1,13 +1,15 @@
 /** @format */
 
+import { PrismaClient } from "@prisma/client";
 import { ITaskProps } from "@domain";
 import { ITaskRepo } from "../Interfaces";
-import { PrismaClient } from "@prisma/client";
 class TaskRepo implements ITaskRepo {
   private client: PrismaClient;
+
   constructor() {
     this.client = new PrismaClient();
   }
+
   async getList(
     limit: number,
     page: number,
@@ -22,6 +24,7 @@ class TaskRepo implements ITaskRepo {
     });
     return dbTasks;
   }
+
   async create(task: ITaskProps): Promise<void> {
     await this.client.task.create({
       data: {

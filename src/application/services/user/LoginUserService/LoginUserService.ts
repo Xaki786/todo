@@ -26,9 +26,11 @@ class LoginUserService
   implements IService<ILoginUserRequestDto, ILoginUserResponseDto>
 {
   private readonly userRepo: IUserRepo;
+
   constructor(userRepo: IUserRepo) {
     this.userRepo = userRepo;
   }
+
   async execute(
     loginUserDto: ILoginUserRequestDto
   ): Promise<ServiceResultType<ILoginUserResponseDto>> {

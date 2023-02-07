@@ -1,7 +1,7 @@
 /** @format */
 
-import { logger } from "@Infrastructure";
 import type { Response } from "express";
+import { logger } from "@Infrastructure";
 import { ErrorStatusCodes } from "./ErrorCodes";
 
 interface IResponseError {
