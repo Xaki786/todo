@@ -9,6 +9,7 @@ import {
   UserNotFoundError,
 } from "@application/services";
 import { Task } from "@domain";
+import { ErrorStatusCodes } from "@http";
 import {
   ITaskRepo,
   IUserRepo,
@@ -37,18 +38,30 @@ class CreateTaskService
       });
     } catch (error) {
       return ServiceResult.fail(
-        new UnExpextedDatabaseError("Error Fetching User in creating task")
+        new UnExpextedDatabaseError(
+          ErrorStatusCodes.DATABASE_ERROR,
+          "Database Error",
+          `Error Fetching user in Create Task Service ${error as string}`
+        )
       );
     }
     if (!isUserPresent) {
       return ServiceResult.fail(
-        new UserNotFoundError("User not found in creating task")
+        new UserNotFoundError(
+          ErrorStatusCodes.NOT_FOUND,
+          "Invalid Credentials",
+          "User not found in creating task service"
+        )
       );
     }
     const taskOrError = Task.create(createTaskDto);
     if (taskOrError.isFailure) {
       return ServiceResult.fail(
-        new InvalidTaskData(taskOrError.error as string)
+        new InvalidTaskData(
+          ErrorStatusCodes.INTERNAL_SERVER_ERROR,
+          "Invternal Service Error",
+          `Invalid Task Data in Create Task Service ${taskOrError.getError()}`
+        )
       );
     }
     const task = taskOrError.getValue();
@@ -56,7 +69,11 @@ class CreateTaskService
       await this.taskRepo.create(task.taskProps);
     } catch (error) {
       return ServiceResult.fail(
-        new UnExpextedDatabaseError("Error creating task")
+        new UnExpextedDatabaseError(
+          ErrorStatusCodes.DATABASE_ERROR,
+          "Database Error",
+          `Error creating task in create task service ${error}`
+        )
       );
     }
     return ServiceResult.success({

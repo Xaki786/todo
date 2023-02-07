@@ -4,3 +4,4 @@ export * from "./UniqueIdGenerator";
 export * from "./TaskRepository";
 export * from "./mappers";
 export * from "./AuthService";
+export * from "./LoggingService";

@@ -11,6 +11,7 @@ import {
   ServiceResultType,
 } from "@application/services/ServiceResult";
 import { ITaskProps } from "@domain";
+import { ErrorStatusCodes } from "@http";
 import {
   ITaskRepo,
   IUserRepo,
@@ -41,13 +42,21 @@ class UpdateTaskService
       });
     } catch (error) {
       return ServiceResult.fail(
-        new UnExpextedDatabaseError("Error fetching user in update task")
+        new UnExpextedDatabaseError(
+          ErrorStatusCodes.DATABASE_ERROR,
+          "Database Error",
+          `Error Fetching user in Update Task Service ${error as string}`
+        )
       );
     }
 
     if (!isUserPresent) {
       return ServiceResult.fail(
-        new UserNotFoundError("User not found in updating task")
+        new UserNotFoundError(
+          ErrorStatusCodes.NOT_FOUND,
+          "Invalid Credentials",
+          "User not found in update task service"
+        )
       );
     }
 
@@ -58,13 +67,21 @@ class UpdateTaskService
       );
     } catch (error) {
       return ServiceResult.fail(
-        new UnExpextedDatabaseError("Error fetching task in update task")
+        new UnExpextedDatabaseError(
+          ErrorStatusCodes.DATABASE_ERROR,
+          "Database Error",
+          `Error Fetching task in Update Task Service ${error as string}`
+        )
       );
     }
 
     if (!dbTask) {
       return ServiceResult.fail(
-        new TaskNotFoundError("Task not found in updating task")
+        new TaskNotFoundError(
+          ErrorStatusCodes.NOT_FOUND,
+          "Task not found",
+          "Task not found in update task service"
+        )
       );
     }
 
@@ -74,7 +91,11 @@ class UpdateTaskService
       await this.taskRepo.updateById(task.id, task.taskProps, task.authorId);
     } catch (error) {
       return ServiceResult.fail(
-        new UnExpextedDatabaseError("Error updating task")
+        new UnExpextedDatabaseError(
+          ErrorStatusCodes.DATABASE_ERROR,
+          "Database Error",
+          "Error updating task in update task service"
+        )
       );
     }
 

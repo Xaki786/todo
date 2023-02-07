@@ -1,12 +1,6 @@
 /** @format */
 
-import {
-  GetTaskServiceInstance,
-  IService,
-  TaskNotFoundError,
-  UnExpextedDatabaseError,
-  UserNotFoundError,
-} from "@application";
+import { GetTaskServiceInstance, IService } from "@application";
 import { IGetTaskRequestDto, IGetTaskResponseDto } from "@application";
 import { BaseController } from "@http/controllers/BaseController";
 import { UniqueIdGenerator } from "@Infrastructure";
@@ -27,17 +21,7 @@ class GetTaskController extends BaseController {
     if (result.success) {
       return this.ok(result.value);
     }
-    switch (result.error.constructor) {
-      case UnExpextedDatabaseError:
-        return this.internalServerError(result.error.message);
-
-      case UserNotFoundError:
-      case TaskNotFoundError:
-        return this.notFound(result.error.message);
-
-      default:
-        return this.internalServerError("Something Went Wrong");
-    }
+    return this.handleErrors?.(result.error);
   }
 }
 export const GetTaskControllerInstance = new GetTaskController(

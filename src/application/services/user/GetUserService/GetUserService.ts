@@ -10,6 +10,7 @@ import {
   UserNotFoundError,
 } from "@application/services";
 import { IGetUserRequestDto, IGetUserResponseDto } from "./dtos";
+import { ErrorStatusCodes } from "@http";
 
 class GetUserService
   implements IService<IGetUserRequestDto, IGetUserResponseDto>
@@ -27,11 +28,21 @@ class GetUserService
       dbUser = await this.userRepo.getById(getUserDto.id);
     } catch (error) {
       return ServiceResult.fail(
-        new UnExpextedDatabaseError("Error Fetching User")
+        new UnExpextedDatabaseError(
+          ErrorStatusCodes.DATABASE_ERROR,
+          "Database Error",
+          `Error Fetching user in Get User Service ${error as string}`
+        )
       );
     }
     if (!dbUser) {
-      return ServiceResult.fail(new UserNotFoundError("User Not Found"));
+      return ServiceResult.fail(
+        new UserNotFoundError(
+          ErrorStatusCodes.NOT_FOUND,
+          "Invalid User",
+          "User Not Found in Get User Service"
+        )
+      );
     }
     const user = UserMapper.toDomainFromDb(dbUser).getValue();
     return ServiceResult.success({

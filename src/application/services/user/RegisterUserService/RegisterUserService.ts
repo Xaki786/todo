@@ -15,10 +15,11 @@ import {
   ServiceResultType,
   InvalidUserDataError,
   JWTGenerateError,
-  UnExpextedDatabaseError,
   UserAlreadyExistError,
+  UnExpextedDatabaseError,
 } from "@application/services";
 import { PasswordEncryptionError } from "./errors";
+import { ErrorStatusCodes } from "@http";
 class RegisterUserService
   implements IService<IRegisterUserRequestDto, IRegisterUserResponseDto>
 {
@@ -29,12 +30,31 @@ class RegisterUserService
   async execute(
     registerUserDto: IRegisterUserRequestDto
   ): Promise<ServiceResultType<IRegisterUserResponseDto>> {
-    const isUserAlreadyPresent = await this.userRepo.exists({
-      email: registerUserDto.email,
-    });
+    let isUserAlreadyPresent = false;
+
+    try {
+      isUserAlreadyPresent = await this.userRepo.exists({
+        email: registerUserDto.email,
+      });
+    } catch (error) {
+      return ServiceResult.fail(
+        new UnExpextedDatabaseError(
+          ErrorStatusCodes.DATABASE_ERROR,
+          "Database Error",
+          `Error Fetching existing user in Register User Service ${
+            error as string
+          }`
+        )
+      );
+    }
+
     if (isUserAlreadyPresent) {
       return ServiceResult.fail(
-        new UserAlreadyExistError("User with same email already exists!!")
+        new UserAlreadyExistError(
+          ErrorStatusCodes.BAD_REQUEST,
+          "User with same email already exists",
+          "User with same email already exists in Register User Service"
+        )
       );
     }
     let encryptedPassword = "";
@@ -43,24 +63,50 @@ class RegisterUserService
         registerUserDto.hash
       );
     } catch (error) {
-      return ServiceResult.fail(new PasswordEncryptionError(error as string));
+      return ServiceResult.fail(
+        new PasswordEncryptionError(
+          ErrorStatusCodes.INTERNAL_SERVER_ERROR,
+          "Internal Server Error",
+          `Password encryption error in Register User Service ${
+            error as string
+          }`
+        )
+      );
     }
     registerUserDto.hash = encryptedPassword;
     const userOrError: Result<User> = User.create(registerUserDto);
     if (userOrError.isFailure) {
-      return ServiceResult.fail(new InvalidUserDataError("Invalid User Data"));
+      return ServiceResult.fail(
+        new InvalidUserDataError(
+          ErrorStatusCodes.INTERNAL_SERVER_ERROR,
+          "Internal Server Error",
+          `Invalid User Data in Register User Service ${userOrError.getError()}`
+        )
+      );
     }
     const user = userOrError.getValue();
     try {
       await this.userRepo.create(UserMapper.toDbFromDomain(user));
     } catch (error: unknown) {
-      return ServiceResult.fail(new UnExpextedDatabaseError(error as string));
+      return ServiceResult.fail(
+        new UnExpextedDatabaseError(
+          ErrorStatusCodes.BAD_REQUEST,
+          "Database Error",
+          `Error Creating user in Register User Service ${error as string}`
+        )
+      );
     }
     let token = "";
     try {
       token = GenerateAuthToken.generateToken(user.id as string);
     } catch (error) {
-      return ServiceResult.fail(new JWTGenerateError(error as string));
+      return ServiceResult.fail(
+        new JWTGenerateError(
+          ErrorStatusCodes.INTERNAL_SERVER_ERROR,
+          "Internal Server Error",
+          `Token generate error in Register User Service ${error as string}`
+        )
+      );
     }
     return ServiceResult.success({
       email: user.userProps.email,

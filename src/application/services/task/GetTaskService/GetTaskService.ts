@@ -11,6 +11,7 @@ import {
   ServiceResultType,
 } from "@application/services/ServiceResult";
 import { ITaskProps } from "@domain";
+import { ErrorStatusCodes } from "@http";
 import {
   ITaskRepo,
   IUserRepo,
@@ -42,13 +43,21 @@ class GetTaskService
       });
     } catch (error) {
       return ServiceResult.fail(
-        new UnExpextedDatabaseError("Error fetching user in get task")
+        new UnExpextedDatabaseError(
+          ErrorStatusCodes.DATABASE_ERROR,
+          "Database Error",
+          `Error Fetching user in get Task Service ${error as string}`
+        )
       );
     }
 
     if (!isUserPresent) {
       return ServiceResult.fail(
-        new UserNotFoundError("User not found in get task")
+        new UserNotFoundError(
+          ErrorStatusCodes.NOT_FOUND,
+          "Invalid Credentials",
+          "User not found in get task service"
+        )
       );
     }
 
@@ -56,13 +65,21 @@ class GetTaskService
       dbTask = await this.taskRepo.getById(getTaskDto.id, getTaskDto.authorId);
     } catch (error) {
       return ServiceResult.fail(
-        new UnExpextedDatabaseError("Error fetching task")
+        new UnExpextedDatabaseError(
+          ErrorStatusCodes.DATABASE_ERROR,
+          "Database Error",
+          `Error Fetching task in get Task Service ${error as string}`
+        )
       );
     }
 
     if (!dbTask) {
       return ServiceResult.fail(
-        new TaskNotFoundError("Task not found in get task")
+        new TaskNotFoundError(
+          ErrorStatusCodes.NOT_FOUND,
+          "Task Not Found",
+          "Task not found in get task service"
+        )
       );
     }
 

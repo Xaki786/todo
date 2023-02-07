@@ -1,6 +1,6 @@
 /** @format */
-import argon2 from "argon2";
-
+import { envConfigObject } from "@config";
+import bcrypt from "bcrypt";
 export function getEnvironment() {
   return process.env.NODE_ENV || "development";
 }
@@ -35,13 +35,14 @@ export class PasswordManager {
   public static encryptPassword = async (
     plainPassword: string
   ): Promise<string> => {
-    return await argon2.hash(plainPassword);
+    const salt = await bcrypt.genSalt(envConfigObject.SALT_ROUNDS);
+    return await bcrypt.hash(plainPassword, salt);
   };
 
   public static verifyPassword = async (
     plainPassword: string,
     hashedPassword: string
   ): Promise<boolean> => {
-    return await argon2.verify(hashedPassword, plainPassword);
+    return await bcrypt.compare(plainPassword, hashedPassword);
   };
 }

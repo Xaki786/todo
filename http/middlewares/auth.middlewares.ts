@@ -1,62 +1,67 @@
 /** @format */
 
-import argon2 from "argon2";
 import { NextFunction, Request, Response } from "express";
-import { body } from "express-validator";
-import { envConfigObject } from "@config";
 import { JSON_MESSAGES } from "@http/controllers/utils";
 import { VerifyAuthToken } from "@Infrastructure";
+import {
+  InternelServerError,
+  InvalidCredentialsError,
+  UnAuthorizedError,
+} from "@application";
 
 class AuthMiddleware {
-  async isPasswordCorrect(encryptedPassword: string, password: string) {
-    try {
-      const isVerified = await argon2.verify(encryptedPassword, password);
-      return isVerified;
-    } catch (error) {
-      return false;
-    }
-  }
-
-  async isValidUser(req: Request, res: Response, next: NextFunction) {
-    if (!req.body.hash || !req.body.email) {
-      return res
-        .status(404)
-        .json({ message: JSON_MESSAGES.INVALID_CREDENTIALS });
-    }
-    envConfigObject.isValidationEnabled && [
-      body("email")
-        .exists()
-        .isEmail()
-        .withMessage(JSON_MESSAGES.INVALID_CREDENTIALS),
-    ];
-    return next();
-  }
-
   async isLoggedIn(req: Request, res: Response, next: NextFunction) {
     const token = req.header("Authorization")?.replace("Bearer ", "");
     if (!token) {
-      return res
-        .status(401)
-        .json({ message: JSON_MESSAGES.INVALID_CREDENTIALS });
+      return next(
+        new InvalidCredentialsError(
+          400,
+          "Invalid Credentials",
+          "Token is not provided in the headers Auth Middlewares"
+        )
+      );
     }
-    const decoded = (await VerifyAuthToken.verifyToken(token)) as {
-      id: string;
-      iat?: Date;
-      exp?: Date;
-    };
-    if (!decoded) {
-      return res
-        .status(401)
-        .json({ message: JSON_MESSAGES.INVALID_CREDENTIALS });
+
+    try {
+      const decoded = (await VerifyAuthToken.verifyToken(token)) as {
+        id: string;
+        iat?: Date;
+        exp?: Date;
+      };
+      if (!decoded) {
+        return next(
+          new InvalidCredentialsError(
+            400,
+            "Invalid Credentials",
+            "Decoded token is not valid Auth Middlewares"
+          )
+        );
+      }
+      req.body.decodedId = decoded.id;
+      return next();
+    } catch (error) {
+      return next(
+        new InternelServerError(
+          500,
+          "Something Went Wrong",
+          `Something Went Wrong in verifying auth token Auth Middleware ${
+            error as string
+          }`
+        )
+      );
     }
-    req.body.userId = decoded.id;
-    return next();
   }
 
   async isAuthorized(req: Request, res: Response, next: NextFunction) {
     const { userId } = req.params;
-    if (userId !== req.body.userId) {
-      return res.status(401).json({ message: JSON_MESSAGES.UN_AUTHORIZED });
+    if (userId !== req.body.decodedId) {
+      return next(
+        new UnAuthorizedError(
+          401,
+          JSON_MESSAGES.UN_AUTHORIZED,
+          "User id didn't match from token in auth middleware"
+        )
+      );
     }
     delete req.body.userId;
     return next();

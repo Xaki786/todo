@@ -20,6 +20,7 @@ import {
   IGetUsersListResponseDto,
   IUserResponseDto,
 } from "./dtos";
+import { ErrorStatusCodes } from "@http";
 
 class GetUsersListService
   implements IService<IGetUsersListRequestDto, IGetUsersListResponseDto>
@@ -39,11 +40,21 @@ class GetUsersListService
       );
     } catch (error) {
       return ServiceResult.fail(
-        new UnExpextedDatabaseError("Error Fetching users list")
+        new UnExpextedDatabaseError(
+          ErrorStatusCodes.DATABASE_ERROR,
+          "Database Error",
+          `Error Fetching user in Get User List Service ${error as string}`
+        )
       );
     }
     if (dbUsers.length === 0) {
-      return ServiceResult.fail(new UserNotFoundError("Users not found"));
+      return ServiceResult.fail(
+        new UserNotFoundError(
+          ErrorStatusCodes.NOT_FOUND,
+          "Users not found",
+          "Users not found in Get Users List Service"
+        )
+      );
     }
     const users = UserMapper.toDomainFromDbBulk(dbUsers);
     const usersResponse: IGetUsersListResponseDto = {
