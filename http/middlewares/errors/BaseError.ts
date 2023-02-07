@@ -7,9 +7,6 @@ interface IResponseError {
   sendResponse(response: Response): Response;
 }
 
-interface IResponseValidationError {
-  sendResponse(response: Response): Response;
-}
 export class BaseError extends Error implements IResponseError {
   statusCode: number;
   constructor(statusCode: number, message: string) {
@@ -25,10 +22,7 @@ export class BaseError extends Error implements IResponseError {
   }
 }
 
-export class BaseValidationError
-  extends Error
-  implements IResponseValidationError
-{
+export class BaseValidationError extends Error implements IResponseError {
   errors: { [key: string]: string };
   constructor(errors: { [key: string]: string }) {
     super("Validation Error");
