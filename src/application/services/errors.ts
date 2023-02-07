@@ -11,3 +11,5 @@ export class InvalidTaskData extends BaseError {}
 export class TaskNotFoundError extends BaseError {}
 export class PasswordDecryptionError extends BaseError {}
 export class InvalidCredentialsError extends BaseError {}
+export class InternelServerError extends BaseError {}
+export class UnAuthorizedError extends BaseError {}

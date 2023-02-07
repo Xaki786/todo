@@ -1,5 +1,4 @@
 /** @format */
 
-export * from "./BaseError";
+export * from "./BaseErrors";
 export * from "./ErrorCodes";
-export * from "./user";

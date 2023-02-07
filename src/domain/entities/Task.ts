@@ -37,7 +37,7 @@ export class Task extends Entity<ITaskProps> {
   }
 
   get taskProps() {
-    return {...this.props };
+    return { ...this.props, id: this._id };
   }
 
   get id() {

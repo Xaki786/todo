@@ -1,12 +1,6 @@
 /** @format */
 
-import {
-  GetTaskServiceInstance,
-  IService,
-  TaskNotFoundError,
-  UnExpextedDatabaseError,
-  UserNotFoundError,
-} from "@application";
+import { GetTaskServiceInstance, IService } from "@application";
 import { IGetTaskRequestDto, IGetTaskResponseDto } from "@application";
 import { BaseController } from "@http/controllers/BaseController";
 import { UniqueIdGenerator } from "@Infrastructure";
