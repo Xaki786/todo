@@ -10,6 +10,7 @@ import {
   UserNotFoundError,
 } from "@application/services";
 import { IDeleteUserRequestDto, IDeleteUserResponseDto } from "./dtos";
+import { ErrorStatusCodes } from "@http";
 
 class DeleteUserService
   implements IService<IDeleteUserRequestDto, IDeleteUserResponseDto>
@@ -27,12 +28,17 @@ class DeleteUserService
       dbUser = await this.userRepo.getById(deleteUserDto.id);
     } catch (error) {
       return ServiceResult.fail(
-        new UnExpextedDatabaseError("Error fetching Entity")
+        new UnExpextedDatabaseError(
+          ErrorStatusCodes.DATABASE_ERROR,
+          "Error fetching User"
+        )
       );
     }
 
     if (!dbUser) {
-      return ServiceResult.fail(new UserNotFoundError("User Not Found"));
+      return ServiceResult.fail(
+        new UserNotFoundError(ErrorStatusCodes.NOT_FOUND, "User Not Found")
+      );
     }
     const user = UserMapper.toDomainFromDb(dbUser).getValue();
 
@@ -40,7 +46,10 @@ class DeleteUserService
       await this.userRepo.deleteById(user.id);
     } catch (error) {
       return ServiceResult.fail(
-        new UnExpextedDatabaseError("Error Deleteing user")
+        new UnExpextedDatabaseError(
+          ErrorStatusCodes.DATABASE_ERROR,
+          "Error Deleteing user"
+        )
       );
     }
 

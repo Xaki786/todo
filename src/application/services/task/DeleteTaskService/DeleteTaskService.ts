@@ -11,6 +11,7 @@ import {
   ServiceResultType,
 } from "@application/services/ServiceResult";
 import { ITaskProps } from "@domain";
+import { ErrorStatusCodes } from "@http";
 import {
   ITaskRepo,
   IUserRepo,
@@ -42,13 +43,19 @@ class DeleteTaskService
       });
     } catch (error) {
       return ServiceResult.fail(
-        new UnExpextedDatabaseError("Error fetching user in delete task")
+        new UnExpextedDatabaseError(
+          ErrorStatusCodes.DATABASE_ERROR,
+          "Error fetching user in delete task"
+        )
       );
     }
 
     if (!isUserPresent) {
       return ServiceResult.fail(
-        new UserNotFoundError("User not found in delete task")
+        new UserNotFoundError(
+          ErrorStatusCodes.NOT_FOUND,
+          "User not found in delete task"
+        )
       );
     }
 
@@ -59,13 +66,19 @@ class DeleteTaskService
       );
     } catch (error) {
       return ServiceResult.fail(
-        new UnExpextedDatabaseError("Error fetching task")
+        new UnExpextedDatabaseError(
+          ErrorStatusCodes.DATABASE_ERROR,
+          "Error fetching task"
+        )
       );
     }
 
     if (!dbTask) {
       return ServiceResult.fail(
-        new TaskNotFoundError("Task not found in delete task")
+        new TaskNotFoundError(
+          ErrorStatusCodes.NOT_FOUND,
+          "Task not found in delete task"
+        )
       );
     }
 
@@ -75,7 +88,10 @@ class DeleteTaskService
       await this.taskRepo.deleteById(deleteTaskDto.id, deleteTaskDto.authorId);
     } catch (error) {
       return ServiceResult.fail(
-        new UnExpextedDatabaseError("Error deleting task")
+        new UnExpextedDatabaseError(
+          ErrorStatusCodes.DATABASE_ERROR,
+          "Error deleting task"
+        )
       );
     }
     return ServiceResult.success({

@@ -8,7 +8,11 @@ import {
   UpdateTaskControllerInstance,
 } from "@http/controllers";
 import { CommonRoutesConfig } from "./utils/CommonRoutesConfig";
-import { AuthMiddlewareInstance } from "@http/middlewares";
+import {
+  AuthMiddlewareInstance,
+  TaskSchema,
+  Validator,
+} from "@http/middlewares";
 import {
   CreateTaskControllerInstance,
   GetTaskListControllerInstance,
@@ -22,28 +26,51 @@ export class TaskRoutes extends CommonRoutesConfig {
     this.app
       .route(ROUTES_PATHS.USER_TASK_LIST)
       .get(
+        (req, res, next) => {
+          const validator = new Validator(req, res, next);
+          validator.execute(TaskSchema.GetTasksListSchema);
+        },
         AuthMiddlewareInstance.isLoggedIn,
         AuthMiddlewareInstance.isAuthorized,
-        (req, res) => GetTaskListControllerInstance.execute(req, res)
+        (req, res, next) =>
+          GetTaskListControllerInstance.execute(req, res, next)
       )
       .post(
+        (req, res, next) => {
+          const validator = new Validator(req, res, next);
+          validator.execute(TaskSchema.CreateTaskSchema);
+        },
         AuthMiddlewareInstance.isLoggedIn,
         AuthMiddlewareInstance.isAuthorized,
-        (req, res) => CreateTaskControllerInstance.execute(req, res)
+        (req, res, next) => CreateTaskControllerInstance.execute(req, res, next)
       );
 
     this.app
       .route(ROUTES_PATHS.USER_TASK_SINGLE)
-      .get((req, res) => GetTaskControllerInstance.execute(req, res))
+      .get(
+        (req, res, next) => {
+          const validator = new Validator(req, res, next);
+          validator.execute(TaskSchema.GetTaskSchema);
+        },
+        (req, res, next) => GetTaskControllerInstance.execute(req, res, next)
+      )
       .put(
+        (req, res, next) => {
+          const validator = new Validator(req, res, next);
+          validator.execute(TaskSchema.UpdateTaskSchema);
+        },
         AuthMiddlewareInstance.isLoggedIn,
         AuthMiddlewareInstance.isAuthorized,
-        (req, res) => UpdateTaskControllerInstance.execute(req, res)
+        (req, res, next) => UpdateTaskControllerInstance.execute(req, res, next)
       )
       .delete(
+        (req, res, next) => {
+          const validator = new Validator(req, res, next);
+          validator.execute(TaskSchema.DeleteTaskSchema);
+        },
         AuthMiddlewareInstance.isLoggedIn,
         AuthMiddlewareInstance.isAuthorized,
-        (req, res) => DeleteTaskControllerInstance.execute(req, res)
+        (req, res, next) => DeleteTaskControllerInstance.execute(req, res, next)
       );
     return this.app;
   }

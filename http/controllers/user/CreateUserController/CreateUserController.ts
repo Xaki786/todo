@@ -5,9 +5,6 @@ import {
   ICreateUserRequestDto,
   IService,
   ICreateUserResponseDto,
-  InvalidUserDataError,
-  UserAlreadyExistError,
-  UnExpextedDatabaseError,
   CreateUserServiceInstance,
 } from "@application";
 
@@ -25,17 +22,7 @@ class CreateUserController extends BaseController {
     if (result.success) {
       return this.created(result.value);
     }
-    switch (result.error.constructor) {
-      case UserAlreadyExistError:
-        return this.badRequest(result.error.message);
-      case InvalidUserDataError:
-        return this.badRequest(result.error.message);
-      case UnExpextedDatabaseError:
-        return this.internalServerError(result.error.message);
-
-      default:
-        return this.internalServerError("Something Went Wrong");
-    }
+    return this.handleErrors?.(result.error);
   }
 }
 

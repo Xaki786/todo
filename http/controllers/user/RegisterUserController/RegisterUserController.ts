@@ -1,15 +1,10 @@
 /** @format */
 
 import {
-  InvalidUserDataError,
   IRegisterUserRequestDto,
   IRegisterUserResponseDto,
   IService,
-  JWTGenerateError,
   RegisterUserServiceInstance,
-  UnExpextedDatabaseError,
-  UserAlreadyExistError,
-  PasswordEncryptionError,
 } from "@application";
 import { BaseController } from "@http/controllers/BaseController";
 
@@ -27,22 +22,7 @@ class RegisterUserController extends BaseController {
     if (result.success) {
       return this.created(result.value);
     }
-    switch (result.error.constructor) {
-      case UserAlreadyExistError:
-        return this.badRequest(result.error.message);
-      case InvalidUserDataError:
-        return this.badRequest(result.error.message);
-      case UnExpextedDatabaseError:
-        return this.internalServerError(result.error.message);
-
-      case PasswordEncryptionError:
-        return this.internalServerError(result.error.message);
-
-      case JWTGenerateError:
-        return this.internalServerError(result.error.message);
-      default:
-        return this.internalServerError("Something Went Wrong");
-    }
+    return this.handleErrors?.(result.error);
   }
 }
 

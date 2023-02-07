@@ -10,10 +10,10 @@ import {
   GetUsersListControllerInstance,
 } from "@http/controllers";
 import { CommonRoutesConfig } from "./utils/CommonRoutesConfig";
-import { BodyValidationMiddlewareInstance } from "@common";
 import {
   AuthMiddlewareInstance,
-  UserMiddlewareInstance,
+  UserSchema,
+  Validator,
 } from "@http/middlewares";
 
 export class UserRoutes extends CommonRoutesConfig {
@@ -23,31 +23,45 @@ export class UserRoutes extends CommonRoutesConfig {
   configureRoutes(): Application {
     this.app
       .route(ROUTES_PATHS.USERS)
-      .get((req, res) => GetUsersListControllerInstance.execute(req, res))
+      .get((req, res, next) =>
+        GetUsersListControllerInstance.execute(req, res, next)
+      )
       .post(
-        UserMiddlewareInstance.isUserValidForCreation,
-        BodyValidationMiddlewareInstance.verifyBodyFieldErrors,
-        (req, res) => CreateUserControllerInstance.execute(req, res)
+        (req, res, next) => {
+          const validator = new Validator(req, res, next);
+          validator.execute(UserSchema.CreateUserSchema);
+        },
+        (req, res, next) => CreateUserControllerInstance.execute(req, res, next)
       );
 
     this.app
       .route(ROUTES_PATHS.SINGLE_USER)
       .get(
+        (req, res, next) => {
+          const validator = new Validator(req, res, next);
+          validator.execute(UserSchema.GetUserSchema);
+        },
         AuthMiddlewareInstance.isLoggedIn,
         AuthMiddlewareInstance.isAuthorized,
-        (req, res) => GetUserControllerInstance.execute(req, res)
+        (req, res, next) => GetUserControllerInstance.execute(req, res, next)
       )
       .put(
-        UserMiddlewareInstance.isUserValidForUpdate,
-        BodyValidationMiddlewareInstance.verifyBodyFieldErrors,
+        (req, res, next) => {
+          const validator = new Validator(req, res, next);
+          validator.execute(UserSchema.UpdateUserSchema);
+        },
         AuthMiddlewareInstance.isLoggedIn,
         AuthMiddlewareInstance.isAuthorized,
-        (req, res) => UpdateUserControllerInstance.execute(req, res)
+        (req, res, next) => UpdateUserControllerInstance.execute(req, res, next)
       )
       .delete(
+        (req, res, next) => {
+          const validator = new Validator(req, res, next);
+          validator.execute(UserSchema.DeleteUserSchema);
+        },
         AuthMiddlewareInstance.isLoggedIn,
         AuthMiddlewareInstance.isAuthorized,
-        (req, res) => DeleteUserControllerInstance.execute(req, res)
+        (req, res, next) => DeleteUserControllerInstance.execute(req, res, next)
       );
 
     return this.app;

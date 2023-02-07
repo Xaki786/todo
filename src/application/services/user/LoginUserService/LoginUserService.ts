@@ -16,9 +16,11 @@ import {
   JWTGenerateError,
   UnExpextedDatabaseError,
   UserNotFoundError,
+  PasswordDecryptionError,
+  InvalidCredentialsError,
 } from "@application/services";
 
-import { PasswordDecryptionError, InvalidCredentialsError } from "./errors";
+import { ErrorStatusCodes } from "@http";
 
 class LoginUserService
   implements IService<ILoginUserRequestDto, ILoginUserResponseDto>
@@ -35,11 +37,18 @@ class LoginUserService
     try {
       dbUser = await this.userRepo.getByEmail(loginUserDto.email);
     } catch (error) {
-      return ServiceResult.fail(new UnExpextedDatabaseError(error as string));
+      return ServiceResult.fail(
+        new UnExpextedDatabaseError(
+          ErrorStatusCodes.DATABASE_ERROR,
+          "Error Fetching User"
+        )
+      );
     }
 
     if (!dbUser) {
-      return ServiceResult.fail(new UserNotFoundError("User Not Found"));
+      return ServiceResult.fail(
+        new UserNotFoundError(ErrorStatusCodes.NOT_FOUND, "User Not Found")
+      );
     }
 
     const user = UserMapper.toDomainFromDb(dbUser).getValue();
@@ -51,12 +60,20 @@ class LoginUserService
         user.userProps.hash
       );
     } catch (error) {
-      return ServiceResult.fail(new PasswordDecryptionError(error as string));
+      return ServiceResult.fail(
+        new PasswordDecryptionError(
+          ErrorStatusCodes.INTERNAL_SERVER_ERROR,
+          error as string
+        )
+      );
     }
 
     if (!isVerifiedUser) {
       return ServiceResult.fail(
-        new InvalidCredentialsError("Invalid Credentials")
+        new InvalidCredentialsError(
+          ErrorStatusCodes.UNAUTHORIZED,
+          "Invalid Credentials"
+        )
       );
     }
 
@@ -64,7 +81,12 @@ class LoginUserService
     try {
       token = GenerateAuthToken.generateToken(user.id as string);
     } catch (error) {
-      return ServiceResult.fail(new JWTGenerateError(error as string));
+      return ServiceResult.fail(
+        new JWTGenerateError(
+          ErrorStatusCodes.INTERNAL_SERVER_ERROR,
+          error as string
+        )
+      );
     }
 
     return ServiceResult.success({

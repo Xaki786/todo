@@ -31,16 +31,7 @@ class GetUsersListController extends BaseController {
       return this.ok(result.value);
     }
 
-    switch (result.error.constructor) {
-      case UnExpextedDatabaseError:
-        return this.internalServerError(result.error.message);
-
-      case UserNotFoundError:
-        return this.notFound(result.error.message);
-
-      default:
-        return this.internalServerError("Something Went Wrong");
-    }
+    return this.handleErrors?.(result.error);
   }
 }
 

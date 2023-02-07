@@ -4,10 +4,8 @@ import { Guard, IGuardProps, Result } from "@common";
 import { UniqueIdGenerator } from "@Infrastructure";
 import { Entity } from "./Entity";
 import { IUserProps } from "./interfaces";
-import { Task } from "./Task";
 
 export class User extends Entity<IUserProps> {
-  private _tasks: Task[] = [];
   private constructor({ id, ...data }: IUserProps) {
     super(data, id);
   }
@@ -29,18 +27,6 @@ export class User extends Entity<IUserProps> {
     return this._id;
   }
 
-  get name(): string {
-    return this.name;
-  }
-
-  get email(): string {
-    return this.email;
-  }
-
-  get tasks(): Task[] {
-    return this._tasks;
-  }
-
   get userProps(): IUserProps {
     return {
       id: this._id,
@@ -57,5 +43,5 @@ export class User extends Entity<IUserProps> {
     if (email) {
       this.props.email = email;
     }
-  } 
+  }
 }

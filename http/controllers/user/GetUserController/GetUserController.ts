@@ -5,8 +5,6 @@ import {
   IGetUserRequestDto,
   IGetUserResponseDto,
   IService,
-  UnExpextedDatabaseError,
-  UserNotFoundError,
 } from "@application";
 import { UniqueIdGenerator } from "@Infrastructure";
 import { BaseController } from "@http/controllers/BaseController";
@@ -26,16 +24,7 @@ class GetUserController extends BaseController {
     if (result.success) {
       return this.ok(result.value);
     }
-    switch (result.error.constructor) {
-      case UnExpextedDatabaseError:
-        return this.internalServerError(result.error.message);
-
-      case UserNotFoundError:
-        return this.notFound(result.error.message);
-
-      default:
-        return this.internalServerError("Something Went Wrong");
-    }
+    return this.handleErrors?.(result.error);
   }
 }
 
