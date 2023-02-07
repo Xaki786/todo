@@ -5,12 +5,9 @@ import { body, check } from "express-validator";
 import { envConfigObject } from "@config";
 import { JSON_MESSAGES } from "@http/controllers/utils";
 import { USER_FIELDS } from "@http/routes";
-import { AnyZodObject, z, ZodIssue } from "zod";
-import { CreateUserValidationError, UpdateUserValidationError } from "./errors";
-import { combineZodValidationErrors } from "./utils";
+import { z } from "zod";
 import { toZod } from "tozod";
 import { ICreateUserRequestDto, IUpdateUserRequestDto } from "@application";
-import { Validator } from "./Validator";
 
 export class UserSchema {
   static CreateUserSchema: toZod<{ body: ICreateUserRequestDto }> = z
@@ -26,6 +23,7 @@ export class UserSchema {
     .required();
 
   static UpdateUserSchema: toZod<{
+    params: { userId: string };
     body: Omit<IUpdateUserRequestDto, "id">;
   }> = z.object({
     params: z.object({
@@ -40,25 +38,16 @@ export class UserSchema {
         .optional(),
     }),
   });
+
+  static DeleteUserSchema: toZod<{ params: { userId: string } }> = z.object({
+    params: z.object({ userId: z.string().uuid() }),
+  });
+
+  static GetUserSchema: toZod<{ params: { userId: string } }> = z.object({
+    params: z.object({ userId: z.string().uuid() }),
+  });
 }
 export class UserMiddleware {
-  static validate(schema: AnyZodObject) {
-    return async (req: Request, res: Response, next: NextFunction) => {
-      const validator = new Validator(req, res, next);
-      await validator.execute(schema);
-    };
-  }
-  static validateUpdateUser(schema: AnyZodObject) {
-    return async (req: Request, res: Response, next: NextFunction) => {
-      try {
-        await schema.parseAsync(req.body);
-        return next();
-      } catch (error: any) {
-        const errors = combineZodValidationErrors(error.errors as ZodIssue[]);
-        return next(new UpdateUserValidationError(errors));
-      }
-    };
-  }
   async isUserValidForCreation(
     req: Request,
     res: Response,

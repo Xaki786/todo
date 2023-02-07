@@ -37,6 +37,10 @@ export class UserRoutes extends CommonRoutesConfig {
     this.app
       .route(ROUTES_PATHS.SINGLE_USER)
       .get(
+        (req, res, next) => {
+          const validator = new Validator(req, res, next);
+          validator.execute(UserSchema.GetUserSchema);
+        },
         AuthMiddlewareInstance.isLoggedIn,
         AuthMiddlewareInstance.isAuthorized,
         (req, res, next) => GetUserControllerInstance.execute(req, res, next)
@@ -51,6 +55,10 @@ export class UserRoutes extends CommonRoutesConfig {
         (req, res, next) => UpdateUserControllerInstance.execute(req, res, next)
       )
       .delete(
+        (req, res, next) => {
+          const validator = new Validator(req, res, next);
+          validator.execute(UserSchema.DeleteUserSchema);
+        },
         AuthMiddlewareInstance.isLoggedIn,
         AuthMiddlewareInstance.isAuthorized,
         (req, res, next) => DeleteUserControllerInstance.execute(req, res, next)
