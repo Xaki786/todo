@@ -1,3 +1,5 @@
 /** @format */
 
-export class PasswordEncryptionError extends Error {}
+import { BaseError } from "@http";
+
+export class PasswordEncryptionError extends BaseError {}
