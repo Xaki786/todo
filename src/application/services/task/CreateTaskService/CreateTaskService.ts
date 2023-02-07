@@ -40,7 +40,8 @@ class CreateTaskService
       return ServiceResult.fail(
         new UnExpextedDatabaseError(
           ErrorStatusCodes.DATABASE_ERROR,
-          "Error Fetching User in creating task"
+          "Database Error",
+          `Error Fetching user in Create Task Service ${error as string}`
         )
       );
     }
@@ -48,7 +49,8 @@ class CreateTaskService
       return ServiceResult.fail(
         new UserNotFoundError(
           ErrorStatusCodes.NOT_FOUND,
-          "User not found in creating task"
+          "Invalid Credentials",
+          "User not found in creating task service"
         )
       );
     }
@@ -56,8 +58,9 @@ class CreateTaskService
     if (taskOrError.isFailure) {
       return ServiceResult.fail(
         new InvalidTaskData(
-          ErrorStatusCodes.BAD_REQUEST,
-          taskOrError.error as string
+          ErrorStatusCodes.INTERNAL_SERVER_ERROR,
+          "Invternal Service Error",
+          `Invalid Task Data in Create Task Service ${taskOrError.getError()}`
         )
       );
     }
@@ -68,7 +71,8 @@ class CreateTaskService
       return ServiceResult.fail(
         new UnExpextedDatabaseError(
           ErrorStatusCodes.DATABASE_ERROR,
-          "Error creating task"
+          "Database Error",
+          `Error creating task in create task service ${error}`
         )
       );
     }
