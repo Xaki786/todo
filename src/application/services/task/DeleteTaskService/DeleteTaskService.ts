@@ -45,7 +45,8 @@ class DeleteTaskService
       return ServiceResult.fail(
         new UnExpextedDatabaseError(
           ErrorStatusCodes.DATABASE_ERROR,
-          "Error fetching user in delete task"
+          "Database Error",
+          `Error fetching user in delete task Service ${error as string}`
         )
       );
     }
@@ -54,7 +55,8 @@ class DeleteTaskService
       return ServiceResult.fail(
         new UserNotFoundError(
           ErrorStatusCodes.NOT_FOUND,
-          "User not found in delete task"
+          "Invalid Credentials",
+          "User not found in delete task service"
         )
       );
     }
@@ -68,7 +70,8 @@ class DeleteTaskService
       return ServiceResult.fail(
         new UnExpextedDatabaseError(
           ErrorStatusCodes.DATABASE_ERROR,
-          "Error fetching task"
+          "Database Error",
+          `Error fetching task in delete task Service ${error as string}`
         )
       );
     }
@@ -77,7 +80,8 @@ class DeleteTaskService
       return ServiceResult.fail(
         new TaskNotFoundError(
           ErrorStatusCodes.NOT_FOUND,
-          "Task not found in delete task"
+          "Task Not Found",
+          "Task not found in delete task service"
         )
       );
     }
@@ -90,7 +94,8 @@ class DeleteTaskService
       return ServiceResult.fail(
         new UnExpextedDatabaseError(
           ErrorStatusCodes.DATABASE_ERROR,
-          "Error deleting task"
+          "Database Error",
+          "Error deleting task in delete task service"
         )
       );
     }
