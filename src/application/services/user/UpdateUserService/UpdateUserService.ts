@@ -30,14 +30,19 @@ class UpdateUserService
       return ServiceResult.fail(
         new UnExpextedDatabaseError(
           ErrorStatusCodes.DATABASE_ERROR,
-          "Database Fetching User Error"
+          "Database Error",
+          `Error Fetching user in Update User Service ${error as string}`
         )
       );
     }
 
     if (!dbUser) {
       ServiceResult.fail(
-        new UserNotFoundError(ErrorStatusCodes.NOT_FOUND, "User Not Found")
+        new UserNotFoundError(
+          ErrorStatusCodes.NOT_FOUND,
+          "Invalid Credentials",
+          "User Not Found in Update User Service"
+        )
       );
     }
 
@@ -56,7 +61,8 @@ class UpdateUserService
       return ServiceResult.fail(
         new UnExpextedDatabaseError(
           ErrorStatusCodes.DATABASE_ERROR,
-          "Error Updating User"
+          "Database Error",
+          `Error Updating User in Update User Service ${error as string}`
         )
       );
     }

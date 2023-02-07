@@ -24,7 +24,7 @@ export class Validator {
       return this.next();
     } catch (error: any) {
       const errors = combineZodValidationErrors(error.errors as ZodIssue[]);
-      const validationError = new BaseValidationError(errors);
+      const validationError = new BaseValidationError(errors, error.errors);
       return this.next(validationError);
     }
   }

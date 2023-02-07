@@ -30,13 +30,18 @@ class GetUserService
       return ServiceResult.fail(
         new UnExpextedDatabaseError(
           ErrorStatusCodes.DATABASE_ERROR,
-          "Error Fetching User"
+          "Database Error",
+          `Error Fetching user in Get User Service ${error as string}`
         )
       );
     }
     if (!dbUser) {
       return ServiceResult.fail(
-        new UserNotFoundError(ErrorStatusCodes.NOT_FOUND, "User Not Found")
+        new UserNotFoundError(
+          ErrorStatusCodes.NOT_FOUND,
+          "Invalid User",
+          "User Not Found in Get User Service"
+        )
       );
     }
     const user = UserMapper.toDomainFromDb(dbUser).getValue();

@@ -6,6 +6,7 @@ import { AuthRoutes, TaskRoutes, UserRoutes, AppRoutes } from "./routes";
 import cors from "cors";
 import { CommonRoutesConfig } from "./routes/utils/CommonRoutesConfig";
 import { errorHandlingMiddleware } from "./middlewares/errors.middleware";
+import { logger } from "@Infrastructure";
 
 class App {
   public server: Application;
@@ -34,10 +35,10 @@ class App {
   private loadRoutes() {
     const app = this.server;
     this.routes.push(
-      new AppRoutes(app),
       new TaskRoutes(app),
       new UserRoutes(app),
-      new AuthRoutes(app)
+      new AuthRoutes(app),
+      new AppRoutes(app)
     );
   }
 
@@ -47,7 +48,7 @@ class App {
 
   private printRoutes() {
     this.routes.forEach((route) =>
-      console.log(`${JSON.stringify(route.getName())} has been loaded`)
+      logger.log("info", `${JSON.stringify(route.getName())} has been loaded`)
     );
   }
 
@@ -55,7 +56,7 @@ class App {
     const PORT = process.env.PORT || 5000;
     try {
       this.server.listen(PORT, () => {
-        console.log(`SERVER is running on [http://localhost:${PORT}]`);
+        logger.log("info", `SERVER is running on [http://localhost:${PORT}]`);
         this.printRoutes();
       });
     } catch (error) {

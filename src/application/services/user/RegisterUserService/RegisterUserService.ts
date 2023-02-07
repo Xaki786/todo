@@ -40,7 +40,10 @@ class RegisterUserService
       return ServiceResult.fail(
         new UnExpextedDatabaseError(
           ErrorStatusCodes.DATABASE_ERROR,
-          "Error finding existing user"
+          "Database Error",
+          `Error Fetching existing user in Register User Service ${
+            error as string
+          }`
         )
       );
     }
@@ -49,7 +52,8 @@ class RegisterUserService
       return ServiceResult.fail(
         new UserAlreadyExistError(
           ErrorStatusCodes.BAD_REQUEST,
-          "User with same email already exists"
+          "User with same email already exists",
+          "User with same email already exists in Register User Service"
         )
       );
     }
@@ -59,7 +63,15 @@ class RegisterUserService
         registerUserDto.hash
       );
     } catch (error) {
-      return ServiceResult.fail(new PasswordEncryptionError(error as string));
+      return ServiceResult.fail(
+        new PasswordEncryptionError(
+          ErrorStatusCodes.INTERNAL_SERVER_ERROR,
+          "Internal Server Error",
+          `Password encryption error in Register User Service ${
+            error as string
+          }`
+        )
+      );
     }
     registerUserDto.hash = encryptedPassword;
     const userOrError: Result<User> = User.create(registerUserDto);
@@ -67,7 +79,8 @@ class RegisterUserService
       return ServiceResult.fail(
         new InvalidUserDataError(
           ErrorStatusCodes.INTERNAL_SERVER_ERROR,
-          "Invalid User Data"
+          "Internal Server Error",
+          `Invalid User Data in Register User Service ${userOrError.getError()}`
         )
       );
     }
@@ -78,7 +91,8 @@ class RegisterUserService
       return ServiceResult.fail(
         new UnExpextedDatabaseError(
           ErrorStatusCodes.BAD_REQUEST,
-          error as string
+          "Database Error",
+          `Error Creating user in Register User Service ${error as string}`
         )
       );
     }
@@ -89,7 +103,8 @@ class RegisterUserService
       return ServiceResult.fail(
         new JWTGenerateError(
           ErrorStatusCodes.INTERNAL_SERVER_ERROR,
-          error as string
+          "Internal Server Error",
+          `Token generate error in Register User Service ${error as string}`
         )
       );
     }
