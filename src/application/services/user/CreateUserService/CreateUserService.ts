@@ -13,6 +13,8 @@ import {
   UserAlreadyExistError,
 } from "@application/services";
 import { ErrorStatusCodes } from "@http";
+import { DomainEventsService } from "@domain/events/DomainEventsService";
+import { AfterUserCreated } from "@Infrastructure/Notifications/AfterUserCreated";
 
 class CreateUserService
   implements IService<ICreateUserRequestDto, ICreateUserResponseDto>
@@ -76,7 +78,8 @@ class CreateUserService
         )
       );
     }
-
+    new AfterUserCreated();
+    DomainEventsService.dispatchEntityEvents(user);
     return ServiceResult.success({
       email: user.userProps.email as string,
       id: user.id,
