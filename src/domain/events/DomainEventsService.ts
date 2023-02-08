@@ -34,11 +34,12 @@ export class DomainEventsService {
 
   public static registerEvent({ callback, eventClassName }: IRegisterEvent) {
     if (!this.eventHandlersMap.has(eventClassName)) {
-      this.eventHandlersMap.set(eventClassName, [
-        ...this.eventHandlersMap.get(eventClassName),
-        callback,
-      ]);
+      this.eventHandlersMap.set(eventClassName, []);
     }
+    this.eventHandlersMap.set(eventClassName, [
+      ...this.eventHandlersMap.get(eventClassName),
+      callback,
+    ]);
   }
 
   public static clearEventHandlersMap() {
@@ -60,6 +61,8 @@ export class DomainEventsService {
   private static findMarkedEntity(
     entity: Entity<any>
   ): Entity<any> | undefined {
-    return this.markedEntities.find((entityt) => entityt.equals(entity));
+    return this.markedEntities.find((markedEntity) =>
+      markedEntity.equals(entity)
+    );
   }
 }

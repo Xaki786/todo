@@ -78,8 +78,7 @@ class CreateUserService
         )
       );
     }
-    new AfterUserCreated();
-    DomainEventsService.dispatchEntityEvents(user);
+
     return ServiceResult.success({
       email: user.userProps.email as string,
       id: user.id,
