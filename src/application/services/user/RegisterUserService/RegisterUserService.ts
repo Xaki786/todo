@@ -20,7 +20,7 @@ import {
 } from "@application/services";
 import { PasswordEncryptionError } from "./errors";
 import { ErrorStatusCodes } from "@http";
-import { AfterUserCreated } from "@Infrastructure/Notifications/AfterUserCreated";
+import { NotificationsAfterUserCreated } from "@Infrastructure/Notifications/";
 import { DomainEventsService } from "@domain/events";
 class RegisterUserService
   implements IService<IRegisterUserRequestDto, IRegisterUserResponseDto>
@@ -106,7 +106,7 @@ class RegisterUserService
       );
     }
 
-    new AfterUserCreated();
+    new NotificationsAfterUserCreated();
     DomainEventsService.dispatchEntityEvents(user);
 
     let token = "";

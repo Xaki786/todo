@@ -7,9 +7,9 @@ export interface IDomainEvent {
   getEntityId(): UniqueIdGenerator;
 }
 
-type TEventCallback = (event: IDomainEvent) => void;
+type TEventCallback = (event: any) => void;
 
-export interface IHandleEvent {
+export interface ISubscribeEvent {
   setupSubscriptions: () => void;
 }
 

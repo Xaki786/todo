@@ -32,7 +32,7 @@ export class DomainEventsService {
     }
   }
 
-  public static registerEvent({ callback, eventClassName }: IRegisterEvent) {
+  public static subscribeEvent({ callback, eventClassName }: IRegisterEvent) {
     if (!this.eventHandlersMap.has(eventClassName)) {
       this.eventHandlersMap.set(eventClassName, []);
     }

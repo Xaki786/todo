@@ -1,5 +1,5 @@
 /** @format */
 
 export interface ILogger {
-  log: (level: "info" | "debug" | "error", message: any) => void;
+  log: (type: "info" | "debug" | "error", message: any) => void;
 }
