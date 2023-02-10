@@ -13,6 +13,8 @@ import {
   UserAlreadyExistError,
 } from "@application/services";
 import { ErrorStatusCodes } from "@http";
+import { DomainEventsQueue } from "@domain";
+import { ObserverOnUserCreated } from "@Infrastructure";
 
 class CreateUserService
   implements IService<ICreateUserRequestDto, ICreateUserResponseDto>
@@ -76,6 +78,9 @@ class CreateUserService
         )
       );
     }
+
+    new ObserverOnUserCreated();
+    DomainEventsQueue.dispatchEntityEvents(user);
 
     return ServiceResult.success({
       email: user.userProps.email as string,

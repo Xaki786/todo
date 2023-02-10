@@ -20,6 +20,8 @@ import {
 } from "@application/services";
 import { PasswordEncryptionError } from "./errors";
 import { ErrorStatusCodes } from "@http";
+import { ObserverOnUserCreated } from "@Infrastructure";
+import { DomainEventsQueue } from "@domain";
 class RegisterUserService
   implements IService<IRegisterUserRequestDto, IRegisterUserResponseDto>
 {
@@ -103,6 +105,9 @@ class RegisterUserService
         )
       );
     }
+
+    new ObserverOnUserCreated();
+    DomainEventsQueue.dispatchEntityEvents(user);
 
     let token = "";
 
