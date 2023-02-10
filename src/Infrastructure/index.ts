@@ -6,3 +6,4 @@ export * from "./mappers";
 export * from "./AuthService";
 export * from "./LoggingService";
 export * from "./EmailService";
+export * from "./notifications";

@@ -14,7 +14,7 @@ import {
 } from "@application/services";
 import { ErrorStatusCodes } from "@http";
 import { DomainEventsQueue } from "@domain";
-import { NotificationsAfterUserCreated } from "@Infrastructure/Notifications";
+import { ObserverOnUserCreated } from "@Infrastructure";
 
 class CreateUserService
   implements IService<ICreateUserRequestDto, ICreateUserResponseDto>
@@ -79,7 +79,7 @@ class CreateUserService
       );
     }
 
-    new NotificationsAfterUserCreated();
+    new ObserverOnUserCreated();
     DomainEventsQueue.dispatchEntityEvents(user);
 
     return ServiceResult.success({

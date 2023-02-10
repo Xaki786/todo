@@ -1,3 +1,3 @@
 /** @format */
 
-export * from "./NotificationsAfterUserCreated";
+export * from "./ObserverOnUserCreated";
