@@ -3,7 +3,7 @@
 import { Entity } from "@domain/entities";
 import { IDomainEvent, IRegisterEvent } from "./interfaces";
 
-export class DomainEventsService {
+export class DomainEventsQueue {
   private static eventHandlersMap = new Map();
   private static markedEntities: Entity<any>[] = [];
 

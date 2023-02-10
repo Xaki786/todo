@@ -21,7 +21,7 @@ import {
 import { PasswordEncryptionError } from "./errors";
 import { ErrorStatusCodes } from "@http";
 import { NotificationsAfterUserCreated } from "@Infrastructure/Notifications/";
-import { DomainEventsService } from "@domain/events";
+import { DomainEventsQueue } from "@domain";
 class RegisterUserService
   implements IService<IRegisterUserRequestDto, IRegisterUserResponseDto>
 {
@@ -107,7 +107,7 @@ class RegisterUserService
     }
 
     new NotificationsAfterUserCreated();
-    DomainEventsService.dispatchEntityEvents(user);
+    DomainEventsQueue.dispatchEntityEvents(user);
 
     let token = "";
 

@@ -13,7 +13,7 @@ import {
   UserAlreadyExistError,
 } from "@application/services";
 import { ErrorStatusCodes } from "@http";
-import { DomainEventsService } from "@domain/events/DomainEventsService";
+import { DomainEventsQueue } from "@domain";
 import { NotificationsAfterUserCreated } from "@Infrastructure/Notifications";
 
 class CreateUserService
@@ -80,7 +80,7 @@ class CreateUserService
     }
 
     new NotificationsAfterUserCreated();
-    DomainEventsService.dispatchEntityEvents(user);
+    DomainEventsQueue.dispatchEntityEvents(user);
 
     return ServiceResult.success({
       email: user.userProps.email as string,

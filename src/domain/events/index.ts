@@ -1,5 +1,5 @@
 /** @format */
 
-export * from "./DomainEventsService";
+export * from "./DomainEventsQueue";
 export * from "./UserCreatedEvent";
 export * from "./interfaces";

@@ -1,7 +1,7 @@
 /** @format */
 
 import { IDomainEvent } from "@domain/events";
-import { DomainEventsService } from "@domain/events/DomainEventsService";
+import { DomainEventsQueue } from "@domain/events";
 import { UniqueIdGenerator } from "@Infrastructure";
 
 const isEntity = <T>(v: Entity<T>): v is Entity<T> => {
@@ -33,7 +33,7 @@ export abstract class Entity<T> {
 
   protected addDomainEvent(event: IDomainEvent) {
     this._domainEvents.push(event);
-    DomainEventsService.markEntityForDispatch(this);
+    DomainEventsQueue.markEntityForDispatch(this);
     this.logDomainEventAdded(event);
   }
 

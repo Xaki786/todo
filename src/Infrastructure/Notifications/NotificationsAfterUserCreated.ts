@@ -1,11 +1,6 @@
 /** @format */
 
-import { appDevelopmentLogger } from "@common";
-import {
-  DomainEventsService,
-  ISubscribeEvent,
-  UserCreatedEvent,
-} from "@domain/events";
+import { DomainEventsQueue, ISubscribeEvent, UserCreatedEvent } from "@domain";
 import {
   EmailService,
   EmailSender,
@@ -18,7 +13,7 @@ export class NotificationsAfterUserCreated implements ISubscribeEvent {
     this.setupSubscriptions();
   }
   setupSubscriptions() {
-    DomainEventsService.subscribeEvent({
+    DomainEventsQueue.subscribeEvent({
       callback: this.onUserCreated,
       eventClassName: UserCreatedEvent.name,
     });
