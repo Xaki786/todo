@@ -11,6 +11,7 @@ import { UniqueIdGenerator } from "@Infrastructure";
 
 class CreateTaskController extends BaseController {
   private service: IService<ICreateTaskRequestDto, ICreateTaskResponseDto>;
+
   constructor(
     service: IService<ICreateTaskRequestDto, ICreateTaskResponseDto>
   ) {
@@ -30,7 +31,7 @@ class CreateTaskController extends BaseController {
       return this.created(result.value);
     }
 
-   return this.handleErrors?.(result.error);
+    return this.handleErrors?.(result.error);
   }
 }
 

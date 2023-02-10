@@ -32,6 +32,7 @@ class GetTasksListService
 {
   private userRepo: IUserRepo;
   private taskRepo: ITaskRepo;
+
   constructor(userRepo: IUserRepo, taskRepo: ITaskRepo) {
     this.taskRepo = taskRepo;
     this.userRepo = userRepo;
@@ -41,6 +42,7 @@ class GetTasksListService
     getTaskListDto: IGetTasksListRequestDto
   ): Promise<ServiceResultType<IGetTasksListResponseDto>> {
     let isUserPresent = false;
+
     try {
       isUserPresent = await this.userRepo.exists({
         id: getTaskListDto.authodId,
@@ -54,6 +56,7 @@ class GetTasksListService
         )
       );
     }
+
     if (!isUserPresent) {
       return ServiceResult.fail(
         new UserNotFoundError(
@@ -79,6 +82,7 @@ class GetTasksListService
         )
       );
     }
+
     const tasksOrErrors = dbTasks.map((dbTask) => TaskMapper.toDomain(dbTask));
     const combinedTasksOrErrors = Result.combine(tasksOrErrors);
     if (combinedTasksOrErrors.isFailure) {
@@ -90,6 +94,7 @@ class GetTasksListService
         )
       );
     }
+
     const tasks: ITaskResponseDto[] = tasksOrErrors
       .map((task) => task.getValue())
       .map((task) => ({
@@ -99,6 +104,7 @@ class GetTasksListService
         updatedAt: task.taskProps.updatedAt as Date,
         label: task.taskProps.label,
       }));
+
     return ServiceResult.success({ tasks });
   }
 }

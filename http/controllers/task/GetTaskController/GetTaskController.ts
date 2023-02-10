@@ -7,6 +7,7 @@ import { UniqueIdGenerator } from "@Infrastructure";
 
 class GetTaskController extends BaseController {
   private service: IService<IGetTaskRequestDto, IGetTaskResponseDto>;
+
   constructor(service: IService<IGetTaskRequestDto, IGetTaskResponseDto>) {
     super();
     this.service = service;

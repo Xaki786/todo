@@ -1,7 +1,7 @@
 /** @format */
 
-import { logger } from "@Infrastructure";
 import type { Response } from "express";
+import { logger } from "@Infrastructure";
 import { ErrorStatusCodes } from "./ErrorCodes";
 
 interface IResponseError {
@@ -26,12 +26,9 @@ export class BaseError extends Error implements IResponseError {
       .json({ success: false, error: this.message });
   }
   logError(err: BaseError) {
-    console.log("=========================================================");
-    logger.log("info", `Debug Message: ${this.debugMessage}`);
-    logger.log("info", this.constructor.name);
-    console.log("=========================================================");
+    logger.log("debug", `Debug Message: ${this.debugMessage}`);
+    logger.log("debug", this.constructor.name);
     logger.log("error", err.stack);
-    console.log("=========================================================");
   }
 }
 
@@ -50,12 +47,8 @@ export class BaseValidationError extends Error implements IResponseError {
       .json({ success: false, errors: this.errors });
   }
   logError(err: BaseError) {
-    console.log("=========================================================");
-    logger.log("info", `Debug Message: ${JSON.stringify(this.debugMessage)}`);
-    logger.log("info", this.constructor.name);
-    console.log("=========================================================");
-
+    logger.log("debug", `Debug Message: ${JSON.stringify(this.debugMessage)}`);
+    logger.log("debug", this.constructor.name);
     logger.log("error", err.stack);
-    console.log("=========================================================");
   }
 }

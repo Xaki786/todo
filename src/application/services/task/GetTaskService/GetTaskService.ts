@@ -26,6 +26,7 @@ class GetTaskService
 {
   private userRepo: IUserRepo;
   private taskRepo: ITaskRepo;
+
   constructor(userRepo: IUserRepo, taskRepo: ITaskRepo) {
     this.userRepo = userRepo;
     this.taskRepo = taskRepo;
@@ -84,6 +85,7 @@ class GetTaskService
     }
 
     const task = TaskMapper.toDomain(dbTask).getValue();
+
     return ServiceResult.success({
       id: task.id,
       label: task.taskProps.label,
@@ -93,6 +95,7 @@ class GetTaskService
     });
   }
 }
+
 export const GetTaskServiceInstance = new GetTaskService(
   UserRepoInstance,
   TaskRepoInstance

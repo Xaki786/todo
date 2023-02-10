@@ -1,14 +1,10 @@
 /** @format */
 
 import {
-  InvalidTaskData,
   IService,
   IUpdateTaskRequestDto,
   IUpdateTaskResponseDto,
-  TaskNotFoundError,
-  UnExpextedDatabaseError,
   UpdateTaskServiceInstance,
-  UserNotFoundError,
 } from "@application";
 import { BaseController } from "@http/controllers/BaseController";
 import { UniqueIdGenerator } from "@Infrastructure";

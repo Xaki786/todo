@@ -20,13 +20,17 @@ import {
 } from "@application/services";
 import { PasswordEncryptionError } from "./errors";
 import { ErrorStatusCodes } from "@http";
+import { ObserverOnUserCreated } from "@Infrastructure";
+import { DomainEventsQueue } from "@domain";
 class RegisterUserService
   implements IService<IRegisterUserRequestDto, IRegisterUserResponseDto>
 {
   private readonly userRepo: IUserRepo;
+
   constructor(userRepo: IUserRepo) {
     this.userRepo = userRepo;
   }
+
   async execute(
     registerUserDto: IRegisterUserRequestDto
   ): Promise<ServiceResultType<IRegisterUserResponseDto>> {
@@ -57,6 +61,7 @@ class RegisterUserService
         )
       );
     }
+
     let encryptedPassword = "";
     try {
       encryptedPassword = await PasswordManager.encryptPassword(
@@ -73,7 +78,9 @@ class RegisterUserService
         )
       );
     }
+
     registerUserDto.hash = encryptedPassword;
+
     const userOrError: Result<User> = User.create(registerUserDto);
     if (userOrError.isFailure) {
       return ServiceResult.fail(
@@ -84,7 +91,9 @@ class RegisterUserService
         )
       );
     }
+
     const user = userOrError.getValue();
+
     try {
       await this.userRepo.create(UserMapper.toDbFromDomain(user));
     } catch (error: unknown) {
@@ -96,7 +105,12 @@ class RegisterUserService
         )
       );
     }
+
+    new ObserverOnUserCreated();
+    DomainEventsQueue.dispatchEntityEvents(user);
+
     let token = "";
+
     try {
       token = GenerateAuthToken.generateToken(user.id as string);
     } catch (error) {
@@ -108,6 +122,7 @@ class RegisterUserService
         )
       );
     }
+
     return ServiceResult.success({
       email: user.userProps.email,
       id: user.id,

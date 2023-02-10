@@ -2,8 +2,8 @@
 
 import express, { Application } from "express";
 import dotenv from "dotenv";
-import { AuthRoutes, TaskRoutes, UserRoutes, AppRoutes } from "./routes";
 import cors from "cors";
+import { AuthRoutes, TaskRoutes, UserRoutes, AppRoutes } from "./routes";
 import { CommonRoutesConfig } from "./routes/utils/CommonRoutesConfig";
 import { errorHandlingMiddleware } from "./middlewares/errors.middleware";
 import { logger } from "@Infrastructure";

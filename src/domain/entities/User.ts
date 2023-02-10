@@ -1,6 +1,7 @@
 /** @format */
 
 import { Guard, IGuardProps, Result } from "@common";
+import { UserCreatedEvent } from "@domain/events/UserCreatedEvent";
 import { UniqueIdGenerator } from "@Infrastructure";
 import { Entity } from "./Entity";
 import { IUserProps } from "./interfaces";
@@ -15,11 +16,20 @@ export class User extends Entity<IUserProps> {
       { arguement: props.email, arguementName: "email" },
       { arguement: props.hash, arguementName: "hash" },
     ];
+
     const guardResult = Guard.guardAgainstNullOrUndefinedBulk(guardedProps);
+
     if (!guardResult.succeeded) {
       return Result.fail<User>(guardResult.message);
     }
+
     const user = new User({ ...props, name: props?.name || "" });
+
+    const isUserAlreadyCreated = Boolean(props?.id);
+    if (!isUserAlreadyCreated) {
+      user.addDomainEvent(new UserCreatedEvent(user));
+    }
+
     return Result.ok<User>(user);
   }
 

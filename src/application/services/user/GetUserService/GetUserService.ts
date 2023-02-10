@@ -16,6 +16,7 @@ class GetUserService
   implements IService<IGetUserRequestDto, IGetUserResponseDto>
 {
   userRepo: IUserRepo;
+
   constructor(userRepo: IUserRepo) {
     this.userRepo = userRepo;
   }
@@ -24,6 +25,7 @@ class GetUserService
     getUserDto: IGetUserRequestDto
   ): Promise<ServiceResultType<IGetUserResponseDto>> {
     let dbUser: IUserProps;
+
     try {
       dbUser = await this.userRepo.getById(getUserDto.id);
     } catch (error) {
@@ -35,6 +37,7 @@ class GetUserService
         )
       );
     }
+
     if (!dbUser) {
       return ServiceResult.fail(
         new UserNotFoundError(
@@ -44,7 +47,9 @@ class GetUserService
         )
       );
     }
+
     const user = UserMapper.toDomainFromDb(dbUser).getValue();
+
     return ServiceResult.success({
       id: user.id,
       email: user.userProps.email as string,

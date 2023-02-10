@@ -11,6 +11,7 @@ import { BaseController } from "@http/controllers/BaseController";
 
 class UpdateUserController extends BaseController {
   private service: IService<IUpdateUserRequestDto, IUpdateUserResponseDto>;
+
   constructor(
     service: IService<IUpdateUserRequestDto, IUpdateUserResponseDto>
   ) {
@@ -30,7 +31,7 @@ class UpdateUserController extends BaseController {
     if (result.success) {
       return this.ok(result.value);
     }
-    
+
     return this.handleErrors?.(result.error);
   }
 }

@@ -16,9 +16,11 @@ class UpdateUserService
   implements IService<IUpdateUserRequestDto, IUpdateUserResponseDto>
 {
   userRepo: IUserRepo;
+
   constructor(userRepo: IUserRepo) {
     this.userRepo = userRepo;
   }
+
   async execute(
     updateUserDto: IUpdateUserRequestDto
   ): Promise<ServiceResultType<IUpdateUserResponseDto>> {
@@ -55,6 +57,7 @@ class UpdateUserService
     if (updateUserDto.hasOwnProperty("email") && updateUserDto.email) {
       user.email = updateUserDto.email;
     }
+
     try {
       await this.userRepo.updateById(updateUserDto.id, user.userProps);
     } catch (error) {
@@ -66,6 +69,7 @@ class UpdateUserService
         )
       );
     }
+
     return ServiceResult.success({
       id: user.id,
       email: user.userProps.email as string,

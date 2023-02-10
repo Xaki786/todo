@@ -1,7 +1,7 @@
 /** @format */
 
-import { envConfigObject } from "@config";
 import jwt from "jsonwebtoken";
+import { envConfigObject } from "@config";
 
 export abstract class VerifyAuthToken {
   public static verifyToken(token: string) {

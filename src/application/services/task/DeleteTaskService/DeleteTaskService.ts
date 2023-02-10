@@ -26,6 +26,7 @@ class DeleteTaskService
 {
   private userRepo: IUserRepo;
   private taskRepo: ITaskRepo;
+
   constructor(userRepo: IUserRepo, taskRepo: ITaskRepo) {
     this.userRepo = userRepo;
     this.taskRepo = taskRepo;
@@ -99,6 +100,7 @@ class DeleteTaskService
         )
       );
     }
+
     return ServiceResult.success({
       id: task.id,
     });

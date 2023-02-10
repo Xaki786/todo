@@ -22,6 +22,7 @@ export class TaskRoutes extends CommonRoutesConfig {
   constructor(app: Application) {
     super(app, "TaskRoutes");
   }
+
   configureRoutes(): Application {
     this.app
       .route(ROUTES_PATHS.USER_TASK_LIST)
